@@ -10,5 +10,8 @@ export const paths = {
     index: '/dashboard',
   },
   blank: '/blank',
+  hr: {
+    candidate: '/hr/candidate',
+  },
   docs: 'https://material-kit-pro-react-docs.devias.io',
 };

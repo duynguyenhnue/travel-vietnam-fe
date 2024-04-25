@@ -4,5 +4,10 @@ export const tokens = {
   },
   nav: {
     overview: 'nav.overview',
+
+    //HR
+    candidate: 'nav.candidate',
+    newCandidate: 'nav.newCandidate',
+
   },
 };
