@@ -4,7 +4,7 @@ export type CandidateState = {
     errorMessage: string | null;
 };
 export type CandidateType = {
-    id?: string;
+    _id?: string;
     name: string,
     status: string,
     contact: Contact,

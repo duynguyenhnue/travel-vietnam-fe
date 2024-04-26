@@ -15,6 +15,8 @@ import { IconButton, Menu, MenuItem, TableHead } from '@mui/material';
 import { Link } from 'react-router-dom';
 import TablePagination from '@mui/material/TablePagination';
 import { CandidateType } from 'src/types/hr/candidate';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 const statusMap: Record<string, SeverityPillColor> = {
   reject: 'error',
@@ -32,7 +34,7 @@ interface CandidateTransactionsProps {
 
 export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => {
   const { candidates, setViewOpen, setCurrentCandidate } = props;
-
+  const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -66,12 +68,12 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
           <TableHead>
             <TableRow>
               <TableCell>{''}</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Contact</TableCell>
-              <TableCell>Interview information</TableCell>
-              <TableCell>Project experience</TableCell>
-              <TableCell>Skills summary</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>{t(tokens.nav.name)}</TableCell>
+              <TableCell>{t(tokens.nav.contact)}</TableCell>
+              <TableCell>{t(tokens.nav.interviewInformation)}</TableCell>
+              <TableCell>{t(tokens.nav.projectExperience)}</TableCell>
+              <TableCell>{t(tokens.nav.skillsSummary)}</TableCell>
+              <TableCell>{t(tokens.nav.status)}</TableCell>
               <TableCell>{''}</TableCell>
             </TableRow>
           </TableHead>
@@ -83,7 +85,7 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
                   return (
                     <>
                       <TableRow
-                        key={transaction.id}
+                        key={transaction._id}
                         hover
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                       >
@@ -117,10 +119,10 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
                         <TableCell>
                           <div>
                             <Typography variant="subtitle2">
-                              Email: {transaction.contact.email}
+                              {t(tokens.nav.email)}: {transaction.contact.email}
                             </Typography>
                             <Typography variant="subtitle2">
-                              Phone: {transaction.contact.phone}
+                              {t(tokens.nav.phone)}: {transaction.contact.phone}
                             </Typography>
                           </div>
                         </TableCell>
@@ -128,10 +130,10 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
                         <TableCell>
                           <div>
                             <Typography variant="subtitle2">
-                              Time: {transaction.interviewInformation.dateTime}
+                              {t(tokens.nav.time)}: {transaction.interviewInformation.dateTime}
                             </Typography>
                             <Typography variant="subtitle2">
-                              Link:{' '}
+                              {t(tokens.nav.link)}:{' '}
                               <Link
                                 target="blank"
                                 to={transaction.interviewInformation.linkGmeet}
@@ -157,7 +159,7 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
                         </TableCell>
                         <TableCell>
                           <IconButton
-                            onClick={(event) => handleClick(event, transaction.id || '')}
+                            onClick={(event) => handleClick(event, transaction._id || '')}
                             size="small"
                             sx={{ ml: 2 }}
                             aria-controls={open ? 'account-menu' : undefined}
@@ -183,6 +185,7 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage={t(tokens.nav.rowsPerPage)}
       />
 
       <Menu

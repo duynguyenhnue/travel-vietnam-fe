@@ -30,7 +30,7 @@ const CandidatePage = () => {
     dispatch(getCandidate());
   }, []);
 
-  const candidate = candidates && candidates?.find((item) => item.id === currentCandidate);
+  const candidate = candidates && candidates?.find((item) => item._id === currentCandidate);
 
   return (
     <>

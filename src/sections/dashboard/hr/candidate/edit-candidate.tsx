@@ -1,7 +1,10 @@
 import { Button, CardContent, Grid, Modal, TextField, Typography } from '@mui/material';
+import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import { useFormik } from 'formik';
 import { MouseEvent, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 import { editCandidate } from 'src/redux/slices/candidate';
 import { useDispatch } from 'src/redux/store';
 import { CandidateType } from 'src/types/hr/candidate';
@@ -17,10 +20,8 @@ type NewCandidateType = {
 const EditCandidate = (props: NewCandidateType) => {
   const { open, setOpen, candidate, currentCandidate } = props;
   const dispath = useDispatch();
-
+  const { t } = useTranslation();
   const handleClose = () => {
-    window.location.reload();
-
     setOpen({ view: false, edit: false, delete: false });
   };
   const formik = useFormik({
@@ -52,7 +53,7 @@ const EditCandidate = (props: NewCandidateType) => {
       certificate: Yup.string().max(255).required('Certificate is required'),
       contact: Yup.object({
         email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-        phone: Yup.string().max(10).required('Phone is required'),
+        phone: Yup.string().max(10).min(10).required('Phone is required'),
       }),
       interviewInformation: Yup.object({
         dateTime: Yup.string().max(255).required('Date time is required'),
@@ -77,12 +78,39 @@ const EditCandidate = (props: NewCandidateType) => {
     candidate && formik.setValues({ ...candidate, submit: null });
   }, [candidate]);
 
+  const listStatus = [
+    {
+      value: '',
+      label: '',
+    },
+    {
+      value: 'reject',
+      label: 'Reject',
+    },
+    {
+      value: 'schedule_interview',
+      label: 'Schedule Interview',
+    },
+    {
+      value: 'interviewed',
+      label: 'Interviewed',
+    },
+    {
+      value: 'pass',
+      label: 'Pass',
+    },
+    {
+      value: 'onboard',
+      label: 'Onboard',
+    },
+  ];
+
   return (
     <Modal
       open={open.edit}
       onClose={handleClose}
-      aria-labelledby="new-candidate"
-      aria-describedby="new-candidate"
+      aria-labelledby="edit-candidate"
+      aria-describedby="edit-candidate"
     >
       <CardContent
         sx={{
@@ -109,7 +137,7 @@ const EditCandidate = (props: NewCandidateType) => {
               variant="h5"
               align="center"
             >
-              Candidate
+              {t(tokens.nav.candidate)}
             </Typography>
           </Grid>
           <Grid
@@ -121,7 +149,7 @@ const EditCandidate = (props: NewCandidateType) => {
               error={!!(formik.touched.name && formik.errors.name)}
               fullWidth
               helperText={formik.touched.name && formik.errors.name}
-              label="Full name"
+              label={t(tokens.nav.name)}
               name="name"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -138,7 +166,7 @@ const EditCandidate = (props: NewCandidateType) => {
               error={!!(formik.touched.projectExperience && formik.errors.projectExperience)}
               fullWidth
               helperText={formik.touched.projectExperience && formik.errors.projectExperience}
-              label="Project experience"
+              label={t(tokens.nav.projectExperience)}
               name="projectExperience"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -152,10 +180,58 @@ const EditCandidate = (props: NewCandidateType) => {
             md={6}
           >
             <TextField
+              error={!!(formik.touched.universityMajor && formik.errors.universityMajor)}
+              fullWidth
+              helperText={formik.touched.universityMajor && formik.errors.universityMajor}
+              label={t(tokens.nav.universityMajor)}
+              name="universityMajor"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              required
+              value={formik.values.universityMajor}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
+            <TextField
+              select
+              fullWidth
+              label={t(tokens.nav.status)}
+              SelectProps={{
+                native: true,
+              }}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.status}
+              name="status"
+              helperText={formik.touched.status && formik.errors.status}
+              variant="filled"
+              error={!!(formik.touched.status && formik.errors.status)}
+            >
+              {listStatus.map((option) => (
+                <option
+                  key={option.value}
+                  value={option.value}
+                  disabled={option.value ? false : true}
+                >
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
+            <TextField
               error={!!(formik.touched.skillsSummary && formik.errors.skillsSummary)}
               fullWidth
               helperText={formik.touched.skillsSummary && formik.errors.skillsSummary}
-              label="Skills summary"
+              label={t(tokens.nav.skillsSummary)}
               name="skillsSummary"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -172,7 +248,7 @@ const EditCandidate = (props: NewCandidateType) => {
               error={!!(formik.touched.certificate && formik.errors.certificate)}
               fullWidth
               helperText={formik.touched.certificate && formik.errors.certificate}
-              label="Certificate"
+              label={t(tokens.nav.certificate)}
               name="certificate"
               onBlur={formik.handleBlur}
               required
@@ -180,11 +256,36 @@ const EditCandidate = (props: NewCandidateType) => {
               value={formik.values.certificate}
             />
           </Grid>
+
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
+            <DatePicker
+              format="dd/MM/yyyy"
+              label="DOB"
+              onChange={(value) => {
+                formik.setFieldValue('dob', value, true);
+              }}
+              value={new Date(formik.values.dob)}
+              slotProps={{
+                textField: {
+                  variant: 'outlined',
+                  required: true,
+                  name: 'dob',
+                  error: !!(formik.touched.dob && Boolean(formik.errors.dob)),
+                  helperText: formik.touched.dob && formik.errors.dob,
+                },
+              }}
+            />
+          </Grid>
+
           <Grid
             item
             xs={12}
           >
-            <Typography variant="h6">Contact</Typography>
+            <Typography variant="h6">{t(tokens.nav.contact)}</Typography>
           </Grid>
           <Grid
             item
@@ -195,7 +296,7 @@ const EditCandidate = (props: NewCandidateType) => {
               error={!!(formik.touched.contact?.email && formik.errors.contact?.email)}
               fullWidth
               helperText={formik.touched.contact?.email && formik.errors.contact?.email}
-              label="Email"
+              label={t(tokens.nav.email)}
               name="contact.email"
               onBlur={formik.handleBlur}
               required
@@ -212,7 +313,7 @@ const EditCandidate = (props: NewCandidateType) => {
               error={!!(formik.touched.contact?.phone && formik.errors.contact?.phone)}
               fullWidth
               helperText={formik.touched.contact?.phone && formik.errors.contact?.phone}
-              label="Phone"
+              label={t(tokens.nav.phone)}
               name="contact.phone"
               required
               onBlur={formik.handleBlur}
@@ -225,31 +326,35 @@ const EditCandidate = (props: NewCandidateType) => {
             item
             xs={12}
           >
-            <Typography variant="h6">Interview information</Typography>
+            <Typography variant="h6">{t(tokens.nav.interviewInformation)}</Typography>
           </Grid>
           <Grid
             item
             xs={12}
             md={6}
           >
-            <TextField
-              error={
-                !!(
-                  formik.touched.interviewInformation?.dateTime &&
-                  formik.errors.interviewInformation?.dateTime
-                )
-              }
-              fullWidth
-              required
-              helperText={
-                formik.touched.interviewInformation?.dateTime &&
-                formik.errors.interviewInformation?.dateTime
-              }
-              label="Date time"
-              name="interviewInformation.dateTime"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              value={formik.values.interviewInformation.dateTime}
+            <DateTimePicker
+              label={t(tokens.nav.time)}
+              onChange={(value) => {
+                formik.setFieldValue('interviewInformation.dateTime', value, true);
+              }}
+              value={new Date(formik.values.interviewInformation.dateTime)}
+              minDate={new Date()}
+              minTime={new Date()}
+              slotProps={{
+                textField: {
+                  variant: 'outlined',
+                  error: !!(
+                    formik.touched.interviewInformation?.dateTime &&
+                    formik.errors.interviewInformation?.dateTime
+                  ),
+                  helperText:
+                    formik.touched.interviewInformation?.dateTime &&
+                    formik.errors.interviewInformation?.dateTime,
+                  required: true,
+                  name: 'dateTime',
+                },
+              }}
             />
           </Grid>
           <Grid
@@ -269,7 +374,7 @@ const EditCandidate = (props: NewCandidateType) => {
                 formik.touched.interviewInformation?.linkGmeet &&
                 formik.errors.interviewInformation?.linkGmeet
               }
-              label="Link gmeet"
+              label={t(tokens.nav.link)}
               name="interviewInformation.linkGmeet"
               required
               onBlur={formik.handleBlur}
@@ -280,7 +385,6 @@ const EditCandidate = (props: NewCandidateType) => {
           <Grid
             item
             xs={6}
-            sx={{ display: 'flex', justifyContent: 'center' }}
           >
             <Button
               disabled={formik.isSubmitting}
@@ -292,20 +396,19 @@ const EditCandidate = (props: NewCandidateType) => {
               }}
               sx={{ bgcolor: 'success.main' }}
             >
-              Update
+              {t(tokens.nav.update)}
             </Button>
           </Grid>
           <Grid
             item
             xs={6}
-            sx={{ display: 'flex', justifyContent: 'center' }}
           >
             <Button
+              onClick={handleClose}
               variant="contained"
               disabled={formik.isSubmitting}
-              onClick={handleClose}
             >
-              {'Cancel'}
+              {t(tokens.nav.cancel)}
             </Button>
           </Grid>
         </Grid>

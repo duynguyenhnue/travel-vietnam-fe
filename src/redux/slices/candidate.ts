@@ -91,9 +91,10 @@ export const newCandidate = (candidate: CandidateType) => {
             await axios.post('http://localhost:8083/api/candidate', candidate);
             toast.success('Create candidate successful');
             dispatch(candidateSlice.actions.newCandidateSuccess());
+            window.location.reload();
         } catch (error) {
             const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
-            toast.error(errorMessage);
+            toast.error("Create candidate error");
             dispatch(candidateSlice.actions.newCandidateFailure(errorMessage));
         }
     };
@@ -104,13 +105,13 @@ export const editCandidate = (candidate: CandidateType, id: string) => {
     return async () => {
         try {
             dispatch(candidateSlice.actions.editCandidateRequest());
-
             await axios.put(`http://localhost:8083/api/candidate/${id}`, candidate);
             toast.success('Edit candidate successful');
             dispatch(candidateSlice.actions.editCandidateSuccess());
+            window.location.reload();
         } catch (error) {
             const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
-            toast.error(errorMessage);
+            toast.error("Edit candidate false");
             dispatch(candidateSlice.actions.editCandidateFailure(errorMessage));
         }
     };
@@ -125,6 +126,7 @@ export const deleteCandidate = (id: string) => {
             await axios.delete(`http://localhost:8083/api/candidate/${id}`);
             toast.success('Delete candidate successful');
             dispatch(candidateSlice.actions.editCandidateSuccess());
+            window.location.reload();
         } catch (error) {
             const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
             toast.error(errorMessage);

@@ -1,4 +1,6 @@
 import { Button, CardContent, Grid, Modal, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 import { deleteCandidate } from 'src/redux/slices/candidate';
 import { useDispatch } from 'src/redux/store';
 
@@ -10,10 +12,8 @@ type NewCandidateType = {
 
 const DeleteCandidate = (props: NewCandidateType) => {
   const { open, setOpen, currentCandidate } = props;
-
+  const { t } = useTranslation();
   const handleClose = () => {
-    window.location.reload();
-
     setOpen({ view: false, edit: false, delete: false });
   };
   const dispath = useDispatch();
@@ -56,7 +56,7 @@ const DeleteCandidate = (props: NewCandidateType) => {
               variant="h6"
               align="center"
             >
-              Do you want to delete it or not?
+              {t(tokens.nav.doYouWantToDeleteItOrNot)}
             </Typography>
           </Grid>
           <Grid
@@ -70,7 +70,7 @@ const DeleteCandidate = (props: NewCandidateType) => {
               onClick={handleDelete}
               sx={{ bgcolor: 'success.main' }}
             >
-              Yes
+              {t(tokens.nav.yes)}
             </Button>
           </Grid>
           <Grid
@@ -82,7 +82,7 @@ const DeleteCandidate = (props: NewCandidateType) => {
               variant="contained"
               onClick={handleClose}
             >
-              No
+              {t(tokens.nav.no)}
             </Button>
           </Grid>
         </Grid>
