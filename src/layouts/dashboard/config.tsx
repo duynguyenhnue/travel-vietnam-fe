@@ -7,6 +7,7 @@ import File01Icon from 'src/icons/untitled-ui/duocolor/file-01';
 import HomeSmileIcon from 'src/icons/untitled-ui/duocolor/home-smile';
 import { tokens } from 'src/locales/tokens';
 import { paths } from 'src/paths';
+import { Person } from '@mui/icons-material';
 
 export interface Item {
   disabled?: boolean;
@@ -47,6 +48,20 @@ export const useSections = () => {
                 <File01Icon />
               </SvgIcon>
             ),
+          },
+          {
+            title: 'HR',
+            icon: (
+              <SvgIcon fontSize="small">
+                <Person />
+              </SvgIcon>
+            ),
+            items: [
+              {
+                title: t(tokens.nav.candidate),
+                path: paths.hr.candidate,
+              },
+            ],
           },
         ],
       },
