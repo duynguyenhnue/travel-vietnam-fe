@@ -28,6 +28,7 @@
     "react/react-in-jsx-scope": 0,
     "react/self-closing-comp": 2,
     "react/no-unescaped-entities": 0,
+    "react/jsx-no-target-blank": "off",
     "@typescript-eslint/ban-ts-comment": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-empty-function": 0,

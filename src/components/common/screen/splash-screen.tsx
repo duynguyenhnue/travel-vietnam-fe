@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import Box from '@mui/material/Box';
 
-import { Logo } from 'src/components/logo';
+import { Logo } from 'src/components/common/logo/logo';
 
 export const SplashScreen: FC = () => (
   <Box

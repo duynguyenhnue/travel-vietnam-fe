@@ -1,5 +1,5 @@
 import { Box, Stack } from '@mui/system';
-import { Seo } from 'src/components/seo';
+import { Seo } from 'src/components/common/performance/seo';
 import { useSettings } from 'src/hooks/use-settings';
 import Container from '@mui/material/Container';
 import Grid from '@mui/system/Unstable_Grid/Grid';
@@ -7,15 +7,15 @@ import PlusIcon from '@untitled-ui/icons-react/build/esm/Plus';
 import { Button, SvgIcon, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
-import { CandidateTransactions } from 'src/sections/dashboard/hr/candidate/list-candidate';
+import { CandidateTransactions } from 'src/sections/hr/candidate/list-candidate';
 import { useEffect, useState } from 'react';
-import NewCandidate from 'src/sections/dashboard/hr/candidate/new-candidate';
-import EditAndDeleteCandidate from 'src/sections/dashboard/hr/candidate/edit-candidate';
-import DeleteCandidate from 'src/sections/dashboard/hr/candidate/delete-candidate';
-import ViewCandidate from 'src/sections/dashboard/hr/candidate/view-candidate';
+import NewCandidate from 'src/sections/hr/candidate/new-candidate';
+import EditAndDeleteCandidate from 'src/sections/hr/candidate/edit-candidate';
+import DeleteCandidate from 'src/sections/hr/candidate/delete-candidate';
+import ViewCandidate from 'src/sections/hr/candidate/view-candidate';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { getCandidate } from 'src/redux/slices/candidate';
-import SendEmailCandidate from 'src/sections/dashboard/hr/candidate/send-email-candidate';
+import SendEmailCandidate from 'src/sections/hr/candidate/send-email-candidate';
 
 const CandidatePage = () => {
   const settings = useSettings();
@@ -40,7 +40,7 @@ const CandidatePage = () => {
 
   return (
     <>
-      <Seo title="Dashboard: Overview" />
+      <Seo title="HR - Candidate" />
       <Box
         component="main"
         sx={{
@@ -122,11 +122,15 @@ const CandidatePage = () => {
               />
             </Grid>
             <Grid xs={12}>
-              <SendEmailCandidate
-                open={viewOpen}
-                setOpen={setViewOpen}
-                candidate={candidate && candidate}
-              />
+              {
+                candidate && 
+                 <SendEmailCandidate
+                  open={viewOpen}
+                  setOpen={setViewOpen}
+                  candidate={candidate && candidate}
+                />
+              }
+             
             </Grid>
           </Grid>
         </Container>

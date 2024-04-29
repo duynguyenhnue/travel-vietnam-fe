@@ -10,9 +10,9 @@ import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
-import { Logo } from 'src/components/logo';
-import { RouterLink } from 'src/components/router-link';
-import { Scrollbar } from 'src/components/scrollbar';
+import { Logo } from 'src/components/common/logo/logo';
+import { RouterLink } from 'src/components/common/router/router-link';
+import { Scrollbar } from 'src/components/common/scrollbar/scrollbar';
 import { usePathname } from 'src/hooks/use-pathname';
 import { paths } from 'src/paths';
 import type { NavColor } from 'src/types/settings';

@@ -4,8 +4,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 
-import { Logo } from 'src/components/logo';
-import { RouterLink } from 'src/components/router-link';
+import { Logo } from 'src/components/common/logo/logo';
+import { RouterLink } from 'src/components/common/router/router-link';
 import { paths } from 'src/paths';
 
 interface LayoutProps {
@@ -121,7 +121,7 @@ export const Layout: FC<LayoutProps> = (props) => {
                   lineHeight: 2.5,
                 }}
               >
-                IELTS PRACTICE
+                STARACK Admin
               </Box>
             </Stack>
           </Box>

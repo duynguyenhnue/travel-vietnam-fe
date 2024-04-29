@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 
-import { Seo } from 'src/components/seo';
+import { Seo } from 'src/components/common/performance/seo';
 import { useSettings } from 'src/hooks/use-settings';
 import { OverviewBanner } from 'src/sections/dashboard/overview/overview-banner';
 import { OverviewDoneTasks } from 'src/sections/dashboard/overview/overview-done-tasks';

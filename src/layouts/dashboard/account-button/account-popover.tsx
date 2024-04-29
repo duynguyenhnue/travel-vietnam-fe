@@ -15,7 +15,7 @@ import Popover from '@mui/material/Popover';
 import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 
-import { RouterLink } from 'src/components/router-link';
+import { RouterLink } from 'src/components/common/router/router-link';
 import { useRouter } from 'src/hooks/use-router';
 import { paths } from 'src/paths';
 import { useDispatch, useSelector } from 'src/redux/store';

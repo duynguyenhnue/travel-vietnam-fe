@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { newCandidate } from 'src/redux/slices/candidate';
 import { useDispatch } from 'src/redux/store';
+import { convertLocateTimezone, convertStringToDateWithTimezone } from 'src/utils/date-locale';
 import { wait } from 'src/utils/wait';
 import * as Yup from 'yup';
 
@@ -39,23 +40,26 @@ const NewCandidate = (props: NewCandidateType) => {
       projectExperience: '',
       skillsSummary: '',
       certificate: '',
+      role: '',
+      onboardDate: '',
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255).required('Name is required'),
       status: Yup.string().required('Status is required'),
-      dob: Yup.string().required('DOB is required'),
-      universityMajor: Yup.string().required('University major is required'),
-      projectExperience: Yup.string().required('Project experience is required'),
-      skillsSummary: Yup.string().required('Skills summary is required'),
-      certificate: Yup.string().required('Certificate is required'),
+      role: Yup.string().required('Role is required'),
+      // dob: Yup.string().required('DOB is required'),
+      // universityMajor: Yup.string().required('University major is required'),
+      // projectExperience: Yup.string().required('Project experience is required'),
+      // skillsSummary: Yup.string().required('Skills summary is required'),
+      // certificate: Yup.string().required('Certificate is required'),
       contact: Yup.object({
         email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
         phone: Yup.string().max(10).min(10).required('Phone is required'),
       }),
-      interviewInformation: Yup.object({
-        dateTime: Yup.string().required('Date time is required'),
-        linkGmeet: Yup.string().required('Link gmeet is required'),
-      }),
+      // interviewInformation: Yup.object({
+      //   dateTime: Yup.string().required('Date time is required'),
+      //   linkGmeet: Yup.string().required('Link gmeet is required'),
+      // }),
     }),
     onSubmit: async (values, helpers): Promise<void> => {
       try {
@@ -139,7 +143,7 @@ const NewCandidate = (props: NewCandidateType) => {
               variant="h5"
               align="center"
             >
-              {t(tokens.nav.candidate)}
+              {t(tokens.nav.newCandidate)}
             </Typography>
           </Grid>
           <Grid
@@ -172,7 +176,6 @@ const NewCandidate = (props: NewCandidateType) => {
               name="projectExperience"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              required
               value={formik.values.projectExperience}
             />
           </Grid>
@@ -189,7 +192,6 @@ const NewCandidate = (props: NewCandidateType) => {
               name="universityMajor"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              required
               value={formik.values.universityMajor}
             />
           </Grid>
@@ -238,7 +240,6 @@ const NewCandidate = (props: NewCandidateType) => {
               name="skillsSummary"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              required
               value={formik.values.skillsSummary}
             />
           </Grid>
@@ -254,7 +255,6 @@ const NewCandidate = (props: NewCandidateType) => {
               label={t(tokens.nav.certificate)}
               name="certificate"
               onBlur={formik.handleBlur}
-              required
               onChange={formik.handleChange}
               value={formik.values.certificate}
             />
@@ -275,12 +275,30 @@ const NewCandidate = (props: NewCandidateType) => {
               slotProps={{
                 textField: {
                   variant: 'outlined',
-                  required: true,
+                  required: false,
                   name: 'dob',
                   error: !!(formik.touched.dob && Boolean(formik.errors.dob)),
                   helperText: formik.touched.dob && formik.errors.dob,
                 },
               }}
+            />
+          </Grid>
+
+           <Grid
+            item
+            xs={12}
+            md={6}
+          >
+             <TextField
+              error={!!(formik.touched.role && formik.errors.role)}
+              required
+              fullWidth
+              helperText={formik.touched.role && formik.errors.role}
+              label={t(tokens.nav.role)}
+              name="role"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.role}
             />
           </Grid>
 
@@ -336,27 +354,28 @@ const NewCandidate = (props: NewCandidateType) => {
             xs={12}
             md={6}
           >
-            <DateTimePicker
-              label={t(tokens.nav.time)}
-              onChange={(value) => {
-                formik.setFieldValue('interviewInformation.dateTime', value, true);
-              }}
-              value={formik.values.interviewInformation.dateTime}
-              slotProps={{
-                textField: {
-                  variant: 'outlined',
-                  error: !!(
-                    formik.touched.interviewInformation?.dateTime &&
-                    formik.errors.interviewInformation?.dateTime
-                  ),
-                  helperText:
-                    formik.touched.interviewInformation?.dateTime &&
-                    formik.errors.interviewInformation?.dateTime,
-                  required: true,
-                  name: 'dateTime',
-                },
-              }}
-            />
+             <DateTimePicker
+                onChange={(value) => {
+                  if(value){
+                    formik.setFieldValue('interviewInformation.dateTime', convertLocateTimezone(value), true);
+                  }
+                }}
+                value={typeof formik.values.interviewInformation?.dateTime === "string" ? new Date(convertStringToDateWithTimezone(formik.values.interviewInformation.dateTime)) : formik.values.interviewInformation.dateTime}
+                slotProps={{
+                  textField: {
+                    variant: 'outlined',
+                    error: !!(
+                      formik.touched.interviewInformation?.dateTime &&
+                      formik.errors.interviewInformation?.dateTime
+                    ),
+                    helperText:
+                      formik.touched.interviewInformation?.dateTime &&
+                      formik.errors.interviewInformation?.dateTime,
+                    required: false,
+                    name: 'dateTime',
+                  },
+                }}
+              />
           </Grid>
           <Grid
             item
@@ -377,29 +396,60 @@ const NewCandidate = (props: NewCandidateType) => {
               }
               label={t(tokens.nav.link)}
               name="interviewInformation.linkGmeet"
-              required
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               value={formik.values.interviewInformation.linkGmeet}
             />
           </Grid>
-          <Grid
+          {
+            formik.values.status === "pass" && 
+            <Grid
             item
-            xs={6}
-          >
-            <Button
-              disabled={formik.isSubmitting}
-              variant="contained"
-              type="submit"
-              onClick={handleSubmit}
-              sx={{ bgcolor: 'success.main' }}
+            xs={12}
             >
-              {t(tokens.nav.create)}
-            </Button>
+              <Typography variant="h6">{t(tokens.nav.onboardDate)}</Typography>
+              <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{mt: 2}}
+            >
+               <DateTimePicker
+                onChange={(value) => {
+                  if(value){
+                    formik.setFieldValue('onboardDate', convertLocateTimezone(value), true);
+                  }
+                }}
+                value={typeof formik.values.onboardDate === "string" ? new Date(convertStringToDateWithTimezone(formik.values.onboardDate)) : formik.values.onboardDate}
+                slotProps={{
+                  textField: {
+                    variant: 'outlined',
+                    error: !!(
+                      formik.touched.onboardDate &&
+                      formik.errors.onboardDate
+                    ),
+                    helperText:
+                      formik.touched.onboardDate &&
+                      formik.errors.onboardDate,
+                    required: false,
+                    name: 'dateTime',
+                  },
+                }}
+              />
+            </Grid>
           </Grid>
+          }
           <Grid
             item
             xs={6}
+          />
+          
+          <Grid
+            item
+            xs={6}
+             style={{
+              textAlign: "right"
+            }}
           >
             <Button
               onClick={handleClose}
@@ -407,6 +457,15 @@ const NewCandidate = (props: NewCandidateType) => {
               disabled={formik.isSubmitting}
             >
               {t(tokens.nav.cancel)}
+            </Button>
+            <Button
+              disabled={formik.isSubmitting}
+              variant="contained"
+              type="submit"
+              onClick={handleSubmit}
+              sx={{ bgcolor: 'success.main', ml: 1 }}
+            >
+              {t(tokens.nav.create)}
             </Button>
           </Grid>
         </Grid>

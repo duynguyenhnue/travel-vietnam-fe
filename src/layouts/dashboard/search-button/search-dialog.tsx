@@ -16,7 +16,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import { Tip } from 'src/components/tip';
+import { Tip } from 'src/components/common/tip/tip';
 import { wait } from 'src/utils/wait';
 
 type Article = {
