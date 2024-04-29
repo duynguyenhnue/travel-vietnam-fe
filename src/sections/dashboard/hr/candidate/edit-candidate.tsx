@@ -22,7 +22,7 @@ const EditCandidate = (props: NewCandidateType) => {
   const dispath = useDispatch();
   const { t } = useTranslation();
   const handleClose = () => {
-    setOpen({ view: false, edit: false, delete: false });
+    setOpen({ send_email: false, view: false, edit: false, delete: false });
   };
   const formik = useFormik({
     initialValues: {

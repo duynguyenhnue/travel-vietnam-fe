@@ -15,13 +15,19 @@ import DeleteCandidate from 'src/sections/dashboard/hr/candidate/delete-candidat
 import ViewCandidate from 'src/sections/dashboard/hr/candidate/view-candidate';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { getCandidate } from 'src/redux/slices/candidate';
+import SendEmailCandidate from 'src/sections/dashboard/hr/candidate/send-email-candidate';
 
 const CandidatePage = () => {
   const settings = useSettings();
   const { t } = useTranslation();
   const [open, setOpen] = useState<boolean>(false);
   const [currentCandidate, setCurrentCandidate] = useState<string>('');
-  const [viewOpen, setViewOpen] = useState({ view: false, edit: false, delete: false });
+  const [viewOpen, setViewOpen] = useState({
+    send_email: false,
+    view: false,
+    edit: false,
+    delete: false,
+  });
   const handleOpen = () => setOpen(true);
   const dispatch = useDispatch();
 
@@ -113,6 +119,13 @@ const CandidatePage = () => {
                 open={viewOpen}
                 setOpen={setViewOpen}
                 candidate={candidates && candidate}
+              />
+            </Grid>
+            <Grid xs={12}>
+              <SendEmailCandidate
+                open={viewOpen}
+                setOpen={setViewOpen}
+                candidate={candidate && candidate}
               />
             </Grid>
           </Grid>

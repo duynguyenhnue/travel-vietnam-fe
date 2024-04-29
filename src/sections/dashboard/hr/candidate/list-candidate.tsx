@@ -55,10 +55,12 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
   };
   const handleClose = (name: string) => {
     setAnchorEl(null);
-    setViewOpen((prevState: { view: boolean; edit: boolean; delete: boolean }) => ({
-      ...prevState,
-      [name]: true,
-    }));
+    setViewOpen(
+      (prevState: { send_email: boolean; view: boolean; edit: boolean; delete: boolean }) => ({
+        ...prevState,
+        [name]: true,
+      })
+    );
   };
 
   return (
@@ -223,6 +225,7 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
+        <MenuItem onClick={() => handleClose('send_email')}>Send Email</MenuItem>
         <MenuItem onClick={() => handleClose('view')}>View</MenuItem>
         <MenuItem onClick={() => handleClose('edit')}>Edit</MenuItem>
         <MenuItem

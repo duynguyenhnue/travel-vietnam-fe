@@ -19,7 +19,8 @@ const ViewCandidate = (props: ViewCandidateType) => {
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
 
   const align = lgUp ? 'horizontal' : 'vertical';
-  const handleClose = () => setOpen({ view: false, edit: false, delete: false });
+  const handleClose = () =>
+    setOpen({ send_email: false,view: false, edit: false, delete: false });
 
   return (
     <Modal
