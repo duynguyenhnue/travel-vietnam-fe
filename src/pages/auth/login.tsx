@@ -12,10 +12,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { RouterLink } from 'src/components/router-link';
-import { Seo } from 'src/components/seo';
+import { RouterLink } from 'src/components/common/router/router-link';
+import { Seo } from 'src/components/common/performance/seo';
 import { paths } from 'src/paths';
-import { GoogleSignInButton } from 'src/components/google-login-button';
+import { GoogleSignInButton } from 'src/components/common/logo/google-login-button';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { login } from '../../redux/slices/authentication';
 import { useRouter } from 'src/hooks/use-router';

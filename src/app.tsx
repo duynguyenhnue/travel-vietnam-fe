@@ -10,10 +10,10 @@ import 'src/global.css';
 // Remove if locales are not used
 import 'src/locales/i18n';
 
-import { RTL } from 'src/components/rtl';
-import { SettingsButton } from 'src/components/settings/settings-button';
-import { SettingsDrawer } from 'src/components/settings/settings-drawer';
-import { Toaster } from 'src/components/toaster';
+import { RTL } from 'src/components/common/toggle-rtl/rtl';
+import { SettingsButton } from 'src/components/common/settings/settings-button';
+import { SettingsDrawer } from 'src/components/common/settings/settings-drawer';
+import { Toaster } from 'src/components/common/snack-bar/toaster';
 import { SettingsConsumer, SettingsProvider } from 'src/contexts/settings';
 import { useNprogress } from 'src/hooks/use-nprogress';
 import { routes } from 'src/routes';

@@ -2,8 +2,8 @@ import { CardContent, Grid, Modal, Typography, useMediaQuery } from '@mui/materi
 import { createTheme } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { PropertyList } from 'src/components/property-list';
-import { PropertyListItem } from 'src/components/property-list-item';
+import { PropertyList } from 'src/components/common/list/property-list';
+import { PropertyListItem } from 'src/components/common/list/property-list-item';
 import { tokens } from 'src/locales/tokens';
 import { CandidateType } from 'src/types/hr/candidate';
 type ViewCandidateType = {
@@ -19,7 +19,8 @@ const ViewCandidate = (props: ViewCandidateType) => {
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
 
   const align = lgUp ? 'horizontal' : 'vertical';
-  const handleClose = () => setOpen({ view: false, edit: false, delete: false });
+  const handleClose = () =>
+    setOpen({ send_email: false,view: false, edit: false, delete: false });
 
   return (
     <Modal
@@ -68,6 +69,13 @@ const ViewCandidate = (props: ViewCandidateType) => {
                 divider
                 label={t(tokens.nav.name)}
                 value={(candidate && candidate.name) || ''}
+              />
+               <PropertyListItem
+                align={align}
+                disableGutters
+                divider
+                label={t(tokens.nav.role)}
+                value={(candidate && candidate.role) || ''}
               />
               <PropertyListItem
                 align={align}
@@ -158,6 +166,13 @@ const ViewCandidate = (props: ViewCandidateType) => {
                 divider
                 label={t(tokens.nav.certificate)}
                 value={(candidate && candidate.certificate) || ''}
+              />
+              <PropertyListItem
+                align={align}
+                disableGutters
+                divider
+                label={t(tokens.nav.onboardDate)}
+                value={(candidate && candidate.onboardDate) || ''}
               />
             </PropertyList>
           </Grid>

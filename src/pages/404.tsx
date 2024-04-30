@@ -5,8 +5,8 @@ import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import type { Theme } from '@mui/material/styles/createTheme';
 
-import { RouterLink } from 'src/components/router-link';
-import { Seo } from 'src/components/seo';
+import { RouterLink } from 'src/components/common/router/router-link';
+import { Seo } from 'src/components/common/performance/seo';
 import { paths } from 'src/paths';
 
 const Page = () => {

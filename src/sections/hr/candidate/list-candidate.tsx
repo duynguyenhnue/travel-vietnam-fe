@@ -7,9 +7,9 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
-import { Scrollbar } from 'src/components/scrollbar';
-import type { SeverityPillColor } from 'src/components/severity-pill';
-import { SeverityPill } from 'src/components/severity-pill';
+import { Scrollbar } from 'src/components/common/scrollbar/scrollbar';
+import type { SeverityPillColor } from 'src/components/common/alert/severity-pill';
+import { SeverityPill } from 'src/components/common/alert/severity-pill';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { IconButton, Menu, MenuItem, TableHead } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -55,10 +55,12 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
   };
   const handleClose = (name: string) => {
     setAnchorEl(null);
-    setViewOpen((prevState: { view: boolean; edit: boolean; delete: boolean }) => ({
-      ...prevState,
-      [name]: true,
-    }));
+    setViewOpen(
+      (prevState: { send_email: boolean; view: boolean; edit: boolean; delete: boolean }) => ({
+        ...prevState,
+        [name]: true,
+      })
+    );
   };
 
   return (
@@ -70,6 +72,7 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
               <TableCell>{''}</TableCell>
               <TableCell>{t(tokens.nav.name)}</TableCell>
               <TableCell>{t(tokens.nav.contact)}</TableCell>
+              <TableCell>{t(tokens.nav.role)}</TableCell>
               <TableCell>{t(tokens.nav.interviewInformation)}</TableCell>
               <TableCell>{t(tokens.nav.projectExperience)}</TableCell>
               <TableCell>{t(tokens.nav.skillsSummary)}</TableCell>
@@ -83,8 +86,7 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((transaction, index: number) => {
                   return (
-                    <>
-                      <TableRow
+                     <TableRow
                         key={transaction._id}
                         hover
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -125,6 +127,11 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
                               {t(tokens.nav.phone)}: {transaction.contact.phone}
                             </Typography>
                           </div>
+                        </TableCell>
+                         <TableCell>
+                          <Typography variant="subtitle2">
+                            {transaction.role}
+                          </Typography>
                         </TableCell>
 
                         <TableCell>
@@ -171,7 +178,6 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
                           </IconButton>
                         </TableCell>
                       </TableRow>
-                    </>
                   );
                 })}
           </TableBody>
@@ -223,6 +229,7 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
+        <MenuItem onClick={() => handleClose('send_email')}>Send Email</MenuItem>
         <MenuItem onClick={() => handleClose('view')}>View</MenuItem>
         <MenuItem onClick={() => handleClose('edit')}>Edit</MenuItem>
         <MenuItem

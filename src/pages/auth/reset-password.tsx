@@ -12,8 +12,8 @@ import {
   Typography,
 } from '@mui/material';
 
-import { RouterLink } from 'src/components/router-link';
-import { Seo } from 'src/components/seo';
+import { RouterLink } from 'src/components/common/router/router-link';
+import { Seo } from 'src/components/common/performance/seo';
 import { paths } from 'src/paths';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'src/redux/store';
