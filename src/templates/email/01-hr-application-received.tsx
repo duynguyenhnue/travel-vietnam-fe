@@ -18,7 +18,7 @@ const HRApplicationReceivedEmailTemplate = (props: EmailTemplateType) => {
         </span>
         <br />
         <span style={{ color: 'rgb(29, 28, 29)', fontFamily: 'Slack-Lato, Slack-Fractions, appleLogo, sans-serif', fontStyle: 'normal', fontVariantLigatures: 'common-ligatures', fontVariantCaps: 'normal', fontWeight: 400, letterSpacing: 'normal', orphans: 2, textAlign: 'left', textIndent: 0, textTransform: 'none', widows: 2, wordSpacing: 0, WebkitTextStrokeWidth: 0, whiteSpace: 'normal', textDecorationThickness: 'initial', textDecorationStyle: 'initial', textDecorationColor: 'initial', float: 'none', display: 'inline !important', fontSize: '15px' }}>
-          Our hiring team is currently reviewing all applications. We will be contacting candidates selected for interviews within [Timeframe - e.g., the next two weeks]. If you are not contacted by then, we encourage you to continue exploring other opportunities.
+          Our hiring team is currently reviewing all applications. We will be contacting candidates selected for interviews within the next two weeks. If you are not contacted by then, we encourage you to continue exploring other opportunities.
         </span>
         <br />
         <span style={{ color: 'rgb(29, 28, 29)', fontFamily: 'Slack-Lato, Slack-Fractions, appleLogo, sans-serif', fontStyle: 'normal', fontVariantLigatures: 'common-ligatures', fontVariantCaps: 'normal', fontWeight: 400, letterSpacing: 'normal', orphans: 2, textAlign: 'left', textIndent: 0, textTransform: 'none', widows: 2, wordSpacing: 0, WebkitTextStrokeWidth: 0, whiteSpace: 'normal', textDecorationThickness: 'initial', textDecorationStyle: 'initial', textDecorationColor: 'initial', float: 'none', display: 'inline !important', fontSize: '15px' }}>

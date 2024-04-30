@@ -5,7 +5,7 @@ import { MouseEvent, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
-import { editCandidate } from 'src/redux/slices/candidate';
+import { editCandidate } from 'src/redux/slices/hr/candidate/candidate';
 import { useDispatch } from 'src/redux/store';
 import { CandidateType } from 'src/types/hr/candidate';
 import { convertLocateTimezone, convertStringToDateWithTimezone } from 'src/utils/date-locale';
@@ -20,7 +20,7 @@ type NewCandidateType = {
 
 const EditCandidate = (props: NewCandidateType) => {
   const { open, setOpen, candidate, currentCandidate } = props;
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const handleClose = () => {
     setOpen({ send_email: false, view: false, edit: false, delete: false });
@@ -66,7 +66,7 @@ const EditCandidate = (props: NewCandidateType) => {
     }),
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        await dispath(editCandidate(values, currentCandidate));
+        await dispatch(editCandidate(values, currentCandidate));
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
         handleClose();
@@ -399,7 +399,7 @@ const EditCandidate = (props: NewCandidateType) => {
           </Grid>
 
           {
-            formik.values.status === "pass" && 
+            (formik.values.status === "pass" || formik.values.status === "onboard")&& 
             <Grid
             item
             xs={12}

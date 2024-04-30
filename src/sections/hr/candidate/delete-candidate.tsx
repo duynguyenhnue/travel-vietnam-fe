@@ -1,26 +1,29 @@
-import { Button, CardContent, Grid, Modal, Typography } from '@mui/material';
+import { Button, CardContent, CardHeader, Grid, Modal, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
-import { deleteCandidate } from 'src/redux/slices/candidate';
+import { deleteCandidate } from 'src/redux/slices/hr/candidate/candidate';
 import { useDispatch } from 'src/redux/store';
+import { CandidateType } from 'src/types/hr/candidate';
 
 type NewCandidateType = {
   open: any;
   setOpen: any;
-  currentCandidate: string;
+  candidate: CandidateType | null | undefined;
 };
 
 const DeleteCandidate = (props: NewCandidateType) => {
-  const { open, setOpen, currentCandidate } = props;
+  const { open, setOpen, candidate } = props;
   const { t } = useTranslation();
   const handleClose = () => {
     setOpen({ view: false, edit: false, delete: false });
   };
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
 
   const handleDelete = async (): Promise<void> => {
-    await dispath(deleteCandidate(currentCandidate));
-    handleClose();
+    if(candidate && candidate._id){
+      await dispatch(deleteCandidate(candidate._id));
+      handleClose();
+    }
   };
 
   return (
@@ -47,42 +50,45 @@ const DeleteCandidate = (props: NewCandidateType) => {
           container
           spacing={3}
         >
+           <CardHeader
+            title={t(tokens.nav.doYouWantToDeleteItOrNot)}
+            subheader=""
+            sx={{ pb: 2 }}
+          />
           <Grid
             item
             xs={12}
             display={open.delete ? 'block' : 'none'}
           >
             <Typography
-              variant="h6"
-              align="center"
+              variant="inherit"
+              align="left"
             >
-              {t(tokens.nav.doYouWantToDeleteItOrNot)}
+              Candidate: {candidate?.name} - {candidate?.role}
             </Typography>
           </Grid>
           <Grid
             item
             xs={6}
-            sx={{ display: 'flex', justifyContent: 'center' }}
-          >
-            <Button
-              variant="contained"
-              type="submit"
-              onClick={handleDelete}
-              sx={{ bgcolor: 'success.main' }}
-            >
-              {t(tokens.nav.yes)}
-            </Button>
-          </Grid>
+            />
           <Grid
             item
             xs={6}
-            sx={{ display: 'flex', justifyContent: 'center' }}
+            sx={{ display: 'flex', justifyContent: 'right' }}
           >
             <Button
               variant="contained"
               onClick={handleClose}
             >
               {t(tokens.nav.no)}
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              onClick={handleDelete}
+              sx={{ bgcolor: 'success.main', ml: 1 }}
+            >
+              {t(tokens.nav.yes)}
             </Button>
           </Grid>
         </Grid>

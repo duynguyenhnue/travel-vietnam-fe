@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { dispatch } from '../store';
+import { dispatch } from '../../../store';
 import { Response } from 'src/types/redux/response';
 import toast from 'react-hot-toast';
 import { CandidateState, CandidateType } from 'src/types/hr/candidate';
 import { CommonResponseType } from 'src/types/common';
+import { envConfig } from 'src/config';
 
 type GetCandidateSuccessdAction = PayloadAction<CandidateType[] | null>;
 type GetCandidateFailureAction = PayloadAction<string>;
@@ -54,7 +55,6 @@ export const candidateSlice = createSlice({
       state.loading = false;
       state.errorMessage = action.payload;
     },
-
     deleteCandidateRequest: (state: CandidateState) => {
       state.loading = true;
     },
@@ -74,7 +74,7 @@ export const getCandidate = () => {
       dispatch(candidateSlice.actions.getCandidateRequest());
 
       const result: Response<CommonResponseType> = await axios.get(
-        'http://localhost:8083/api/hr/candidate'
+        `${envConfig.serverURL}/hr/candidate`
       );
 
       dispatch(candidateSlice.actions.getCandidateSuccess(result.data?.data));
@@ -94,7 +94,7 @@ export const newCandidate = (candidate: CandidateType) => {
     try {
       dispatch(candidateSlice.actions.newCandidateRequest());
 
-      await axios.post('http://localhost:8083/api/hr/candidate', candidate);
+      await axios.post(`${envConfig.serverURL}/hr/candidate`, candidate);
       toast.success('Create candidate successful');
       dispatch(candidateSlice.actions.newCandidateSuccess());
       window.location.reload();
@@ -113,10 +113,10 @@ export const editCandidate = (candidate: CandidateType, id: string) => {
   return async () => {
     try {
       dispatch(candidateSlice.actions.editCandidateRequest());
-      await axios.put(`http://localhost:8083/api/hr/candidate/${id}`, candidate);
+      await axios.put(`${envConfig.serverURL}/hr/candidate/${id}`, candidate);
       toast.success('Edit candidate successful');
       dispatch(candidateSlice.actions.editCandidateSuccess());
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       const errorMessage =
         error.response && error.response.status !== 500
@@ -133,7 +133,7 @@ export const deleteCandidate = (id: string) => {
     try {
       dispatch(candidateSlice.actions.editCandidateRequest());
 
-      await axios.delete(`http://localhost:8083/api/hr/candidate/${id}`);
+      await axios.delete(`${envConfig.serverURL}/hr/candidate/${id}`);
       toast.success('Delete candidate successful');
       dispatch(candidateSlice.actions.editCandidateSuccess());
       window.location.reload();

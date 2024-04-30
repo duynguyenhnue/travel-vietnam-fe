@@ -37,6 +37,7 @@ export type SendEmailTabType = {
   label: string;
   value: string;
   emailTemplate: string;
+  senderName: string;
 };
 
 export type EmailTemplateType = {

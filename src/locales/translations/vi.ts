@@ -30,5 +30,5 @@ export const vi = {
   [tokens.nav.cancel]: 'Hủy',
   [tokens.nav.yes]: 'Đồng ý',
   [tokens.nav.no]: 'Không',
-  [tokens.nav.doYouWantToDeleteItOrNot]: 'Bạn có muốn xóa nó hay không',
+  [tokens.nav.doYouWantToDeleteItOrNot]: 'Bạn có muốn xóa ứng viên này không',
 };

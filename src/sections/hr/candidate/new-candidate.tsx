@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
-import { newCandidate } from 'src/redux/slices/candidate';
+import { newCandidate } from 'src/redux/slices/hr/candidate/candidate';
 import { useDispatch } from 'src/redux/store';
 import { convertLocateTimezone, convertStringToDateWithTimezone } from 'src/utils/date-locale';
 import { wait } from 'src/utils/wait';
@@ -21,7 +21,7 @@ const NewCandidate = (props: NewCandidateType) => {
     setOpen(false);
   };
   const { t } = useTranslation();
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -78,7 +78,7 @@ const NewCandidate = (props: NewCandidateType) => {
 
   const handleSubmit = async (): Promise<void> => {
     try {
-      await dispath(newCandidate(formik.values));
+      await dispatch(newCandidate(formik.values));
       handleClose();
     } catch (error) {
       toast.error('Create Candidate false');
@@ -402,7 +402,7 @@ const NewCandidate = (props: NewCandidateType) => {
             />
           </Grid>
           {
-            formik.values.status === "pass" && 
+            (formik.values.status === "pass" || formik.values.status === "onboard") && 
             <Grid
             item
             xs={12}

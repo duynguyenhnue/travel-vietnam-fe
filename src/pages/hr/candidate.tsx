@@ -14,7 +14,7 @@ import EditAndDeleteCandidate from 'src/sections/hr/candidate/edit-candidate';
 import DeleteCandidate from 'src/sections/hr/candidate/delete-candidate';
 import ViewCandidate from 'src/sections/hr/candidate/view-candidate';
 import { useDispatch, useSelector } from 'src/redux/store';
-import { getCandidate } from 'src/redux/slices/candidate';
+import { getCandidate } from 'src/redux/slices/hr/candidate/candidate';
 import SendEmailCandidate from 'src/sections/hr/candidate/send-email-candidate';
 
 const CandidatePage = () => {
@@ -111,7 +111,7 @@ const CandidatePage = () => {
               <DeleteCandidate
                 open={viewOpen}
                 setOpen={setViewOpen}
-                currentCandidate={currentCandidate}
+                candidate={candidates && candidate}
               />
             </Grid>
             <Grid xs={12}>

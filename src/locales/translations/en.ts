@@ -30,5 +30,5 @@ export const en = {
   [tokens.nav.cancel]: 'Cancel',
   [tokens.nav.yes]: 'Yes',
   [tokens.nav.no]: 'No',
-  [tokens.nav.doYouWantToDeleteItOrNot]: 'Do you want to delete it or not',
+  [tokens.nav.doYouWantToDeleteItOrNot]: 'Do you want to delete this candidate?',
 };
