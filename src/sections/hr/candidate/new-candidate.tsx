@@ -1,13 +1,13 @@
 import { Button, CardContent, Grid, Modal, TextField, Typography } from '@mui/material';
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import { useFormik } from 'formik';
+import { MouseEvent } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { newCandidate } from 'src/redux/slices/hr/candidate/candidate';
 import { useDispatch } from 'src/redux/store';
 import { convertLocateTimezone, convertStringToDateWithTimezone } from 'src/utils/date-locale';
-import { wait } from 'src/utils/wait';
 import * as Yup from 'yup';
 
 type NewCandidateType = {
@@ -63,27 +63,19 @@ const NewCandidate = (props: NewCandidateType) => {
     }),
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        await wait(500);
+        await dispatch(newCandidate(formik.values));
+        handleClose();
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
         handleClose();
         toast.success('Candidate create');
       } catch (err) {
-        toast.error('Something went wrong!');
+        toast.error('Create Candidate false');
         helpers.setStatus({ success: false });
         helpers.setSubmitting(false);
       }
     },
   });
-
-  const handleSubmit = async (): Promise<void> => {
-    try {
-      await dispatch(newCandidate(formik.values));
-      handleClose();
-    } catch (error) {
-      toast.error('Create Candidate false');
-    }
-  };
   const listStatus = [
     {
       value: '',
@@ -284,12 +276,12 @@ const NewCandidate = (props: NewCandidateType) => {
             />
           </Grid>
 
-           <Grid
+          <Grid
             item
             xs={12}
             md={6}
           >
-             <TextField
+            <TextField
               error={!!(formik.touched.role && formik.errors.role)}
               required
               fullWidth
@@ -354,28 +346,38 @@ const NewCandidate = (props: NewCandidateType) => {
             xs={12}
             md={6}
           >
-             <DateTimePicker
-                onChange={(value) => {
-                  if(value){
-                    formik.setFieldValue('interviewInformation.dateTime', convertLocateTimezone(value), true);
-                  }
-                }}
-                value={typeof formik.values.interviewInformation?.dateTime === "string" ? new Date(convertStringToDateWithTimezone(formik.values.interviewInformation.dateTime)) : formik.values.interviewInformation.dateTime}
-                slotProps={{
-                  textField: {
-                    variant: 'outlined',
-                    error: !!(
-                      formik.touched.interviewInformation?.dateTime &&
-                      formik.errors.interviewInformation?.dateTime
-                    ),
-                    helperText:
-                      formik.touched.interviewInformation?.dateTime &&
-                      formik.errors.interviewInformation?.dateTime,
-                    required: false,
-                    name: 'dateTime',
-                  },
-                }}
-              />
+            <DateTimePicker
+              onChange={(value) => {
+                if (value) {
+                  formik.setFieldValue(
+                    'interviewInformation.dateTime',
+                    convertLocateTimezone(value),
+                    true
+                  );
+                }
+              }}
+              value={
+                typeof formik.values.interviewInformation?.dateTime === 'string'
+                  ? new Date(
+                      convertStringToDateWithTimezone(formik.values.interviewInformation.dateTime)
+                    )
+                  : formik.values.interviewInformation.dateTime
+              }
+              slotProps={{
+                textField: {
+                  variant: 'outlined',
+                  error: !!(
+                    formik.touched.interviewInformation?.dateTime &&
+                    formik.errors.interviewInformation?.dateTime
+                  ),
+                  helperText:
+                    formik.touched.interviewInformation?.dateTime &&
+                    formik.errors.interviewInformation?.dateTime,
+                  required: false,
+                  name: 'dateTime',
+                },
+              }}
+            />
           </Grid>
           <Grid
             item
@@ -401,54 +403,52 @@ const NewCandidate = (props: NewCandidateType) => {
               value={formik.values.interviewInformation.linkGmeet}
             />
           </Grid>
-          {
-            (formik.values.status === "pass" || formik.values.status === "onboard") && 
+          {(formik.values.status === 'pass' || formik.values.status === 'onboard') && (
             <Grid
-            item
-            xs={12}
+              item
+              xs={12}
             >
               <Typography variant="h6">{t(tokens.nav.onboardDate)}</Typography>
               <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{mt: 2}}
-            >
-               <DateTimePicker
-                onChange={(value) => {
-                  if(value){
-                    formik.setFieldValue('onboardDate', convertLocateTimezone(value), true);
+                item
+                xs={12}
+                md={6}
+                sx={{ mt: 2 }}
+              >
+                <DateTimePicker
+                  onChange={(value) => {
+                    if (value) {
+                      formik.setFieldValue('onboardDate', convertLocateTimezone(value), true);
+                    }
+                  }}
+                  value={
+                    typeof formik.values.onboardDate === 'string'
+                      ? new Date(convertStringToDateWithTimezone(formik.values.onboardDate))
+                      : formik.values.onboardDate
                   }
-                }}
-                value={typeof formik.values.onboardDate === "string" ? new Date(convertStringToDateWithTimezone(formik.values.onboardDate)) : formik.values.onboardDate}
-                slotProps={{
-                  textField: {
-                    variant: 'outlined',
-                    error: !!(
-                      formik.touched.onboardDate &&
-                      formik.errors.onboardDate
-                    ),
-                    helperText:
-                      formik.touched.onboardDate &&
-                      formik.errors.onboardDate,
-                    required: false,
-                    name: 'dateTime',
-                  },
-                }}
-              />
+                  slotProps={{
+                    textField: {
+                      variant: 'outlined',
+                      error: !!(formik.touched.onboardDate && formik.errors.onboardDate),
+                      helperText: formik.touched.onboardDate && formik.errors.onboardDate,
+                      required: false,
+                      name: 'dateTime',
+                    },
+                  }}
+                />
+              </Grid>
             </Grid>
-          </Grid>
-          }
+          )}
           <Grid
             item
             xs={6}
           />
-          
+
           <Grid
             item
             xs={6}
-             style={{
-              textAlign: "right"
+            style={{
+              textAlign: 'right',
             }}
           >
             <Button
@@ -459,10 +459,13 @@ const NewCandidate = (props: NewCandidateType) => {
               {t(tokens.nav.cancel)}
             </Button>
             <Button
-              disabled={formik.isSubmitting}
+              disabled={!formik.isValid || !formik.touched || formik.isSubmitting}
               variant="contained"
               type="submit"
-              onClick={handleSubmit}
+              onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                event.preventDefault();
+                formik.handleSubmit();
+              }}
               sx={{ bgcolor: 'success.main', ml: 1 }}
             >
               {t(tokens.nav.create)}

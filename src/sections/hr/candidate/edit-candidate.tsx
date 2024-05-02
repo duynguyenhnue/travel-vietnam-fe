@@ -280,12 +280,12 @@ const EditCandidate = (props: NewCandidateType) => {
             />
           </Grid>
 
-           <Grid
+          <Grid
             item
             xs={12}
             md={6}
           >
-             <TextField
+            <TextField
               error={!!(formik.touched.role && formik.errors.role)}
               required
               fullWidth
@@ -351,27 +351,37 @@ const EditCandidate = (props: NewCandidateType) => {
             md={6}
           >
             <DateTimePicker
-                onChange={(value) => {
-                  if(value){
-                    formik.setFieldValue('interviewInformation.dateTime', convertLocateTimezone(value), true);
-                  }
-                }}
-                value={typeof formik.values.interviewInformation.dateTime === "string" ? new Date(convertStringToDateWithTimezone(formik.values.interviewInformation.dateTime)) : formik.values.interviewInformation.dateTime}
-                slotProps={{
-                  textField: {
-                    variant: 'outlined',
-                    error: !!(
-                      formik.touched.interviewInformation?.dateTime &&
-                      formik.errors.interviewInformation?.dateTime
-                    ),
-                    helperText:
-                      formik.touched.interviewInformation?.dateTime &&
-                      formik.errors.interviewInformation?.dateTime,
-                    required: false,
-                    name: 'dateTime',
-                  },
-                }}
-              />
+              onChange={(value) => {
+                if (value) {
+                  formik.setFieldValue(
+                    'interviewInformation.dateTime',
+                    convertLocateTimezone(value),
+                    true
+                  );
+                }
+              }}
+              value={
+                typeof formik.values.interviewInformation.dateTime === 'string'
+                  ? new Date(
+                      convertStringToDateWithTimezone(formik.values.interviewInformation.dateTime)
+                    )
+                  : formik.values.interviewInformation.dateTime
+              }
+              slotProps={{
+                textField: {
+                  variant: 'outlined',
+                  error: !!(
+                    formik.touched.interviewInformation?.dateTime &&
+                    formik.errors.interviewInformation?.dateTime
+                  ),
+                  helperText:
+                    formik.touched.interviewInformation?.dateTime &&
+                    formik.errors.interviewInformation?.dateTime,
+                  required: false,
+                  name: 'dateTime',
+                },
+              }}
+            />
           </Grid>
           <Grid
             item
@@ -398,44 +408,42 @@ const EditCandidate = (props: NewCandidateType) => {
             />
           </Grid>
 
-          {
-            (formik.values.status === "pass" || formik.values.status === "onboard")&& 
+          {(formik.values.status === 'pass' || formik.values.status === 'onboard') && (
             <Grid
-            item
-            xs={12}
+              item
+              xs={12}
             >
               <Typography variant="h6">{t(tokens.nav.onboardDate)}</Typography>
               <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{mt: 2}}
-            >
-              <DateTimePicker
-                onChange={(value) => {
-                  if(value){
-                    formik.setFieldValue('onboardDate', convertLocateTimezone(value), true);
+                item
+                xs={12}
+                md={6}
+                sx={{ mt: 2 }}
+              >
+                <DateTimePicker
+                  onChange={(value) => {
+                    if (value) {
+                      formik.setFieldValue('onboardDate', convertLocateTimezone(value), true);
+                    }
+                  }}
+                  value={
+                    typeof formik.values.onboardDate === 'string'
+                      ? new Date(convertStringToDateWithTimezone(formik.values.onboardDate))
+                      : formik.values.onboardDate
                   }
-                }}
-                value={typeof formik.values.onboardDate === "string" ? new Date(convertStringToDateWithTimezone(formik.values.onboardDate)) : formik.values.onboardDate}
-                slotProps={{
-                  textField: {
-                    variant: 'outlined',
-                    error: !!(
-                      formik.touched.onboardDate &&
-                      formik.errors.onboardDate
-                    ),
-                    helperText:
-                      formik.touched.onboardDate &&
-                      formik.errors.onboardDate,
-                    required: false,
-                    name: 'dateTime',
-                  },
-                }}
-              />
+                  slotProps={{
+                    textField: {
+                      variant: 'outlined',
+                      error: !!(formik.touched.onboardDate && formik.errors.onboardDate),
+                      helperText: formik.touched.onboardDate && formik.errors.onboardDate,
+                      required: false,
+                      name: 'dateTime',
+                    },
+                  }}
+                />
+              </Grid>
             </Grid>
-          </Grid>
-          }
+          )}
 
           <Grid
             item
@@ -445,7 +453,7 @@ const EditCandidate = (props: NewCandidateType) => {
             item
             xs={6}
             style={{
-              textAlign: "right"
+              textAlign: 'right',
             }}
           >
             <Button
@@ -456,7 +464,7 @@ const EditCandidate = (props: NewCandidateType) => {
               {t(tokens.nav.cancel)}
             </Button>
             <Button
-              disabled={formik.isSubmitting}
+              disabled={!formik.isValid || formik.isSubmitting}
               variant="contained"
               type="submit"
               onClick={(event: MouseEvent<HTMLButtonElement>) => {
