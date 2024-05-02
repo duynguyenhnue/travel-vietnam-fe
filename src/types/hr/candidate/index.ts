@@ -4,6 +4,7 @@ export type CandidateState = {
   candidateLength: number | undefined;
   page: number,
   size: number,
+  filterStatus: string,
   errorMessage: string | null;
 };
 

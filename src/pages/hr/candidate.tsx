@@ -16,6 +16,7 @@ import ViewCandidate from 'src/sections/hr/candidate/view-candidate';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { getCandidate } from 'src/redux/slices/hr/candidate/candidate';
 import SendEmailCandidate from 'src/sections/hr/candidate/send-email-candidate';
+import FilterCandidate from 'src/sections/hr/candidate/filter-candidate';
 
 const CandidatePage = () => {
   const settings = useSettings();
@@ -85,6 +86,13 @@ const CandidatePage = () => {
                   </Stack>
                 </div>
               </Stack>
+            </Grid>
+            <Grid
+              xs={8}
+              sm={4}
+              md={3}
+            >
+              <FilterCandidate />
             </Grid>
             <Grid xs={12}>
               <CandidateTransactions
