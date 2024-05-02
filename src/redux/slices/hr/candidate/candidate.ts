@@ -17,6 +17,7 @@ type editCandidateFailureAction = PayloadAction<string>;
 type deleteCandidateSuccessAction = PayloadAction<string>;
 type deleteCandidateFailureAction = PayloadAction<string>;
 type setPageAndSizePagination = PayloadAction<PaginationType>;
+type setFilterStatus = PayloadAction<string>;
 
 
 const initialState: CandidateState = {
@@ -25,6 +26,7 @@ const initialState: CandidateState = {
   candidateLength: 0,
   page: 0,
   size: 5,
+  filterStatus: "",
   errorMessage: '',
 };
 
@@ -94,6 +96,9 @@ export const candidateSlice = createSlice({
       state.page = action.payload.page;
       state.size = action.payload.size;
     },
+    setFilterStatus: (state, action: setFilterStatus) => {
+      state.filterStatus = action.payload;
+    },
   },
 });
 
@@ -104,11 +109,18 @@ export const setPagination = (page: number, size: number) => {
   };
 };
 
-export const getCandidate = (page: number, size: number) => {
+export const setFillterStatus = (status: string) => {
+  return async () => {
+    dispatch(candidateSlice.actions.setFilterStatus(status));
+  };
+};
+
+
+export const getCandidate = (page: number, size: number, status?: string) => {
   return async () => {
     try {
       const result: Response<CommonResponseType> = await axios.get(
-        `${envConfig.serverURL}/hr/candidate?page=${page}&size=${size}`
+        `${envConfig.serverURL}/hr/candidate?page=${page}&size=${size}&status=${status || ""}`
       );
       dispatch(candidateSlice.actions.getCandidateSuccess(result.data?.data));
     } catch (error) {

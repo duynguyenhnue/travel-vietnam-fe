@@ -34,18 +34,20 @@ interface CandidateTransactionsProps {
 
 export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => {
   const { setViewOpen, setCurrentCandidate } = props;
-  const { candidates, candidateLength, page, size } = useSelector((state) => state.candidate);
+  const { candidates, candidateLength, page, size, filterStatus } = useSelector(
+    (state) => state.candidate
+  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const handleChangePage = (event: unknown, newPage: number) => {
     dispatch(setPagination(newPage, size));
-    dispatch(getCandidate(newPage, size));
+    dispatch(getCandidate(newPage, size, filterStatus));
   };
 
   const handleChangeRowsPerPage = (event: any) => {
     dispatch(setPagination(page, +event.target.value));
-    dispatch(getCandidate(page, +event.target.value));
+    dispatch(getCandidate(page, +event.target.value, filterStatus));
   };
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
