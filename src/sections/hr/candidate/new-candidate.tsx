@@ -1,4 +1,12 @@
-import { Button, CardContent, Grid, Modal, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  CardContent,
+  CircularProgress,
+  Grid,
+  Modal,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import { useFormik } from 'formik';
 import { MouseEvent } from 'react';
@@ -68,7 +76,6 @@ const NewCandidate = (props: NewCandidateType) => {
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
         handleClose();
-        toast.success('Candidate create');
       } catch (err) {
         toast.error('Create Candidate false');
         helpers.setStatus({ success: false });
@@ -468,7 +475,14 @@ const NewCandidate = (props: NewCandidateType) => {
               }}
               sx={{ bgcolor: 'success.main', ml: 1 }}
             >
-              {t(tokens.nav.create)}
+              {formik.isSubmitting ? (
+                <CircularProgress
+                  size={24}
+                  color="inherit"
+                />
+              ) : (
+                t(tokens.nav.create)
+              )}
             </Button>
           </Grid>
         </Grid>
