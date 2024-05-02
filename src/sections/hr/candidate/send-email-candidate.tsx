@@ -1,9 +1,19 @@
-import { Button, CardActions, CardContent, CardHeader, Grid, Modal, Tab, Tabs } from '@mui/material';
+import {
+  Button,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  Grid,
+  Modal,
+  Tab,
+  Tabs,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Stack } from '@mui/system';
 import { tokens } from 'src/locales/tokens';
 import { useTranslation } from 'react-i18next';
-import JoditEditor from "jodit-pro-react";
+import JoditEditor from 'jodit-pro-react';
 import { renderToString } from 'react-dom/server';
 import { useDispatch } from 'src/redux/store';
 import HRApplicationReceivedEmailTemplate from 'src/templates/email/01-hr-application-received';
@@ -17,33 +27,44 @@ import { SendEmailType } from 'src/types/send-email';
 const SendEmailCandidate = (props: SendEmailCandidateType) => {
   const { open, setOpen, candidate } = props;
   const dispatch = useDispatch();
-  
-   const classes = joditEditorStyles();
-  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const classes = joditEditorStyles();
+
   const [tab, setTab] = useState<SendEmailTabType>({
+    label: 'Application Received',
+    value: 'application_received',
+    senderName: '[STARACK] Application Recieved',
+    emailTemplate: renderToString(
+      <HRApplicationReceivedEmailTemplate
+        candidate={props.candidate}
+        signature=""
+      />
+    ),
+  });
+
+  useEffect(() => {
+    setTab({
       label: 'Application Received',
       value: 'application_received',
       senderName: '[STARACK] Application Recieved',
-      emailTemplate: renderToString(<HRApplicationReceivedEmailTemplate candidate={props.candidate} signature='' />)
-    },);
-
-    useEffect(()=> {
-      setTab({
-          label: 'Application Received',
-          value: 'application_received',
-          senderName: '[STARACK] Application Recieved',
-          emailTemplate: renderToString(<HRApplicationReceivedEmailTemplate candidate={props.candidate} signature='' />)
-        })
-    },[candidate])
+      emailTemplate: renderToString(
+        <HRApplicationReceivedEmailTemplate
+          candidate={props.candidate}
+          signature=""
+        />
+      ),
+    });
+  }, [candidate]);
 
   const handleClose = () => setOpen({ send_email: false, view: false, edit: false, delete: false });
 
   const handleSetTab = (value: string) => {
-    const tab : SendEmailTabType | undefined  = tabs.find(item => item.value == value);
-    if(tab){
+    const tab: SendEmailTabType | undefined = tabs.find((item) => item.value == value);
+    if (tab) {
       setTab(tab);
     }
-  }
+  };
 
   const { t } = useTranslation();
 
@@ -52,42 +73,55 @@ const SendEmailCandidate = (props: SendEmailCandidateType) => {
       label: 'Application Received',
       value: 'application_received',
       senderName: '[STARACK] Application Recieved',
-      emailTemplate: renderToString(<HRApplicationReceivedEmailTemplate candidate={props.candidate} signature='' />)
+      emailTemplate: renderToString(
+        <HRApplicationReceivedEmailTemplate
+          candidate={props.candidate}
+          signature=""
+        />
+      ),
     },
     {
       label: 'Accepted',
       value: 'accepted',
       senderName: '[STARACK] HR Accept ',
-      emailTemplate: renderToString(<HRAcceptedEmailTemplate candidate={props.candidate} signature=''/>)
+      emailTemplate: renderToString(
+        <HRAcceptedEmailTemplate
+          candidate={props.candidate}
+          signature=""
+        />
+      ),
     },
     {
       label: 'Rejected',
       value: 'rejected',
       senderName: '[STARACK] HR Reject ',
-      emailTemplate: renderToString(<HRRejectedEmailTemplate candidate={props.candidate} signature=''/>)
+      emailTemplate: renderToString(
+        <HRRejectedEmailTemplate
+          candidate={props.candidate}
+          signature=""
+        />
+      ),
     },
   ];
-  
-  
-  const updateContent = (value: string) => {
-    tab.emailTemplate =  value;
-    setTab(tab) 
-  }
 
-  const handleSubmit = async() => {
-    if(candidate){
+  const updateContent = (value: string) => {
+    tab.emailTemplate = value;
+    setTab(tab);
+  };
+
+  const handleSubmit = async () => {
+    if (candidate) {
+      setIsSubmitting(true);
       const data: SendEmailType = {
         email: candidate.contact.email,
         senderName: tab.senderName,
-        subject: "[STARACK] HR Recruitment",
-        content: tab.emailTemplate
-      } 
+        subject: '[STARACK] HR Recruitment',
+        content: tab.emailTemplate,
+      };
       await dispatch(sendEmail(data));
+      setIsSubmitting(false);
     }
-    
-     
-    
-  }
+  };
 
   return (
     <Modal
@@ -127,8 +161,8 @@ const SendEmailCandidate = (props: SendEmailCandidateType) => {
             />
           ))}
         </Tabs>
-          {candidate && 
-          <Stack sx={{pt: 2}}>
+        {candidate && (
+          <Stack sx={{ pt: 2 }}>
             <JoditEditor
               value={tab.emailTemplate}
               className={classes.root}
@@ -136,24 +170,33 @@ const SendEmailCandidate = (props: SendEmailCandidateType) => {
               onBlur={updateContent}
             />
           </Stack>
-          }
-        <CardActions  style={{float: "right"}}>
+        )}
+        <CardActions style={{ float: 'right' }}>
           <Grid
             item
             xs={12}
           >
             <Button
+              disabled={isSubmitting}
               onClick={handleClose}
               variant="contained"
             >
               {t(tokens.nav.cancel)}
             </Button>
-             <Button
+            <Button
+              disabled={isSubmitting}
               variant="contained"
               onClick={handleSubmit}
               sx={{ bgcolor: 'success.main', ml: 1 }}
             >
-              {t(tokens.nav.sendEmail)}
+              {isSubmitting ? (
+                <CircularProgress
+                  size={24}
+                  color="inherit"
+                />
+              ) : (
+                t(tokens.nav.sendEmail)
+              )}
             </Button>
           </Grid>
         </CardActions>
