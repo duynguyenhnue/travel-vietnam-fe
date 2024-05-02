@@ -1,8 +1,24 @@
 export type CandidateState = {
   loading: boolean;
   candidates: CandidateType[] | null;
+  candidateLength: number | undefined;
+  page: number,
+  size: number,
   errorMessage: string | null;
 };
+
+export type CandidateActionType = {
+  data?: CandidateType,
+  message: string,
+  status: number,
+  content?: CandidateType[] | null
+  totalElements?: number
+};
+export type PaginationType = {
+  page: number,
+  size: number
+}
+
 export type CandidateType = {
   _id?: string;
   name: string;

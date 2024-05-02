@@ -14,9 +14,10 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { IconButton, Menu, MenuItem, TableHead } from '@mui/material';
 import { Link } from 'react-router-dom';
 import TablePagination from '@mui/material/TablePagination';
-import { CandidateType } from 'src/types/hr/candidate';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
+import { useDispatch, useSelector } from 'src/redux/store';
+import { getCandidate, setPagination } from 'src/redux/slices/hr/candidate/candidate';
 
 const statusMap: Record<string, SeverityPillColor> = {
   reject: 'error',
@@ -27,24 +28,24 @@ const statusMap: Record<string, SeverityPillColor> = {
 };
 
 interface CandidateTransactionsProps {
-  candidates: CandidateType[] | null;
   setViewOpen: any;
   setCurrentCandidate: any;
 }
 
 export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => {
-  const { candidates, setViewOpen, setCurrentCandidate } = props;
+  const { setViewOpen, setCurrentCandidate } = props;
+  const { candidates, candidateLength, page, size } = useSelector((state) => state.candidate);
   const { t } = useTranslation();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const dispatch = useDispatch();
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+    dispatch(setPagination(newPage, size));
+    dispatch(getCandidate(newPage, size));
   };
 
   const handleChangeRowsPerPage = (event: any) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    dispatch(setPagination(page, +event.target.value));
+    dispatch(getCandidate(page, +event.target.value));
   };
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -82,112 +83,106 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
           </TableHead>
           <TableBody>
             {candidates &&
-              candidates
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((transaction, index: number) => {
-                  return (
-                     <TableRow
-                        key={transaction._id}
-                        hover
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              candidates.slice(0, page * size + size).map((transaction, index: number) => {
+                return (
+                  <TableRow
+                    key={transaction._id}
+                    hover
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell width={50}>
+                      <Box
+                        sx={{
+                          p: 1,
+                          backgroundColor: (theme) =>
+                            theme.palette.mode === 'dark' ? 'neutral.800' : 'neutral.100',
+                          borderRadius: 2,
+                          width: '32px',
+                          height: '32px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                        }}
                       >
-                        <TableCell width={50}>
-                          <Box
-                            sx={{
-                              p: 1,
-                              backgroundColor: (theme) =>
-                                theme.palette.mode === 'dark' ? 'neutral.800' : 'neutral.100',
-                              borderRadius: 2,
-                              width: '32px',
-                              height: '32px',
-                              display: 'flex',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            <Typography
-                              align="center"
-                              color="text.primary"
-                              variant="caption"
-                            >
-                              {page * rowsPerPage + index + 1}
-                            </Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell>
-                          <div>
-                            <Typography variant="subtitle2">{transaction.name}</Typography>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div>
-                            <Typography variant="subtitle2">
-                              {t(tokens.nav.email)}: {transaction.contact.email}
-                            </Typography>
-                            <Typography variant="subtitle2">
-                              {t(tokens.nav.phone)}: {transaction.contact.phone}
-                            </Typography>
-                          </div>
-                        </TableCell>
-                         <TableCell>
-                          <Typography variant="subtitle2">
-                            {transaction.role}
-                          </Typography>
-                        </TableCell>
+                        <Typography
+                          align="center"
+                          color="text.primary"
+                          variant="caption"
+                        >
+                          {page * size + index + 1}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <div>
+                        <Typography variant="subtitle2">{transaction.name}</Typography>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div>
+                        <Typography variant="subtitle2">
+                          {t(tokens.nav.email)}: {transaction.contact?.email}
+                        </Typography>
+                        <Typography variant="subtitle2">
+                          {t(tokens.nav.phone)}: {transaction.contact?.phone}
+                        </Typography>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2">{transaction.role}</Typography>
+                    </TableCell>
 
-                        <TableCell>
-                          <div>
-                            <Typography variant="subtitle2">
-                              {t(tokens.nav.time)}: {transaction.interviewInformation.dateTime}
-                            </Typography>
-                            <Typography variant="subtitle2">
-                              {t(tokens.nav.link)}:{' '}
-                              <Link
-                                target="blank"
-                                to={transaction.interviewInformation.linkGmeet}
-                              >
-                                {transaction.interviewInformation.linkGmeet}
-                              </Link>
-                            </Typography>
-                          </div>
-                        </TableCell>
-
-                        <TableCell>
-                          <Typography variant="subtitle2">
-                            {transaction.projectExperience}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="subtitle2">{transaction.skillsSummary}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <SeverityPill color={statusMap[transaction.status]}>
-                            {transaction.status}
-                          </SeverityPill>
-                        </TableCell>
-                        <TableCell>
-                          <IconButton
-                            onClick={(event) => handleClick(event, transaction._id || '')}
-                            size="small"
-                            sx={{ ml: 2 }}
-                            aria-controls={open ? 'account-menu' : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
-                            aria-valuenow={index}
+                    <TableCell>
+                      <div>
+                        <Typography variant="subtitle2">
+                          {t(tokens.nav.time)}: {transaction.interviewInformation?.dateTime}
+                        </Typography>
+                        <Typography variant="subtitle2">
+                          {t(tokens.nav.link)}:{' '}
+                          <Link
+                            target="blank"
+                            to={transaction.interviewInformation?.linkGmeet}
                           >
-                            <MoreHorizIcon sx={{ width: 32, height: 32 }} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                  );
-                })}
+                            {transaction.interviewInformation?.linkGmeet}
+                          </Link>
+                        </Typography>
+                      </div>
+                    </TableCell>
+
+                    <TableCell>
+                      <Typography variant="subtitle2">{transaction?.projectExperience}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle2">{transaction?.skillsSummary}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <SeverityPill color={statusMap[transaction?.status]}>
+                        {transaction?.status}
+                      </SeverityPill>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        onClick={(event) => handleClick(event, transaction?._id || '')}
+                        size="small"
+                        sx={{ ml: 2 }}
+                        aria-controls={open ? 'account-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        aria-valuenow={index}
+                      >
+                        <MoreHorizIcon sx={{ width: 32, height: 32 }} />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </Scrollbar>
       <TablePagination
         rowsPerPageOptions={[5, 10, 15]}
         component="div"
-        count={(candidates && candidates.length) || 0}
-        rowsPerPage={rowsPerPage}
+        count={candidateLength || 0}
+        rowsPerPage={size}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
