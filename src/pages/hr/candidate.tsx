@@ -31,9 +31,9 @@ const CandidatePage = () => {
   const handleOpen = () => setOpen(true);
   const dispatch = useDispatch();
 
-  const { candidates } = useSelector((state) => state.candidate);
+  const { candidates, page, size } = useSelector((state) => state.candidate);
   useEffect(() => {
-    dispatch(getCandidate());
+    dispatch(getCandidate(page, size));
   }, []);
 
   const candidate = candidates && candidates?.find((item) => item._id === currentCandidate);
@@ -89,7 +89,6 @@ const CandidatePage = () => {
             <Grid xs={12}>
               <CandidateTransactions
                 setViewOpen={setViewOpen}
-                candidates={candidates}
                 setCurrentCandidate={setCurrentCandidate}
               />
             </Grid>
@@ -122,15 +121,13 @@ const CandidatePage = () => {
               />
             </Grid>
             <Grid xs={12}>
-              {
-                candidate && 
-                 <SendEmailCandidate
+              {candidate && (
+                <SendEmailCandidate
                   open={viewOpen}
                   setOpen={setViewOpen}
                   candidate={candidate && candidate}
                 />
-              }
-             
+              )}
             </Grid>
           </Grid>
         </Container>

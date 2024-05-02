@@ -4,19 +4,27 @@ import axios from 'axios';
 import { dispatch } from '../../../store';
 import { Response } from 'src/types/redux/response';
 import toast from 'react-hot-toast';
-import { CandidateState, CandidateType } from 'src/types/hr/candidate';
+import { CandidateActionType, CandidateState, CandidateType, PaginationType } from 'src/types/hr/candidate';
 import { CommonResponseType } from 'src/types/common';
 import { envConfig } from 'src/config';
 
-type GetCandidateSuccessdAction = PayloadAction<CandidateType[] | null>;
+type GetCandidateSuccessdAction = PayloadAction<CandidateActionType>;
 type GetCandidateFailureAction = PayloadAction<string>;
+type newCandidateSuccessAction = PayloadAction<CandidateActionType>;
 type newCandidateFailureAction = PayloadAction<string>;
+type editCandidateSuccessAction = PayloadAction<CandidateActionType>;
 type editCandidateFailureAction = PayloadAction<string>;
+type deleteCandidateSuccessAction = PayloadAction<string>;
 type deleteCandidateFailureAction = PayloadAction<string>;
+type setPageAndSizePagination = PayloadAction<PaginationType>;
+
 
 const initialState: CandidateState = {
   loading: false,
   candidates: [],
+  candidateLength: 0,
+  page: 0,
+  size: 5,
   errorMessage: '',
 };
 
@@ -29,7 +37,8 @@ export const candidateSlice = createSlice({
     },
     getCandidateSuccess: (state: CandidateState, action: GetCandidateSuccessdAction) => {
       state.loading = false;
-      state.candidates = action.payload;
+      state.candidates = action.payload?.content ?? [];
+      state.candidateLength = action.payload?.totalElements;
     },
     getCandidateFailure: (state: CandidateState, action: GetCandidateFailureAction) => {
       state.loading = false;
@@ -38,8 +47,12 @@ export const candidateSlice = createSlice({
     newCandidateRequest: (state: CandidateState) => {
       state.loading = true;
     },
-    newCandidateSuccess: (state: CandidateState) => {
+    newCandidateSuccess: (state: CandidateState, action: newCandidateSuccessAction) => {
       state.loading = false;
+      if (action.payload?.data) {
+        state.candidates?.unshift(action.payload.data);
+        state.candidateLength && state.candidateLength++;
+      }
     },
     newCandidateFailure: (state: CandidateState, action: newCandidateFailureAction) => {
       state.loading = false;
@@ -48,8 +61,16 @@ export const candidateSlice = createSlice({
     editCandidateRequest: (state: CandidateState) => {
       state.loading = true;
     },
-    editCandidateSuccess: (state: CandidateState) => {
+    editCandidateSuccess: (state: CandidateState, action: editCandidateSuccessAction) => {
       state.loading = false;
+
+      if (action.payload?.data?._id !== undefined) {
+        const indexToUpdate = state.candidates?.findIndex(candidate => candidate._id === action.payload?.data?._id);
+
+        if (indexToUpdate !== undefined && indexToUpdate !== -1 && state.candidates) {
+          state.candidates[indexToUpdate] = action.payload.data;
+        }
+      }
     },
     editCandidateFailure: (state: CandidateState, action: editCandidateFailureAction) => {
       state.loading = false;
@@ -58,25 +79,37 @@ export const candidateSlice = createSlice({
     deleteCandidateRequest: (state: CandidateState) => {
       state.loading = true;
     },
-    deleteCandidateSuccess: (state: CandidateState) => {
+    deleteCandidateSuccess: (state: CandidateState, action: deleteCandidateSuccessAction) => {
       state.loading = false;
+      if (state.candidates) {
+        state.candidates = state.candidates.filter(candidate => candidate._id !== action.payload);
+        state.candidateLength && state.candidateLength--;
+      }
     },
     deleteCandidateFailure: (state: CandidateState, action: deleteCandidateFailureAction) => {
       state.loading = false;
       state.errorMessage = action.payload;
     },
+    setPageAndSize: (state, action: setPageAndSizePagination) => {
+      state.page = action.payload.page;
+      state.size = action.payload.size;
+    },
   },
 });
 
-export const getCandidate = () => {
+
+export const setPagination = (page: number, size: number) => {
+  return async () => {
+    dispatch(candidateSlice.actions.setPageAndSize({ page, size }));
+  };
+};
+
+export const getCandidate = (page: number, size: number) => {
   return async () => {
     try {
-      dispatch(candidateSlice.actions.getCandidateRequest());
-
       const result: Response<CommonResponseType> = await axios.get(
-        `${envConfig.serverURL}/hr/candidate`
+        `${envConfig.serverURL}/hr/candidate?page=${page}&size=${size}`
       );
-
       dispatch(candidateSlice.actions.getCandidateSuccess(result.data?.data));
     } catch (error) {
       const errorMessage =
@@ -94,10 +127,9 @@ export const newCandidate = (candidate: CandidateType) => {
     try {
       dispatch(candidateSlice.actions.newCandidateRequest());
 
-      await axios.post(`${envConfig.serverURL}/hr/candidate`, candidate);
+      const result = await axios.post(`${envConfig.serverURL}/hr/candidate`, candidate);
       toast.success('Create candidate successful');
-      dispatch(candidateSlice.actions.newCandidateSuccess());
-      window.location.reload();
+      dispatch(candidateSlice.actions.newCandidateSuccess(result.data));
     } catch (error) {
       const errorMessage =
         error.response && error.response.status !== 500
@@ -113,10 +145,9 @@ export const editCandidate = (candidate: CandidateType, id: string) => {
   return async () => {
     try {
       dispatch(candidateSlice.actions.editCandidateRequest());
-      await axios.put(`${envConfig.serverURL}/hr/candidate/${id}`, candidate);
+      const result = await axios.put(`${envConfig.serverURL}/hr/candidate/${id}`, candidate);
       toast.success('Edit candidate successful');
-      dispatch(candidateSlice.actions.editCandidateSuccess());
-      window.location.reload();
+      dispatch(candidateSlice.actions.editCandidateSuccess(result.data));
     } catch (error) {
       const errorMessage =
         error.response && error.response.status !== 500
@@ -131,19 +162,18 @@ export const editCandidate = (candidate: CandidateType, id: string) => {
 export const deleteCandidate = (id: string) => {
   return async () => {
     try {
-      dispatch(candidateSlice.actions.editCandidateRequest());
-
+      dispatch(candidateSlice.actions.deleteCandidateRequest());
       await axios.delete(`${envConfig.serverURL}/hr/candidate/${id}`);
       toast.success('Delete candidate successful');
-      dispatch(candidateSlice.actions.editCandidateSuccess());
-      window.location.reload();
+      dispatch(candidateSlice.actions.deleteCandidateSuccess(id));
+      await dispatch(getCandidate(candidateSlice.getInitialState().page, candidateSlice.getInitialState().size));
     } catch (error) {
       const errorMessage =
         error.response && error.response.status !== 500
           ? error.response.data.message
           : error.message;
       toast.error(errorMessage);
-      dispatch(candidateSlice.actions.editCandidateFailure(errorMessage));
+      dispatch(candidateSlice.actions.deleteCandidateFailure(errorMessage));
     }
   };
 };
