@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import type { ListItemProps } from '@mui/material/ListItem';
@@ -8,10 +8,10 @@ import Typography from '@mui/material/Typography';
 
 type Direction = 'horizontal' | 'vertical';
 
-interface PropertyListItemProps extends ListItemProps {
+interface PropertyListItemProps extends Omit<ListItemProps, 'value'> {
   align?: Direction;
   label: string;
-  value?: string;
+  value?: string | ReactNode | null | undefined;
 }
 
 export const PropertyListItem: FC<PropertyListItemProps> = (props) => {
@@ -67,5 +67,5 @@ PropertyListItem.propTypes = {
   children: PropTypes.node,
   disableGutters: PropTypes.bool,
   label: PropTypes.string.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 };

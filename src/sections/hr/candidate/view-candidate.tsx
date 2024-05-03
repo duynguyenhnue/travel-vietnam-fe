@@ -1,16 +1,12 @@
-import { CardContent, Grid, Modal, Typography, useMediaQuery } from '@mui/material';
+import { Grid, Modal, Typography, useMediaQuery } from '@mui/material';
 import { createTheme } from '@mui/system';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { PropertyList } from 'src/components/common/list/property-list';
 import { PropertyListItem } from 'src/components/common/list/property-list-item';
 import { tokens } from 'src/locales/tokens';
-import { CandidateType } from 'src/types/hr/candidate';
-type ViewCandidateType = {
-  open: any;
-  setOpen: any;
-  candidate: CandidateType | null | undefined;
-};
+import { ViewCandidateType } from 'src/types/hr/candidate';
+import { CardContentStyle } from './styles';
 
 const ViewCandidate = (props: ViewCandidateType) => {
   const { open, setOpen, candidate } = props;
@@ -19,8 +15,7 @@ const ViewCandidate = (props: ViewCandidateType) => {
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
 
   const align = lgUp ? 'horizontal' : 'vertical';
-  const handleClose = () =>
-    setOpen({ send_email: false,view: false, edit: false, delete: false });
+  const handleClose = () => setOpen({ send_email: false, view: false, edit: false, delete: false });
 
   return (
     <Modal
@@ -29,19 +24,7 @@ const ViewCandidate = (props: ViewCandidateType) => {
       aria-labelledby="view-candidate"
       aria-describedby="view-candidate"
     >
-      <CardContent
-        sx={{
-          backgroundColor: 'background.paper',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-          borderRadius: '10px',
-        }}
-      >
+      <CardContentStyle>
         <Grid
           container
           spacing={2}
@@ -70,7 +53,7 @@ const ViewCandidate = (props: ViewCandidateType) => {
                 label={t(tokens.nav.name)}
                 value={(candidate && candidate.name) || ''}
               />
-               <PropertyListItem
+              <PropertyListItem
                 align={align}
                 disableGutters
                 divider
@@ -174,10 +157,23 @@ const ViewCandidate = (props: ViewCandidateType) => {
                 label={t(tokens.nav.onboardDate)}
                 value={(candidate && candidate.onboardDate) || ''}
               />
+              <PropertyListItem
+                align={align}
+                disableGutters
+                divider
+                label={'CV'}
+                value={
+                  candidate?.cvUrl && (
+                    <Link to={candidate?.cvUrl || ''}>
+                      {candidate?.cvUrl.split('/')[candidate?.cvUrl.split('/').length - 1]}
+                    </Link>
+                  )
+                }
+              />
             </PropertyList>
           </Grid>
         </Grid>
-      </CardContent>
+      </CardContentStyle>
     </Modal>
   );
 };

@@ -99,6 +99,16 @@ export const candidateSlice = createSlice({
     setFilterStatus: (state, action: setFilterStatus) => {
       state.filterStatus = action.payload;
     },
+    uploadFileRequest: (state: CandidateState) => {
+      state.loading = true;
+    },
+    uploadFileSuccess: (state: CandidateState) => {
+      state.loading = false;
+    },
+    uploadFileFailure: (state: CandidateState, action: deleteCandidateFailureAction) => {
+      state.loading = false;
+      state.errorMessage = action.payload;
+    },
   },
 });
 
@@ -138,7 +148,6 @@ export const newCandidate = (candidate: CandidateType) => {
   return async () => {
     try {
       dispatch(candidateSlice.actions.newCandidateRequest());
-
       const result = await axios.post(`${envConfig.serverURL}/hr/candidate`, candidate);
       toast.success('Create candidate successful');
       dispatch(candidateSlice.actions.newCandidateSuccess(result.data));
@@ -153,7 +162,7 @@ export const newCandidate = (candidate: CandidateType) => {
   };
 };
 
-export const editCandidate = (candidate: CandidateType, id: string) => {
+export const editCandidate = (candidate: CandidateType, id: string,) => {
   return async () => {
     try {
       dispatch(candidateSlice.actions.editCandidateRequest());
@@ -165,7 +174,7 @@ export const editCandidate = (candidate: CandidateType, id: string) => {
         error.response && error.response.status !== 500
           ? error.response.data.message
           : error.message;
-      toast.error('Edit candidate false');
+      toast.error(errorMessage);
       dispatch(candidateSlice.actions.editCandidateFailure(errorMessage));
     }
   };
@@ -189,5 +198,36 @@ export const deleteCandidate = (id: string) => {
     }
   };
 };
+
+export const uplaodFile = (filename: string, file: File | null) => {
+  return async () => {
+    try {
+      dispatch(candidateSlice.actions.uploadFileRequest());
+      const currentTime = Date.now();
+      const newFilename = `${currentTime}_${filename}`;
+      const formData = new FormData();
+      formData.append("filename", newFilename);
+      file && formData.append('file', file);
+
+      const result = await axios.post(
+        `${envConfig.serverURL}/upload-file`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      );
+      dispatch(candidateSlice.actions.uploadFileSuccess());
+      return result.data.data;
+    } catch (error) {
+      const errorMessage =
+        error.response && error.response.status !== 500
+          ? error.response.data.message
+          : error.message;
+      toast.error(errorMessage);
+      dispatch(candidateSlice.actions.uploadFileFailure(errorMessage));
+    }
+  };
+};
+
 
 export default candidateSlice.reducer;
