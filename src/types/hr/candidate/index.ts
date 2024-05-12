@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type CandidateState = {
   loading: boolean;
   candidates: CandidateType[] | null;
@@ -32,6 +34,7 @@ export type CandidateType = {
   skillsSummary: string;
   certificate: string;
   role: string;
+  cvUrl: string;
   onboardDate: string;
 };
 export type InterviewInformation = {
@@ -45,8 +48,8 @@ export type Contact = {
 
 // send email
 export type SendEmailCandidateType = {
-  open: any;
-  setOpen: any;
+  open: ViewOpenStateType;
+  setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
   candidate: CandidateType | null | undefined;
 };
 
@@ -60,4 +63,39 @@ export type SendEmailTabType = {
 export type EmailTemplateType = {
   candidate: CandidateType | null | undefined;
   signature: string;
+};
+
+export type ViewOpenStateType = {
+  send_email: boolean;
+  view: boolean;
+  edit: boolean;
+  delete: boolean;
+};
+
+export type DeleteCandidateType = {
+  open: ViewOpenStateType;
+  setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
+  candidate: CandidateType | null | undefined;
+};
+
+export type EditCandidateType = {
+  open: ViewOpenStateType;
+  setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
+  candidate: CandidateType | null | undefined;
+  currentCandidate: string;
+};
+
+export type CandidateTransactionsProps = {
+  setViewOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
+  setCurrentCandidate: Dispatch<SetStateAction<string>>;
+};
+
+export type NewCandidateType = {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+};
+export type ViewCandidateType = {
+  open: ViewOpenStateType;
+  setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
+  candidate: CandidateType | null | undefined;
 };

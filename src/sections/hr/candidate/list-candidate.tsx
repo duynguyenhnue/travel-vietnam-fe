@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react';
+import React, { ChangeEvent, useState, type FC } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -18,6 +18,8 @@ import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { getCandidate, setPagination } from 'src/redux/slices/hr/candidate/candidate';
+import { MenuPaperStyle } from './styles/menu-paper-style';
+import { CandidateTransactionsProps } from 'src/types/hr/candidate';
 
 const statusMap: Record<string, SeverityPillColor> = {
   reject: 'error',
@@ -26,11 +28,6 @@ const statusMap: Record<string, SeverityPillColor> = {
   pass: 'success',
   onboard: 'secondary',
 };
-
-interface CandidateTransactionsProps {
-  setViewOpen: any;
-  setCurrentCandidate: any;
-}
 
 export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => {
   const { setViewOpen, setCurrentCandidate } = props;
@@ -45,7 +42,7 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
     dispatch(getCandidate(newPage, size, filterStatus));
   };
 
-  const handleChangeRowsPerPage = (event: any) => {
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setPagination(page, +event.target.value));
     dispatch(getCandidate(page, +event.target.value, filterStatus));
   };
@@ -58,12 +55,10 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
   };
   const handleClose = (name: string) => {
     setAnchorEl(null);
-    setViewOpen(
-      (prevState: { send_email: boolean; view: boolean; edit: boolean; delete: boolean }) => ({
-        ...prevState,
-        [name]: true,
-      })
-    );
+    setViewOpen((prevState) => ({
+      ...prevState,
+      [name]: true,
+    }));
   };
 
   return (
@@ -197,32 +192,7 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
         open={open}
         onClose={() => handleClose('')}
         onClick={() => handleClose('')}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            '&::before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
-            },
-          },
-        }}
+        PaperProps={MenuPaperStyle}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >

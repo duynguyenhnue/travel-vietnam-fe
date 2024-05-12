@@ -1,27 +1,16 @@
-import {
-  Button,
-  CardContent,
-  CircularProgress,
-  Grid,
-  Modal,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, CircularProgress, Grid, Modal, TextField, Typography } from '@mui/material';
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import { useFormik } from 'formik';
-import { MouseEvent } from 'react';
+import { MouseEvent, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
-import { newCandidate } from 'src/redux/slices/hr/candidate/candidate';
+import { newCandidate, uploadFile } from 'src/redux/slices/hr/candidate/candidate';
 import { useDispatch } from 'src/redux/store';
 import { convertLocateTimezone, convertStringToDateWithTimezone } from 'src/utils/date-locale';
 import * as Yup from 'yup';
-
-type NewCandidateType = {
-  open: boolean;
-  setOpen: any;
-};
+import { CardContentStyle } from './styles';
+import { NewCandidateType } from 'src/types/hr/candidate';
 
 const NewCandidate = (props: NewCandidateType) => {
   const { open, setOpen } = props;
@@ -30,6 +19,8 @@ const NewCandidate = (props: NewCandidateType) => {
   };
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState<string>('');
 
   const formik = useFormik({
     initialValues: {
@@ -49,6 +40,7 @@ const NewCandidate = (props: NewCandidateType) => {
       skillsSummary: '',
       certificate: '',
       role: '',
+      cvUrl: '',
       onboardDate: '',
     },
     validationSchema: Yup.object({
@@ -71,7 +63,11 @@ const NewCandidate = (props: NewCandidateType) => {
     }),
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        await dispatch(newCandidate(formik.values));
+        if (selectedFile) {
+          const uploadfile = await dispatch(uploadFile(fileName, selectedFile));
+          values.cvUrl = uploadfile;
+        }
+        await dispatch(newCandidate(values));
         handleClose();
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
@@ -110,6 +106,43 @@ const NewCandidate = (props: NewCandidateType) => {
     },
   ];
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setSelectedFile(file || null);
+    if (file) {
+      setFileName(file.name);
+    } else {
+      setFileName('');
+    }
+  };
+
+  const handleClick = () => {
+    hiddenInputRef.current?.click();
+  };
+
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
+
+  const [dragOver, setDragOver] = useState<boolean>(false);
+
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragOver(false);
+  };
+
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    const file = event.dataTransfer?.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setFileName(file.name);
+    }
+    setDragOver(false);
+  };
+
   return (
     <Modal
       open={open}
@@ -117,19 +150,7 @@ const NewCandidate = (props: NewCandidateType) => {
       aria-labelledby="new-candidate"
       aria-describedby="new-candidate"
     >
-      <CardContent
-        sx={{
-          backgroundColor: 'background.paper',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-          borderRadius: '10px',
-        }}
-      >
+      <CardContentStyle>
         <Grid
           container
           spacing={3}
@@ -278,6 +299,7 @@ const NewCandidate = (props: NewCandidateType) => {
                   name: 'dob',
                   error: !!(formik.touched.dob && Boolean(formik.errors.dob)),
                   helperText: formik.touched.dob && formik.errors.dob,
+                  fullWidth: true,
                 },
               }}
             />
@@ -298,6 +320,45 @@ const NewCandidate = (props: NewCandidateType) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               value={formik.values.role}
+            />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            md={6}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            sx={{
+              position: 'relative',
+              cursor: dragOver ? 'pointer' : 'default',
+            }}
+          >
+            <TextField
+              label="CV"
+              fullWidth
+              variant="outlined"
+              value={fileName}
+              InputProps={{
+                readOnly: true,
+                endAdornment: (
+                  <Button
+                    variant="contained"
+                    onClick={handleClick}
+                  >
+                    Browse
+                  </Button>
+                ),
+              }}
+              disabled
+            />
+            <input
+              type="file"
+              accept="/*"
+              onChange={handleFileChange}
+              ref={hiddenInputRef}
+              style={{ display: 'none' }}
             />
           </Grid>
 
@@ -382,6 +443,7 @@ const NewCandidate = (props: NewCandidateType) => {
                     formik.errors.interviewInformation?.dateTime,
                   required: false,
                   name: 'dateTime',
+                  fullWidth: true,
                 },
               }}
             />
@@ -486,7 +548,7 @@ const NewCandidate = (props: NewCandidateType) => {
             </Button>
           </Grid>
         </Grid>
-      </CardContent>
+      </CardContentStyle>
     </Modal>
   );
 };

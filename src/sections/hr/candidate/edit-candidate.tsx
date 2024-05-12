@@ -1,38 +1,28 @@
-import {
-  Button,
-  CardContent,
-  CircularProgress,
-  Grid,
-  Modal,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, CircularProgress, Grid, Modal, TextField, Typography } from '@mui/material';
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import { useFormik } from 'formik';
-import { MouseEvent, useEffect } from 'react';
+import { MouseEvent, useEffect, useRef, useState, DragEvent } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
-import { editCandidate } from 'src/redux/slices/hr/candidate/candidate';
+import { editCandidate, uploadFile } from 'src/redux/slices/hr/candidate/candidate';
 import { useDispatch } from 'src/redux/store';
-import { CandidateType } from 'src/types/hr/candidate';
+import { EditCandidateType } from 'src/types/hr/candidate';
 import { convertLocateTimezone, convertStringToDateWithTimezone } from 'src/utils/date-locale';
 import * as Yup from 'yup';
+import { CardContentStyle } from './styles';
 
-type NewCandidateType = {
-  open: any;
-  setOpen: any;
-  candidate: CandidateType | null | undefined;
-  currentCandidate: string;
-};
-
-const EditCandidate = (props: NewCandidateType) => {
+const EditCandidate = (props: EditCandidateType) => {
   const { open, setOpen, candidate, currentCandidate } = props;
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const handleClose = () => {
     setOpen({ send_email: false, view: false, edit: false, delete: false });
   };
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState<string>('');
+
   const formik = useFormik({
     initialValues: {
       name: (candidate && candidate.name) || '',
@@ -52,6 +42,7 @@ const EditCandidate = (props: NewCandidateType) => {
       certificate: candidate?.certificate || '',
       role: candidate?.role || '',
       onboardDate: candidate?.onboardDate || '',
+      cvUrl: candidate?.cvUrl || '',
       submit: null,
     },
     validationSchema: Yup.object({
@@ -74,6 +65,11 @@ const EditCandidate = (props: NewCandidateType) => {
     }),
     onSubmit: async (values, helpers): Promise<void> => {
       try {
+        if (selectedFile) {
+          const uploadfile = await dispatch(uploadFile(fileName, selectedFile));
+          values.cvUrl = uploadfile;
+          setSelectedFile(null);
+        }
         await dispatch(editCandidate(values, currentCandidate));
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
@@ -117,6 +113,43 @@ const EditCandidate = (props: NewCandidateType) => {
     },
   ];
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setSelectedFile(file || null);
+    if (file) {
+      setFileName(file.name);
+    } else {
+      setFileName('');
+    }
+  };
+
+  const handleClick = () => {
+    hiddenInputRef.current?.click();
+  };
+
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
+
+  const [dragOver, setDragOver] = useState<boolean>(false);
+
+  const handleDragOver = (event: DragEvent) => {
+    event.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragOver(false);
+  };
+
+  const handleDrop = (event: DragEvent) => {
+    event.preventDefault();
+    const file = event.dataTransfer?.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setFileName(file.name);
+    }
+    setDragOver(false);
+  };
+
   return (
     <Modal
       open={open.edit}
@@ -124,7 +157,7 @@ const EditCandidate = (props: NewCandidateType) => {
       aria-labelledby="edit-candidate"
       aria-describedby="edit-candidate"
     >
-      <CardContent
+      <CardContentStyle
         sx={{
           backgroundColor: 'background.paper',
           position: 'absolute',
@@ -283,6 +316,7 @@ const EditCandidate = (props: NewCandidateType) => {
                   name: 'dob',
                   error: !!(formik.touched.dob && Boolean(formik.errors.dob)),
                   helperText: formik.touched.dob && formik.errors.dob,
+                  fullWidth: true,
                 },
               }}
             />
@@ -303,6 +337,49 @@ const EditCandidate = (props: NewCandidateType) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               value={formik.values.role}
+            />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            md={6}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            style={{
+              position: 'relative',
+              cursor: dragOver ? 'pointer' : 'default',
+            }}
+          >
+            <TextField
+              label="CV"
+              variant="outlined"
+              fullWidth
+              value={
+                candidate?.cvUrl && !selectedFile
+                  ? candidate?.cvUrl.split('/')[candidate?.cvUrl.split('/').length - 1]
+                  : fileName
+              }
+              InputProps={{
+                readOnly: true,
+                endAdornment: (
+                  <Button
+                    variant="contained"
+                    onClick={handleClick}
+                  >
+                    Browse
+                  </Button>
+                ),
+              }}
+              disabled
+            />
+            <input
+              type="file"
+              accept="/*"
+              onChange={handleFileChange}
+              ref={hiddenInputRef}
+              style={{ display: 'none' }}
             />
           </Grid>
 
@@ -387,6 +464,7 @@ const EditCandidate = (props: NewCandidateType) => {
                     formik.errors.interviewInformation?.dateTime,
                   required: false,
                   name: 'dateTime',
+                  fullWidth: true,
                 },
               }}
             />
@@ -492,7 +570,7 @@ const EditCandidate = (props: NewCandidateType) => {
             </Button>
           </Grid>
         </Grid>
-      </CardContent>
+      </CardContentStyle>
     </Modal>
   );
 };

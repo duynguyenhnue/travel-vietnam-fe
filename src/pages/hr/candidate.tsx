@@ -17,13 +17,16 @@ import { useDispatch, useSelector } from 'src/redux/store';
 import { getCandidate } from 'src/redux/slices/hr/candidate/candidate';
 import SendEmailCandidate from 'src/sections/hr/candidate/send-email-candidate';
 import FilterCandidate from 'src/sections/hr/candidate/filter-candidate';
+import { ViewOpenStateType } from 'src/types/hr/candidate';
+
+
 
 const CandidatePage = () => {
   const settings = useSettings();
   const { t } = useTranslation();
   const [open, setOpen] = useState<boolean>(false);
   const [currentCandidate, setCurrentCandidate] = useState<string>('');
-  const [viewOpen, setViewOpen] = useState({
+  const [viewOpen, setViewOpen] = useState<ViewOpenStateType>({
     send_email: false,
     view: false,
     edit: false,

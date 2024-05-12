@@ -1,26 +1,21 @@
-import { Button, CardContent, CardHeader, Grid, Modal, Typography } from '@mui/material';
+import { Button, CardHeader, Grid, Modal, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { deleteCandidate } from 'src/redux/slices/hr/candidate/candidate';
 import { useDispatch } from 'src/redux/store';
-import { CandidateType } from 'src/types/hr/candidate';
+import { DeleteCandidateType } from 'src/types/hr/candidate';
+import { CardContentStyle } from './styles';
 
-type NewCandidateType = {
-  open: any;
-  setOpen: any;
-  candidate: CandidateType | null | undefined;
-};
-
-const DeleteCandidate = (props: NewCandidateType) => {
+const DeleteCandidate = (props: DeleteCandidateType) => {
   const { open, setOpen, candidate } = props;
   const { t } = useTranslation();
   const handleClose = () => {
-    setOpen({ view: false, edit: false, delete: false });
+    setOpen({ send_email: false, view: false, edit: false, delete: false });
   };
   const dispatch = useDispatch();
 
   const handleDelete = async (): Promise<void> => {
-    if(candidate && candidate._id){
+    if (candidate && candidate._id) {
       await dispatch(deleteCandidate(candidate._id));
       handleClose();
     }
@@ -33,24 +28,12 @@ const DeleteCandidate = (props: NewCandidateType) => {
       aria-labelledby="new-candidate"
       aria-describedby="new-candidate"
     >
-      <CardContent
-        sx={{
-          backgroundColor: 'background.paper',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-          borderRadius: '10px',
-        }}
-      >
+      <CardContentStyle>
         <Grid
           container
           spacing={3}
         >
-           <CardHeader
+          <CardHeader
             title={t(tokens.nav.doYouWantToDeleteItOrNot)}
             subheader=""
             sx={{ pb: 2 }}
@@ -70,7 +53,7 @@ const DeleteCandidate = (props: NewCandidateType) => {
           <Grid
             item
             xs={6}
-            />
+          />
           <Grid
             item
             xs={6}
@@ -92,7 +75,7 @@ const DeleteCandidate = (props: NewCandidateType) => {
             </Button>
           </Grid>
         </Grid>
-      </CardContent>
+      </CardContentStyle>
     </Modal>
   );
 };
