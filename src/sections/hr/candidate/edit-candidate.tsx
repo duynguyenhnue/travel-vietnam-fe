@@ -5,7 +5,7 @@ import { MouseEvent, useEffect, useRef, useState, DragEvent } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
-import { editCandidate, uplaodFile } from 'src/redux/slices/hr/candidate/candidate';
+import { editCandidate, uploadFile } from 'src/redux/slices/hr/candidate/candidate';
 import { useDispatch } from 'src/redux/store';
 import { EditCandidateType } from 'src/types/hr/candidate';
 import { convertLocateTimezone, convertStringToDateWithTimezone } from 'src/utils/date-locale';
@@ -66,7 +66,7 @@ const EditCandidate = (props: EditCandidateType) => {
     onSubmit: async (values, helpers): Promise<void> => {
       try {
         if (selectedFile) {
-          const uploadfile = await dispatch(uplaodFile(fileName, selectedFile));
+          const uploadfile = await dispatch(uploadFile(fileName, selectedFile));
           values.cvUrl = uploadfile;
           setSelectedFile(null);
         }

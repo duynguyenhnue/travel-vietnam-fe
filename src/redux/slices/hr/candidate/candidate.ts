@@ -4,7 +4,12 @@ import axios from 'axios';
 import { dispatch } from '../../../store';
 import { Response } from 'src/types/redux/response';
 import toast from 'react-hot-toast';
-import { CandidateActionType, CandidateState, CandidateType, PaginationType } from 'src/types/hr/candidate';
+import {
+  CandidateActionType,
+  CandidateState,
+  CandidateType,
+  PaginationType,
+} from 'src/types/hr/candidate';
 import { CommonResponseType } from 'src/types/common';
 import { envConfig } from 'src/config';
 
@@ -19,14 +24,13 @@ type deleteCandidateFailureAction = PayloadAction<string>;
 type setPageAndSizePagination = PayloadAction<PaginationType>;
 type setFilterStatus = PayloadAction<string>;
 
-
 const initialState: CandidateState = {
   loading: false,
   candidates: [],
   candidateLength: 0,
   page: 0,
   size: 5,
-  filterStatus: "",
+  filterStatus: '',
   errorMessage: '',
 };
 
@@ -67,7 +71,9 @@ export const candidateSlice = createSlice({
       state.loading = false;
 
       if (action.payload?.data?._id !== undefined) {
-        const indexToUpdate = state.candidates?.findIndex(candidate => candidate._id === action.payload?.data?._id);
+        const indexToUpdate = state.candidates?.findIndex(
+          (candidate) => candidate._id === action.payload?.data?._id
+        );
 
         if (indexToUpdate !== undefined && indexToUpdate !== -1 && state.candidates) {
           state.candidates[indexToUpdate] = action.payload.data;
@@ -84,7 +90,7 @@ export const candidateSlice = createSlice({
     deleteCandidateSuccess: (state: CandidateState, action: deleteCandidateSuccessAction) => {
       state.loading = false;
       if (state.candidates) {
-        state.candidates = state.candidates.filter(candidate => candidate._id !== action.payload);
+        state.candidates = state.candidates.filter((candidate) => candidate._id !== action.payload);
         state.candidateLength && state.candidateLength--;
       }
     },
@@ -112,7 +118,6 @@ export const candidateSlice = createSlice({
   },
 });
 
-
 export const setPagination = (page: number, size: number) => {
   return async () => {
     dispatch(candidateSlice.actions.setPageAndSize({ page, size }));
@@ -125,12 +130,11 @@ export const setFillterStatus = (status: string) => {
   };
 };
 
-
 export const getCandidate = (page: number, size: number, status?: string) => {
   return async () => {
     try {
       const result: Response<CommonResponseType> = await axios.get(
-        `${envConfig.serverURL}/hr/candidate?page=${page}&size=${size}&status=${status || ""}`
+        `${envConfig.serverURL}/hr/candidate?page=${page}&size=${size}&status=${status || ''}`
       );
       dispatch(candidateSlice.actions.getCandidateSuccess(result.data?.data));
     } catch (error) {
@@ -162,7 +166,7 @@ export const newCandidate = (candidate: CandidateType) => {
   };
 };
 
-export const editCandidate = (candidate: CandidateType, id: string,) => {
+export const editCandidate = (candidate: CandidateType, id: string) => {
   return async () => {
     try {
       dispatch(candidateSlice.actions.editCandidateRequest());
@@ -187,7 +191,9 @@ export const deleteCandidate = (id: string) => {
       await axios.delete(`${envConfig.serverURL}/hr/candidate/${id}`);
       toast.success('Delete candidate successful');
       dispatch(candidateSlice.actions.deleteCandidateSuccess(id));
-      await dispatch(getCandidate(candidateSlice.getInitialState().page, candidateSlice.getInitialState().size));
+      await dispatch(
+        getCandidate(candidateSlice.getInitialState().page, candidateSlice.getInitialState().size)
+      );
     } catch (error) {
       const errorMessage =
         error.response && error.response.status !== 500
@@ -199,23 +205,21 @@ export const deleteCandidate = (id: string) => {
   };
 };
 
-export const uplaodFile = (filename: string, file: File | null) => {
+export const uploadFile = (filename: string, file: File | null) => {
   return async () => {
     try {
       dispatch(candidateSlice.actions.uploadFileRequest());
       const currentTime = Date.now();
       const newFilename = `${currentTime}_${filename}`;
       const formData = new FormData();
-      formData.append("filename", newFilename);
+      formData.append('filename', newFilename);
       file && formData.append('file', file);
 
-      const result = await axios.post(
-        `${envConfig.serverURL}/upload-file`, formData, {
+      const result = await axios.post(`${envConfig.serverURL}/upload-file`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-      );
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       dispatch(candidateSlice.actions.uploadFileSuccess());
       return result.data.data;
     } catch (error) {
@@ -228,6 +232,5 @@ export const uplaodFile = (filename: string, file: File | null) => {
     }
   };
 };
-
 
 export default candidateSlice.reducer;

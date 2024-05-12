@@ -5,7 +5,7 @@ import { MouseEvent, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
-import { newCandidate, uplaodFile } from 'src/redux/slices/hr/candidate/candidate';
+import { newCandidate, uploadFile } from 'src/redux/slices/hr/candidate/candidate';
 import { useDispatch } from 'src/redux/store';
 import { convertLocateTimezone, convertStringToDateWithTimezone } from 'src/utils/date-locale';
 import * as Yup from 'yup';
@@ -64,7 +64,7 @@ const NewCandidate = (props: NewCandidateType) => {
     onSubmit: async (values, helpers): Promise<void> => {
       try {
         if (selectedFile) {
-          const uploadfile = await dispatch(uplaodFile(fileName, selectedFile));
+          const uploadfile = await dispatch(uploadFile(fileName, selectedFile));
           values.cvUrl = uploadfile;
         }
         await dispatch(newCandidate(values));
