@@ -13,5 +13,7 @@ export const paths = {
   hr: {
     candidate: '/hr/candidate',
   },
+  member: '/member',
+  roles: '/roles',
   docs: 'https://material-kit-pro-react-docs.devias.io',
 };
