@@ -5,10 +5,10 @@ import { PropertyList } from 'src/components/common/list/property-list';
 import { PropertyListItem } from 'src/components/common/list/property-list-item';
 import { tokens } from 'src/locales/tokens';
 import { CardContentStyle } from './styles';
-import { ViewMemberType } from 'src/types/member';
+import { ViewPermissionsType } from 'src/types/permissions';
 
-const ViewMember = (props: ViewMemberType) => {
-  const { open, setOpen, member } = props;
+const ViewPermission = (props: ViewPermissionsType) => {
+  const { open, setOpen, permission } = props;
   const theme = createTheme();
   const { t } = useTranslation();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
@@ -20,8 +20,8 @@ const ViewMember = (props: ViewMemberType) => {
     <Modal
       open={open.view}
       onClose={handleClose}
-      aria-labelledby="view-member"
-      aria-describedby="view-member"
+      aria-labelledby="view-permission"
+      aria-describedby="view-permission"
     >
       <CardContentStyle>
         <Grid
@@ -36,7 +36,7 @@ const ViewMember = (props: ViewMemberType) => {
               variant="h5"
               align="center"
             >
-              Member
+              Permission
             </Typography>
           </Grid>
 
@@ -50,22 +50,28 @@ const ViewMember = (props: ViewMemberType) => {
                 disableGutters
                 divider
                 label={t(tokens.nav.name)}
-                value={(member && member.fullName) || ''}
+                value={(permission && permission.scope) || ''}
               />
+
               <PropertyListItem
                 align={align}
                 disableGutters
                 divider
-                label={t(tokens.nav.role)}
-                value={(member && member.username) || ''}
-              />
-              <PropertyListItem
-                align={align}
-                disableGutters
-                divider
-                label={t(tokens.nav.status)}
-                value={(member && member.roles) || ''}
-              />
+                label={t(tokens.nav.contact)}
+              >
+                <Typography
+                  color="text.secondary"
+                  variant="body2"
+                >
+                  name: {permission && permission.actions.name}
+                </Typography>
+                <Typography
+                  color="text.secondary"
+                  variant="body2"
+                >
+                  Description: {permission && permission.actions.description}
+                </Typography>
+              </PropertyListItem>
             </PropertyList>
           </Grid>
         </Grid>
@@ -74,4 +80,4 @@ const ViewMember = (props: ViewMemberType) => {
   );
 };
 
-export default ViewMember;
+export default ViewPermission;

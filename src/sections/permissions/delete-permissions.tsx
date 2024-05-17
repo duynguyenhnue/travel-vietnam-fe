@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { useDispatch } from 'src/redux/store';
 import { CardContentStyle } from './styles';
-import { DeleteMemberType } from 'src/types/member';
-import { deleteMember } from 'src/redux/slices/member';
+import { DeletePermissionsType } from 'src/types/permissions';
+import {  deletePermission } from 'src/redux/slices/permissions';
 
-const DeleteMember = (props: DeleteMemberType) => {
-  const { open, setOpen, member } = props;
+const DeletePermission = (props: DeletePermissionsType) => {
+  const { open, setOpen, permission } = props;
   const { t } = useTranslation();
   const handleClose = () => {
     setOpen({ send_email: false, view: false, edit: false, delete: false });
@@ -15,8 +15,8 @@ const DeleteMember = (props: DeleteMemberType) => {
   const dispatch = useDispatch();
 
   const handleDelete = async (): Promise<void> => {
-    if (member && member._id) {
-      await dispatch(deleteMember(member._id));
+    if (permission && permission._id) {
+      await dispatch(deletePermission(permission._id));
       handleClose();
     }
   };
@@ -47,7 +47,7 @@ const DeleteMember = (props: DeleteMemberType) => {
               variant="inherit"
               align="left"
             >
-              Candidate: {member?.fullName} - {member?.roles.join("_")}
+              Candidate: {permission?.scope} - {permission?.actions.name}
             </Typography>
           </Grid>
           <Grid
@@ -80,4 +80,4 @@ const DeleteMember = (props: DeleteMemberType) => {
   );
 };
 
-export default DeleteMember;
+export default DeletePermission;

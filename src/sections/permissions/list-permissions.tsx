@@ -16,13 +16,13 @@ import { tokens } from 'src/locales/tokens';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { setPagination } from 'src/redux/slices/hr/candidate/candidate';
 import { MenuPaperStyle } from './styles/menu-paper-style';
-import { MemberTransactionsProps } from 'src/types/member';
-import { getMember } from 'src/redux/slices/member';
+import { PermissionsTransactionsProps } from 'src/types/permissions';
+import { getPermissions } from 'src/redux/slices/permissions';
 
-export const ListMember: FC<MemberTransactionsProps> = (props) => {
-  const { setViewOpen, setCurrentMember } = props;
-  const { members, memberLength, page, size } = useSelector(
-    (state) => state.member
+export const ListPermission: FC<PermissionsTransactionsProps> = (props) => {
+  const { setViewOpen, setCurrentPermission } = props;
+  const { permissions, permissionLength, page, size } = useSelector(
+    (state) => state.permissions
   );
   
   const { t } = useTranslation();
@@ -30,19 +30,19 @@ export const ListMember: FC<MemberTransactionsProps> = (props) => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     dispatch(setPagination(newPage, size));
-    dispatch(getMember(newPage, size));
+    dispatch(getPermissions(newPage, size));
   };
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setPagination(page, +event.target.value));
-    dispatch(getMember(page, +event.target.value));
+    dispatch(getPermissions(page, +event.target.value));
   };
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: any, index: string) => {
     setAnchorEl(event.currentTarget);
-    setCurrentMember(index);
+    setCurrentPermission(index);
   };
   const handleClose = (name: string) => {
     setAnchorEl(null);
@@ -53,7 +53,7 @@ export const ListMember: FC<MemberTransactionsProps> = (props) => {
   };
 
   useEffect(() => {  
-    getMember()
+    getPermissions()
   },[])
   
 
@@ -64,15 +64,14 @@ export const ListMember: FC<MemberTransactionsProps> = (props) => {
           <TableHead>
             <TableRow>
               <TableCell>{''}</TableCell>
-              <TableCell>FullName</TableCell>
-              <TableCell>Username</TableCell>
-              <TableCell>Roles</TableCell>
+              <TableCell>Scope</TableCell>
+              <TableCell>Actions</TableCell>
               <TableCell>{''}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {members &&
-              members.slice(0, page * size + size).map((transaction, index: number) => {
+            {permissions &&
+              permissions.slice(0, page * size + size).map((transaction, index: number) => {
                 return (
                   <TableRow
                     key={transaction._id}
@@ -103,26 +102,22 @@ export const ListMember: FC<MemberTransactionsProps> = (props) => {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <Typography variant="subtitle2">{transaction.fullName}</Typography>
+                        <Typography variant="subtitle2">{transaction.scope}</Typography>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div>
                         <Typography variant="subtitle2">
-                        {transaction.username}
+                        Name: {transaction.actions.name}
+                        </Typography>
+                        <Typography variant="subtitle2">
+                        Description: {transaction.actions.description}
                         </Typography>
                       
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <div>
-                      <Typography variant="subtitle2">
-                        {transaction.roles}
-                        </Typography>
-                      </div>
-                    </TableCell>
                     
-                    <TableCell>
+                    <TableCell align='right'>
                       <IconButton
                         onClick={(event) => handleClick(event, transaction?._id || '')}
                         size="small"
@@ -144,7 +139,7 @@ export const ListMember: FC<MemberTransactionsProps> = (props) => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 15]}
         component="div"
-        count={memberLength || 0}
+        count={permissionLength || 0}
         rowsPerPage={size}
         page={page}
         onPageChange={handleChangePage}

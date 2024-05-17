@@ -82,6 +82,16 @@ export const useSections = () => {
             ),
             path: paths.roles,
           },
+          {
+            title: 'Permissions',
+            icon: (
+              <SvgIcon fontSize="small">
+                <Person />
+              </SvgIcon>
+            ),
+            path: paths.permissions,
+          },
+          
         ],
       },
     ];

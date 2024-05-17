@@ -5,11 +5,11 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 import { Outlet } from 'react-router-dom';
 import AuthProvider from 'src/contexts/auth-provider';
 
-const MemberPage = lazy(() => import('src/pages/member/index'));
+const PermissionsPage = lazy(() => import('src/pages/permissions/index'));
 
 export const memberRoutes: RouteObject[] = [
   {
-    path: 'member',
+    path: 'permissions',
     children: [
       {
         element: (
@@ -24,7 +24,7 @@ export const memberRoutes: RouteObject[] = [
         children: [
           {
             path: '',
-            element: <MemberPage />,
+            element: <PermissionsPage />,
           },
         ],
       },
