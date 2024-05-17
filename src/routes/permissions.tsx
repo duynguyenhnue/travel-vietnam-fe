@@ -7,7 +7,7 @@ import AuthProvider from 'src/contexts/auth-provider';
 
 const PermissionsPage = lazy(() => import('src/pages/permissions/index'));
 
-export const memberRoutes: RouteObject[] = [
+export const permissionsRoutes: RouteObject[] = [
   {
     path: 'permissions',
     children: [

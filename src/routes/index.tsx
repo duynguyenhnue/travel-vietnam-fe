@@ -6,7 +6,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 import { authRoutes } from './auth';
 import AuthProvider from 'src/contexts/auth-provider';
 import { hrRoutes } from './hr';
-import { memberRoutes } from './permissions';
+import { permissionsRoutes } from './permissions';
 import { rolesRoutes } from './roles';
 
 const HomePage = lazy(() => import('src/pages/index'));
@@ -45,6 +45,6 @@ export const routes: RouteObject[] = [
   },
   ...authRoutes,
   ...hrRoutes,
-  ...memberRoutes,
+  ...permissionsRoutes,
   ...rolesRoutes,
 ];

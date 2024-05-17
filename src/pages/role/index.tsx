@@ -9,12 +9,12 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { ViewOpenStateType } from 'src/types/hr/candidate';
 import { getRoles } from 'src/redux/slices/roles';
-import { ListRole } from 'src/sections/roles/list-roles';
 import NewRole from 'src/sections/roles/new-roles';
 import EditRole from 'src/sections/roles/edit-roles';
 import ViewRole from 'src/sections/roles/view-roles';
 import DeleteRole from 'src/sections/roles/delete-roles';
 import { getPermissions } from 'src/redux/slices/permissions';
+import { ListRole } from 'src/sections/roles/list-roles';
 
 
 const RolesPage = () => {
