@@ -15,5 +15,6 @@ export const paths = {
   },
   member: '/member',
   roles: '/roles',
+  permissions: '/permissions',
   docs: 'https://material-kit-pro-react-docs.devias.io',
 };

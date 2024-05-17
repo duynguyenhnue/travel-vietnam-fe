@@ -1,4 +1,4 @@
-import { Button, Checkbox, CircularProgress, FormControl, FormHelperText, Grid, InputLabel, ListItemText, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
+import { Button, CircularProgress,  Grid, Modal,  TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { MouseEvent, useEffect } from 'react';
 import toast from 'react-hot-toast';
@@ -7,11 +7,11 @@ import { tokens } from 'src/locales/tokens';
 import { useDispatch } from 'src/redux/store';
 import * as Yup from 'yup';
 import { CardContentStyle } from './styles';
-import { editMember } from 'src/redux/slices/member';
-import { EditMemberType } from 'src/types/member';
+import { EditPermissionsType } from 'src/types/permissions';
+import { editPermission } from 'src/redux/slices/permissions';
 
-const EditMember = (props: EditMemberType) => {
-  const { open, setOpen, member, currentMember, roles } = props;
+const EditPermission = (props: EditPermissionsType) => {
+  const { open, setOpen, permission, currentPermission } = props;
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const handleClose = () => {
@@ -20,28 +20,19 @@ const EditMember = (props: EditMemberType) => {
 
   const formik = useFormik({
     initialValues: {
-      username: member?.username || "",
-      password: member?.password || "",
-      fullName:  member?.fullName || "",
-      roles:  member?.roles || [],
+    scope: "",
+    actions: {
+      name: "",
+      description: "",
+    },
       submit: null,
     },
     validationSchema: Yup.object({
-      username: Yup.string()
-      .min(4, 'Username must be between 4 and 20 characters')
-      .max(20, 'Username must be between 4 and 20 characters')
-      .matches(/^\S+$/, 'Username must be written without spaces')
-      .required('Username cannot be empty'),
-    password: Yup.string()
-      .min(8, 'Password must be at least 8 characters long')
-      .matches(/^\S+$/, 'Password must be written without spaces')
-      .required('Password cannot be empty'),
-      fullName: Yup.string().required('Role is required'),
-      roles: Yup.array().min(1, 'At least one role must be selected').required('Roles are required'),
+    
     }),
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        await dispatch(editMember(values, currentMember));
+        await dispatch(editPermission(values, currentPermission));
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
         handleClose();
@@ -54,8 +45,8 @@ const EditMember = (props: EditMemberType) => {
     },
   });
   useEffect(() => {
-    member && formik.setValues({ ...member, submit: null });
-  }, [member]);
+    permission && formik.setValues({ ...permission, submit: null });
+  }, [permission]);
 
   return (
     <Modal
@@ -85,15 +76,30 @@ const EditMember = (props: EditMemberType) => {
             xs={12}
           >
             <TextField
-              error={!!(formik.touched.fullName && formik.errors.fullName)}
+              error={!!(formik.touched.scope && formik.errors.scope)}
               fullWidth
-              helperText={formik.touched.fullName && formik.errors.fullName}
-              label="FullName"
-              name="fullName"
+              helperText={formik.touched.scope && formik.errors.scope}
+              label="Scope"
+              name="scope"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               required
-              value={formik.values.fullName}
+              value={formik.values.scope}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}          >
+            <TextField
+              error={!!(formik.touched.actions?.name && formik.errors.actions?.name)}
+              fullWidth
+              helperText={formik.touched.actions?.name && formik.errors.actions?.name}
+              label="Name"
+              name="actions.name"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              required
+              value={formik.values.actions?.name}
             />
           </Grid>
           <Grid
@@ -101,51 +107,17 @@ const EditMember = (props: EditMemberType) => {
             xs={12}
           >
             <TextField
-              error={!!(formik.touched.password && formik.errors.password)}
+              error={!!(formik.touched.actions?.description && formik.errors.actions?.description)}
               fullWidth
-              helperText={formik.touched.password && formik.errors.password}
-              label="Password"
-              name="password"
+              helperText={formik.touched.actions?.description && formik.errors.actions?.description}
+              label="Description"
+              name="actions.description"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               required
-              value={formik.values.password}
+              value={formik.values.actions?.description}
             />
           </Grid>
-          <Grid
-            item
-            xs={12}
-          >
-           <FormControl
-        fullWidth
-        error={formik.touched.roles && Boolean(formik.errors.roles)}
-        required
-        margin="normal"
-      >
-        <InputLabel id="roles-label">Roles</InputLabel>
-        <Select
-          labelId="roles-label"
-          id="roles"
-          multiple
-          value={formik.values.roles}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          name="roles"
-          label="Roles"
-          renderValue={(selected) => selected.join(', ')}
-        >
-          {roles.map((role) => (
-            <MenuItem key={role} value={role}>
-              <Checkbox checked={formik.values.roles.indexOf(role) > -1} />
-              <ListItemText primary={role} />
-            </MenuItem>
-          ))}
-        </Select>
-        {formik.touched.roles && formik.errors.roles && (
-          <FormHelperText>{formik.errors.roles}</FormHelperText>
-        )}
-      </FormControl>
-      </Grid>
           <Grid
             item
             xs={6}
@@ -191,4 +163,4 @@ const EditMember = (props: EditMemberType) => {
   );
 };
 
-export default EditMember;
+export default EditPermission;

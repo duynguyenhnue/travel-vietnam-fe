@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import { MemberType } from "../redux/member";
+import { PermissionsType } from "../redux/permissions";
 
-export type MemberState = {
+export type PermissionsState = {
   loading: boolean;
-  candidates: MemberType[] | null;
+  candidates: PermissionsType[] | null;
   candidateLength: number | undefined;
   page: number,
   size: number,
@@ -11,11 +11,11 @@ export type MemberState = {
   errorMessage: string | null;
 };
 
-export type MemberActionType = {
-  data?: MemberType,
+export type PermissionsActionType = {
+  data?: PermissionsType,
   message: string,
   status: number,
-  content?: MemberType[] | null
+  content?: PermissionsType[] | null
   totalElements?: number
 };
 export type PaginationType = {
@@ -30,32 +30,30 @@ export type ViewOpenStateType = {
   delete: boolean;
 };
 
-export type DeleteMemberType = {
+export type DeletePermissionsType = {
   open: ViewOpenStateType;
   setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
-  member: MemberType | null | undefined;
+  permission: PermissionsType | null | undefined;
 };
 
-export type EditMemberType = {
+export type EditPermissionsType = {
   open: ViewOpenStateType;
   setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
-  member: MemberType | null | undefined;
-  currentMember: string;
-  roles: string[];
+  permission: PermissionsType | null | undefined;
+  currentPermission: string;
 };
 
-export type MemberTransactionsProps = {
+export type PermissionsTransactionsProps = {
   setViewOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
-  setCurrentMember: Dispatch<SetStateAction<string>>;
+  setCurrentPermission: Dispatch<SetStateAction<string>>;
 };
 
-export type NewMemberType = {
+export type NewPermissionsType = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  roles: string[]
 };
-export type ViewMemberType = {
+export type ViewPermissionsType = {
   open: ViewOpenStateType;
   setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
-  member: MemberType | null | undefined;
+  permission: PermissionsType | null | undefined;
 };

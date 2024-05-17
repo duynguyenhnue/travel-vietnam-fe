@@ -8,26 +8,18 @@ import { Button, SvgIcon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { ViewOpenStateType } from 'src/types/hr/candidate';
-import { ListMember } from 'src/sections/member/list-member';
-import { getMember } from 'src/redux/slices/member';
-import NewMember from 'src/sections/member/new-member';
-import ViewMember from 'src/sections/member/view-member';
-import EditMember from 'src/sections/member/edit-member';
-import DeleteMember from 'src/sections/member/delete-member';
+import { ListPermission } from 'src/sections/permissions/list-permissions';
+import { getPermissions } from 'src/redux/slices/permissions';
+import DeletePermission from 'src/sections/permissions/delete-permissions';
+import ViewPermission from 'src/sections/permissions/view-permissions';
+import NewPermission from 'src/sections/permissions/new-permissions';
+import EditPermission from 'src/sections/permissions/edit-permissions';
 
 
-const roles: string[] = [
-  'Admin',
-  'Editor',
-  'User',
-  'Viewer',
-  'Contributor',
-];
-
-const MemberPage = () => {
+const PermissionsPage = () => {
   const settings = useSettings();
   const [open, setOpen] = useState<boolean>(false);
-  const [currentMember, setCurrentMember] = useState<string>('');
+  const [currentPermission, setCurrentPermission] = useState<string>('');
   const [viewOpen, setViewOpen] = useState<ViewOpenStateType>({
     send_email: false,
     view: false,
@@ -39,16 +31,16 @@ const MemberPage = () => {
   const handleOpen = () => setOpen(true);
   const dispatch = useDispatch();
 
-  const { members, page, size } = useSelector((state) => state.member);
+  const { permissions, page, size } = useSelector((state) => state.permissions);
   useEffect(() => {
-    dispatch(getMember(page,size));
+    dispatch(getPermissions(page,size));
   }, []);
 
-  const member = members && members?.find((item) => item._id === currentMember);
+  const permission = permissions && permissions?.find((item) => item._id === currentPermission);
 
   return (
     <>
-      <Seo title="Member" />
+      <Seo title="Permissions" />
       <Box
         component="main"
         sx={{
@@ -72,7 +64,7 @@ const MemberPage = () => {
                 spacing={4}
               >
                 <div>
-                  <Typography variant="h4">Member</Typography>
+                  <Typography variant="h4">Permission</Typography>
                 </div>
                 <div>
                   <Stack
@@ -88,46 +80,44 @@ const MemberPage = () => {
                       onClick={handleOpen}
                       variant="contained"
                     >
-                      New Member
+                      New Permission
                     </Button>
                   </Stack>
                 </div>
               </Stack>
             </Grid>
             <Grid xs={12}>
-              <ListMember
+              <ListPermission
                 setViewOpen={setViewOpen}
-                setCurrentMember={setCurrentMember}
+                setCurrentPermission={setCurrentPermission}
               />
             </Grid>
             <Grid xs={12}>
-              <NewMember
+              <NewPermission
                 open={open}
                 setOpen={setOpen}
-                roles={roles}
               />
             </Grid>
             <Grid xs={12}>
-              <EditMember
+              <EditPermission
                 open={viewOpen}
                 setOpen={setViewOpen}
-                member={member && member}
-                currentMember={currentMember}
-                roles={roles}
+                permission={permission&& permission}
+                currentPermission={currentPermission}
               />
             </Grid>
             <Grid xs={12}>
-              <DeleteMember
+              <DeletePermission
                 open={viewOpen}
                 setOpen={setViewOpen}
-                member={member && member}
+                permission={permission && permission}
               />
             </Grid>
             <Grid xs={12}>
-              <ViewMember
+              <ViewPermission
                 open={viewOpen}
                 setOpen={setViewOpen}
-                member={member&& member}
+                permission={permission&& permission}
               />
             </Grid>
           </Grid>
@@ -136,4 +126,4 @@ const MemberPage = () => {
     </>
   );
 };
-export default MemberPage;
+export default PermissionsPage;
