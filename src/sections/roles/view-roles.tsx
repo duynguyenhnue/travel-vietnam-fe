@@ -8,7 +8,7 @@ import { CardContentStyle } from './styles';
 import { ViewRolesType } from 'src/types/roles';
 
 const ViewRole = (props: ViewRolesType) => {
-  const { open, setOpen, role } = props;
+  const { open, setOpen, role, findNameById } = props;
   const theme = createTheme();
   const { t } = useTranslation();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
@@ -58,7 +58,7 @@ const ViewRole = (props: ViewRolesType) => {
                 disableGutters
                 divider
                 label="Permissions"
-                value={(role && role.permissions) || ''}
+                value={(role && role.permissions.map(permission => findNameById(permission)).join(", ")) || ''}
               />
             </PropertyList>
           </Grid>

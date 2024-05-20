@@ -42,6 +42,11 @@ const RolesPage = () => {
 
   const role = roles && roles?.find((item) => item._id === currentRole);
 
+  const findNameById = (id: string) => {
+    const foundItem = permissions && permissions.find(item => item._id === id);
+    return foundItem ? foundItem.actions.name : null;
+    };
+
   return (
     <>
       <Seo title="Roles" />
@@ -94,6 +99,7 @@ const RolesPage = () => {
               <ListRole
                 setViewOpen={setViewOpen}
                 setCurrentRole={setCurrentRole}
+                findNameById={findNameById}
               />
             </Grid>
             <Grid xs={12}>
@@ -124,6 +130,7 @@ const RolesPage = () => {
                 open={viewOpen}
                 setOpen={setViewOpen}
                 role={role&& role}
+                findNameById={findNameById}
               />
             </Grid>
           </Grid>

@@ -20,7 +20,7 @@ import { getRoles } from 'src/redux/slices/roles';
 import { RolesTransactionsProps } from 'src/types/roles';
 
 export const ListRole: FC<RolesTransactionsProps> = (props) => {
-  const { setViewOpen, setCurrentRole } = props;
+  const { setViewOpen, setCurrentRole, findNameById } = props;
   const { roles, roleLength, page, size } = useSelector(
     (state) => state.roles
   );
@@ -108,7 +108,8 @@ export const ListRole: FC<RolesTransactionsProps> = (props) => {
                     <TableCell>
                       <div>
                         <Typography variant="subtitle2">
-                        {transaction.permissions}
+
+                        {transaction.permissions.map(permission => findNameById(permission)).join(", ")}
                         </Typography>
                       </div>
                     </TableCell>

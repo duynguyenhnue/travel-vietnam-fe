@@ -48,6 +48,7 @@ export type EditRolesType = {
 export type RolesTransactionsProps = {
   setViewOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
   setCurrentRole: Dispatch<SetStateAction<string>>;
+  findNameById: any;
 };
 
 export type NewRolesType = {
@@ -59,4 +60,5 @@ export type ViewRolesType = {
   open: ViewOpenStateType;
   setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
   role: RolesType | null | undefined;
+  findNameById: any;
 };

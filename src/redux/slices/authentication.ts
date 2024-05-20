@@ -1,16 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import type { AxiosResponse } from 'axios';
 import { dispatch } from '../store';
 import {
   AuthenticationState,
   LoginRequestType,
-  LoginResponseType,
   RegisterRequestType,
 } from 'src/types/redux/authentication';
-import { getUser } from './user';
-import { localStorageConfig } from 'src/config';
+import { envConfig, localStorageConfig } from 'src/config';
 import toast from 'react-hot-toast';
 
 type RegisterFailureAction = PayloadAction<string>;
@@ -79,7 +76,7 @@ export const authenticationSlice = createSlice({
     resetPasswordFailure: (state: AuthenticationState, action: ResetPasswordFailureAction) => {
       state.loading = false;
       state.errorMessage = action.payload;
-    },
+    }
   },
 });
 
@@ -104,15 +101,15 @@ export const login = (loginData: LoginRequestType) => {
   return async () => {
     try {
       dispatch(authenticationSlice.actions.loginRequest());
-      const result: AxiosResponse<LoginResponseType> = await axios.post('/auth/login', loginData);
-      const token: string | null = result.data ? result.data.accessToken : null;
+      const result = await axios.post(`${envConfig.serverURL}/login`, loginData);
+      const token: string | null = result.data ? result.data.data.token : null;
+      
       if (token) {
         const jwt = token;
         localStorage.setItem(localStorageConfig.accessToken, jwt);
       }
 
       dispatch(authenticationSlice.actions.loginSuccess());
-      dispatch(getUser());
     } catch (error) {
       const errorMessage: string = error.response
         ? error.response.data.message
@@ -122,6 +119,7 @@ export const login = (loginData: LoginRequestType) => {
     }
   };
 };
+
 
 export const logout = () => {
   return () => {

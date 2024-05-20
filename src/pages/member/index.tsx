@@ -113,7 +113,6 @@ const MemberPage = () => {
                 member={member && member}
                 currentMember={currentMember}
                 roles={roles || []}
-                findNameById={findNameById}
               />
             </Grid>
             <Grid xs={12}>

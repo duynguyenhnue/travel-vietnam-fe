@@ -44,7 +44,6 @@ export type EditMemberType = {
   member: MemberType | null | undefined;
   currentMember: string;
   roles: RolesType[];
-  findNameById: any;
 };
 
 export type MemberTransactionsProps = {
