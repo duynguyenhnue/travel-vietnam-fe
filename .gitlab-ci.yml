@@ -22,12 +22,14 @@ variables:
       echo "Exporting staging environment variables...";
       echo "VITE_SERVER_API_URL=$STAGING_VITE_SERVER_API_URL" >> .env;
       echo "VITE_GOOGLE_APP_ID=$STAGING_VITE_GOOGLE_APP_ID" >> .env;
+      echo "VITE_SERVER_URL=$STAGING_VITE_SERVER_URL" >> .env;
       docker build -t $CI_DOCKER_USERNAME/$APP_NAME_STAGING:${CI_COMMIT_SHA} .;
       docker push $CI_DOCKER_USERNAME/$APP_NAME_STAGING:${CI_COMMIT_SHA};
     elif [ "$CI_COMMIT_BRANCH" = "master" ]; then
       echo "Export production environment variables";
       echo "VITE_SERVER_API_URL=$PROD_VITE_SERVER_API_URL" >> .env;
       echo "VITE_GOOGLE_APP_ID=$PROD_VITE_GOOGLE_APP_ID" >> .env;
+      echo "VITE_SERVER_URL=$PROD_VITE_SERVER_URL" >> .env;
       docker build -t $CI_DOCKER_USERNAME/$APP_NAME_PROD:${CI_COMMIT_SHA} .;
       docker push $CI_DOCKER_USERNAME/$APP_NAME_PROD:${CI_COMMIT_SHA};
     fi
