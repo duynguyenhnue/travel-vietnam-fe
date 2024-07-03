@@ -14,28 +14,30 @@ variables:
   APP_NAME_PROD: starack-admin-fe-prod
   APP_NAME_STAGING: starack-admin-fe-staging
 
-.docker-build: &docker-build 
+.docker-build: &docker-build
   - docker info
   - echo "$CI_DOCKER_PASSWORD" | docker login --username "$CI_DOCKER_USERNAME" --password-stdin
   - echo "NODE_PATH=$NODE_PATH" >> .env
   - if [ "$CI_COMMIT_BRANCH" = "develop" ]; then
-      echo "Exporting staging environment variables...";
-      echo "VITE_SERVER_API_URL=$STAGING_VITE_SERVER_API_URL" >> .env;
-      echo "VITE_GOOGLE_APP_ID=$STAGING_VITE_GOOGLE_APP_ID" >> .env;
-      docker build -t $CI_DOCKER_USERNAME/$APP_NAME_STAGING:${CI_COMMIT_SHA} .;
-      docker push $CI_DOCKER_USERNAME/$APP_NAME_STAGING:${CI_COMMIT_SHA};
+    echo "Exporting staging environment variables...";
+    echo "VITE_SERVER_API_URL=$STAGING_VITE_SERVER_API_URL" >> .env;
+    echo "VITE_GOOGLE_APP_ID=$STAGING_VITE_GOOGLE_APP_ID" >> .env;
+    echo "VITE_SERVER_URL=$STAGING_VITE_SERVER_URL" >> .env;
+    docker build -t $CI_DOCKER_USERNAME/$APP_NAME_STAGING:${CI_COMMIT_SHA} .;
+    docker push $CI_DOCKER_USERNAME/$APP_NAME_STAGING:${CI_COMMIT_SHA};
     elif [ "$CI_COMMIT_BRANCH" = "master" ]; then
-      echo "Export production environment variables";
-      echo "VITE_SERVER_API_URL=$PROD_VITE_SERVER_API_URL" >> .env;
-      echo "VITE_GOOGLE_APP_ID=$PROD_VITE_GOOGLE_APP_ID" >> .env;
-      docker build -t $CI_DOCKER_USERNAME/$APP_NAME_PROD:${CI_COMMIT_SHA} .;
-      docker push $CI_DOCKER_USERNAME/$APP_NAME_PROD:${CI_COMMIT_SHA};
+    echo "Export production environment variables";
+    echo "VITE_SERVER_API_URL=$PROD_VITE_SERVER_API_URL" >> .env;
+    echo "VITE_GOOGLE_APP_ID=$PROD_VITE_GOOGLE_APP_ID" >> .env;
+    echo "VITE_SERVER_URL=$PROD_VITE_SERVER_URL" >> .env;
+    docker build -t $CI_DOCKER_USERNAME/$APP_NAME_PROD:${CI_COMMIT_SHA} .;
+    docker push $CI_DOCKER_USERNAME/$APP_NAME_PROD:${CI_COMMIT_SHA};
     fi
 
 .deploy-vercel: &deploy-vercel
-  image: 
+  image:
     name: node:18-alpine
-    entrypoint: [""]
+    entrypoint: ['']
   script:
     - npm install -g vercel
     - VERCEL_ORG_ID=$VERCEL_ORG_ID VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID vercel --token $VERCEL_TOKEN
@@ -49,27 +51,27 @@ variables:
     - ssh-keyscan 139.59.193.149 >> ~/.ssh/known_hosts;
   script:
     - if [ "$CI_COMMIT_BRANCH" = "develop" ]; then
-        ssh -o StrictHostKeyChecking=no root@139.59.193.149  \
-          '
-          echo '"$CI_DOCKER_PASSWORD"' | sudo docker login --username '"$CI_DOCKER_USERNAME"' --password-stdin;
-          sudo docker stop '"$APP_NAME_STAGING"';
-          sudo docker rm '"$APP_NAME_STAGING"';
-          sudo docker pull '"$CI_DOCKER_USERNAME"'/'"$APP_NAME_STAGING"':'"${CI_COMMIT_SHA}"';
-          sudo docker run -d -t -p 6001:80 --name '"$APP_NAME_STAGING"' '"$CI_DOCKER_USERNAME"'/'"$APP_NAME_STAGING"':'"${CI_COMMIT_SHA}"';
-          sudo docker system prune -a -f;
-          sudo docker logout;
-          ';
+      ssh -o StrictHostKeyChecking=no root@139.59.193.149  \
+      '
+      echo '"$CI_DOCKER_PASSWORD"' | sudo docker login --username '"$CI_DOCKER_USERNAME"' --password-stdin;
+      sudo docker stop '"$APP_NAME_STAGING"';
+      sudo docker rm '"$APP_NAME_STAGING"';
+      sudo docker pull '"$CI_DOCKER_USERNAME"'/'"$APP_NAME_STAGING"':'"${CI_COMMIT_SHA}"';
+      sudo docker run -d -t -p 6001:80 --name '"$APP_NAME_STAGING"' '"$CI_DOCKER_USERNAME"'/'"$APP_NAME_STAGING"':'"${CI_COMMIT_SHA}"';
+      sudo docker system prune -a -f;
+      sudo docker logout;
+      ';
       elif [ "$CI_COMMIT_BRANCH" = "master" ]; then
-        ssh -o StrictHostKeyChecking=no root@139.59.193.149  \
-          '
-          echo '"$CI_DOCKER_PASSWORD"' | sudo docker login --username '"$CI_DOCKER_USERNAME"' --password-stdin;
-          sudo docker stop '"$APP_NAME_PROD"';
-          sudo docker rm '"$APP_NAME_PROD"';
-          sudo docker pull '"$CI_DOCKER_USERNAME"'/'"$APP_NAME_PROD"':'"${CI_COMMIT_SHA}"';
-          sudo docker run -d -t -p 6000:80 --name '"$APP_NAME_PROD"' '"$CI_DOCKER_USERNAME"'/'"$APP_NAME_PROD"':'"${CI_COMMIT_SHA}"';
-          sudo docker system prune -a -f;
-          sudo docker logout;
-          ';
+      ssh -o StrictHostKeyChecking=no root@139.59.193.149  \
+      '
+      echo '"$CI_DOCKER_PASSWORD"' | sudo docker login --username '"$CI_DOCKER_USERNAME"' --password-stdin;
+      sudo docker stop '"$APP_NAME_PROD"';
+      sudo docker rm '"$APP_NAME_PROD"';
+      sudo docker pull '"$CI_DOCKER_USERNAME"'/'"$APP_NAME_PROD"':'"${CI_COMMIT_SHA}"';
+      sudo docker run -d -t -p 6000:80 --name '"$APP_NAME_PROD"' '"$CI_DOCKER_USERNAME"'/'"$APP_NAME_PROD"':'"${CI_COMMIT_SHA}"';
+      sudo docker system prune -a -f;
+      sudo docker logout;
+      ';
       fi
 
 deploy_preview:
