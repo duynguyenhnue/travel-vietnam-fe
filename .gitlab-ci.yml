@@ -46,10 +46,10 @@ variables:
     - mkdir -p ~/.ssh
     - echo "$SERVER_SSH_KEY" | tr -d '\r' > ~/.ssh/id_rsa;
     - chmod 700 ~/.ssh/id_rsa;
-    - ssh-keyscan 172.188.25.89 >> ~/.ssh/known_hosts;
+    - ssh-keyscan 139.59.193.149 >> ~/.ssh/known_hosts;
   script:
     - if [ "$CI_COMMIT_BRANCH" = "develop" ]; then
-        ssh -o StrictHostKeyChecking=no ubuntu@172.188.25.89  \
+        ssh -o StrictHostKeyChecking=no root@139.59.193.149  \
           '
           echo '"$CI_DOCKER_PASSWORD"' | sudo docker login --username '"$CI_DOCKER_USERNAME"' --password-stdin;
           sudo docker stop '"$APP_NAME_STAGING"';
@@ -60,7 +60,7 @@ variables:
           sudo docker logout;
           ';
       elif [ "$CI_COMMIT_BRANCH" = "master" ]; then
-        ssh -o StrictHostKeyChecking=no ubuntu@172.188.25.89  \
+        ssh -o StrictHostKeyChecking=no root@139.59.193.149  \
           '
           echo '"$CI_DOCKER_PASSWORD"' | sudo docker login --username '"$CI_DOCKER_USERNAME"' --password-stdin;
           sudo docker stop '"$APP_NAME_PROD"';
