@@ -150,7 +150,7 @@ const NewCandidate = (props: NewCandidateType) => {
       aria-labelledby="new-candidate"
       aria-describedby="new-candidate"
     >
-      <CardContentStyle>
+      <CardContentStyle sx={{ overflowY: 'auto' }}>
         <Grid
           container
           spacing={3}
