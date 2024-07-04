@@ -49,4 +49,5 @@ export const routes: RouteObject[] = [
   ...permissionsRoutes,
   ...rolesRoutes,
   ...memberRoutes,
+  ...rolesRoutes,
 ];

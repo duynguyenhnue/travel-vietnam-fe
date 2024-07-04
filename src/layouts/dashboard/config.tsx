@@ -2,12 +2,10 @@ import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SvgIcon } from '@mui/material';
-
-import File01Icon from 'src/icons/untitled-ui/duocolor/file-01';
 import HomeSmileIcon from 'src/icons/untitled-ui/duocolor/home-smile';
 import { tokens } from 'src/locales/tokens';
 import { paths } from 'src/paths';
-import { Person } from '@mui/icons-material';
+import { Person, AssignmentInd } from '@mui/icons-material';
 
 export interface Item {
   disabled?: boolean;
@@ -41,19 +39,10 @@ export const useSections = () => {
             ),
           },
           {
-            title: 'Blank',
-            path: paths.blank,
+            title: 'Human resources',
             icon: (
               <SvgIcon fontSize="small">
-                <File01Icon />
-              </SvgIcon>
-            ),
-          },
-          {
-            title: 'HR',
-            icon: (
-              <SvgIcon fontSize="small">
-                <Person />
+                <AssignmentInd />
               </SvgIcon>
             ),
             items: [
@@ -63,35 +52,29 @@ export const useSections = () => {
               },
             ],
           },
-         
+
           {
-            title: 'Members',
+            title: 'User Management',
             icon: (
               <SvgIcon fontSize="small">
                 <Person />
               </SvgIcon>
             ),
-            path: paths.member,
+            items: [
+              {
+                title: 'Members',
+                path: paths.member,
+              },
+              {
+                title: 'Roles',
+                path: paths.roles,
+              },
+              {
+                title: 'Permissions',
+                path: paths.permissions,
+              },
+            ],
           },
-          {
-            title: 'Roles',
-            icon: (
-              <SvgIcon fontSize="small">
-                <Person />
-              </SvgIcon>
-            ),
-            path: paths.roles,
-          },
-          {
-            title: 'Permissions',
-            icon: (
-              <SvgIcon fontSize="small">
-                <Person />
-              </SvgIcon>
-            ),
-            path: paths.permissions,
-          },
-          
         ],
       },
     ];

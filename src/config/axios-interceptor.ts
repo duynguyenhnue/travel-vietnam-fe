@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { envConfig, localStorageConfig } from 'src/config';
+import { localStorageConfig } from 'src/config';
 
 const ACCESS_TOKEN = localStorageConfig.accessToken;
 const TIMEOUT = 1 * 60 * 1000;
 axios.defaults.timeout = TIMEOUT;
-axios.defaults.baseURL = envConfig.baseUrl;
 
 const setupAxiosInterceptors = (onUnauthenticated: any) => {
   const onRequestSuccess = (config: any) => {

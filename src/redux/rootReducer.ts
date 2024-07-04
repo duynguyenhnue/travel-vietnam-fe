@@ -10,8 +10,8 @@ import candidateReducer from './slices/hr/candidate/candidate';
 const rootReducer = combineReducers({
   authentication: authenticationReducer,
   permissions: permissionReducer,
-  roles: rolesReducer,
   member: memberReducer,
+  roles: rolesReducer,
   user: userReducer,
   candidate: candidateReducer,
 });
