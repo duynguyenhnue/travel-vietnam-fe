@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Grid,
   Link,
   Stack,
   SvgIcon,
@@ -15,7 +14,6 @@ import {
 import { RouterLink } from 'src/components/common/router/router-link';
 import { Seo } from 'src/components/common/performance/seo';
 import { paths } from 'src/paths';
-import { GoogleSignInButton } from 'src/components/common/logo/google-login-button';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { login } from '../../redux/slices/authentication';
 import { useRouter } from 'src/hooks/use-router';
@@ -23,19 +21,19 @@ import { useMounted } from 'src/hooks/use-mounted';
 import { useEffect } from 'react';
 
 interface LoginValues {
-  email: string;
+  username: string;
   password: string;
   submit: null;
 }
 
 const initialValues: LoginValues = {
-  email: '',
+  username: '',
   password: '',
   submit: null,
 };
 
 const validationSchema = Yup.object({
-  email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+  username: Yup.string().max(255).required('Username is required'),
   password: Yup.string().max(255).required('Password is required'),
 });
 
@@ -52,7 +50,7 @@ const LoginPage = () => {
     onSubmit: async (values, helpers): Promise<void> => {
       try {
         const loginData = {
-          email: values.email,
+          username: values.username,
           password: values.password,
         };
         await dispatch(login(loginData));
@@ -75,15 +73,6 @@ const LoginPage = () => {
       router.push(paths.dashboard.index);
     }
   }, [dispatch, isAuthenticated]);
-
-  const responseGoogleSuccess = async (socialToken: string) => {
-    const userData = {
-      socialNetwork: 'google',
-      socialToken,
-    };
-    localStorage.clear();
-    await dispatch(login(userData));
-  };
 
   return (
     <>
@@ -132,15 +121,15 @@ const LoginPage = () => {
           <Stack spacing={3}>
             <TextField
               autoFocus
-              error={!!(formik.touched.email && formik.errors.email)}
+              error={!!(formik.touched.username && formik.errors.username)}
               fullWidth
-              helperText={formik.touched.email && formik.errors.email}
-              label="Email address"
-              name="email"
+              helperText={formik.touched.username && formik.errors.username}
+              label="Username"
+              name="username"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              type="email"
-              value={formik.values.email}
+              type="text"
+              value={formik.values.username}
             />
             <TextField
               error={!!(formik.touched.password && formik.errors.password)}
@@ -165,54 +154,6 @@ const LoginPage = () => {
           >
             {loading ? <CircularProgress /> : 'Login'}
           </Button>
-          <Grid
-            container
-            sx={{ mt: 4 }}
-          >
-            <Grid
-              item
-              xs={4}
-              color="text.disabled"
-              sx={{
-                border: '1px solid',
-                width: '100%',
-                height: '1px',
-              }}
-            />
-            <Grid
-              item
-              xs={4}
-              style={{ textAlign: 'center', marginTop: '-12px' }}
-            >
-              <Typography variant="subtitle2">or continue with</Typography>
-            </Grid>
-            <Grid
-              item
-              xs={4}
-              color="text.disabled"
-              sx={{
-                border: '1px solid',
-                width: '100%',
-                height: '1px',
-              }}
-            />
-          </Grid>
-          <Box sx={{ mt: 2, justifyContent: 'center', display: 'flex' }}>
-            <GoogleSignInButton login={responseGoogleSuccess} />
-          </Box>
-          <Box sx={{ mt: 3 }}>
-            <Link
-              color="text.primary"
-              href={paths.auth.forgotPassword}
-              sx={{
-                justifyContent: 'center',
-                display: 'flex',
-              }}
-              underline="hover"
-            >
-              <Typography variant="subtitle2">Forgot password?</Typography>
-            </Link>
-          </Box>
         </form>
       </div>
     </>

@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
+import { MemberType } from "../redux/member";
 import { RolesType } from "../redux/roles";
-import { PermissionsType } from "../redux/permissions";
 
-export type RolesState = {
+export type MemberState = {
   loading: boolean;
-  candidates: RolesType[] | null;
+  candidates: MemberType[] | null;
   candidateLength: number | undefined;
   page: number,
   size: number,
@@ -12,11 +12,11 @@ export type RolesState = {
   errorMessage: string | null;
 };
 
-export type RolesActionType = {
-  data?: RolesType,
+export type MemberActionType = {
+  data?: MemberType,
   message: string,
   status: number,
-  content?: RolesType[] | null
+  content?: MemberType[] | null
   totalElements?: number
 };
 export type PaginationType = {
@@ -31,34 +31,35 @@ export type ViewOpenStateType = {
   delete: boolean;
 };
 
-export type DeleteRolesType = {
+export type DeleteMemberType = {
   open: ViewOpenStateType;
   setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
-  role: RolesType | null | undefined;
-};
-
-export type EditRolesType = {
-  open: ViewOpenStateType;
-  setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
-  role: RolesType | null | undefined;
-  currentRole: string;
-  permissions: PermissionsType[];
-};
-
-export type RolesTransactionsProps = {
-  setViewOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
-  setCurrentRole: Dispatch<SetStateAction<string>>;
+  member: MemberType | null | undefined;
   findNameById: any;
 };
 
-export type NewRolesType = {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  permissions: PermissionsType[]
-};
-export type ViewRolesType = {
+export type EditMemberType = {
   open: ViewOpenStateType;
   setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
-  role: RolesType | null | undefined;
+  member: MemberType | null | undefined;
+  currentMember: string;
+  roles: RolesType[];
+};
+
+export type MemberTransactionsProps = {
+  setViewOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
+  setCurrentMember: Dispatch<SetStateAction<string>>;
+  findNameById: any;
+};
+
+export type NewMemberType = {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  roles: RolesType[]
+};
+export type ViewMemberType = {
+  open: ViewOpenStateType;
+  setOpen: Dispatch<SetStateAction<ViewOpenStateType>>;
+  member: MemberType | null | undefined;
   findNameById: any;
 };

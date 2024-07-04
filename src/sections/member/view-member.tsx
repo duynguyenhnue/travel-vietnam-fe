@@ -5,10 +5,10 @@ import { PropertyList } from 'src/components/common/list/property-list';
 import { PropertyListItem } from 'src/components/common/list/property-list-item';
 import { tokens } from 'src/locales/tokens';
 import { CardContentStyle } from './styles';
-import { ViewRolesType } from 'src/types/roles';
+import { ViewMemberType } from 'src/types/member';
 
-const ViewRole = (props: ViewRolesType) => {
-  const { open, setOpen, role, findNameById } = props;
+const ViewMember = (props: ViewMemberType) => {
+  const { open, setOpen, member, findNameById } = props;
   const theme = createTheme();
   const { t } = useTranslation();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
@@ -36,7 +36,7 @@ const ViewRole = (props: ViewRolesType) => {
               variant="h5"
               align="center"
             >
-              Role
+              Member
             </Typography>
           </Grid>
 
@@ -50,15 +50,21 @@ const ViewRole = (props: ViewRolesType) => {
                 disableGutters
                 divider
                 label={t(tokens.nav.name)}
-                value={(role && role.name) || ''}
+                value={(member && member.fullName) || ''}
               />
-
-            <PropertyListItem
+              <PropertyListItem
                 align={align}
                 disableGutters
                 divider
-                label="Permissions"
-                value={(role && role.permissions.map(permission => findNameById(permission)).join(", ")) || ''}
+                label={t(tokens.nav.role)}
+                value={(member && member.username) || ''}
+              />
+              <PropertyListItem
+                align={align}
+                disableGutters
+                divider
+                label={t(tokens.nav.status)}
+                value={(member && member?.roles.map((id:string) => findNameById(id)).join(", ")) || ''}
               />
             </PropertyList>
           </Grid>
@@ -68,4 +74,4 @@ const ViewRole = (props: ViewRolesType) => {
   );
 };
 
-export default ViewRole;
+export default ViewMember;

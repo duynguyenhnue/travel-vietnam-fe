@@ -16,13 +16,13 @@ import { tokens } from 'src/locales/tokens';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { setPagination } from 'src/redux/slices/hr/candidate/candidate';
 import { MenuPaperStyle } from './styles/menu-paper-style';
-import { getRoles } from 'src/redux/slices/roles';
-import { RolesTransactionsProps } from 'src/types/roles';
+import { MemberTransactionsProps } from 'src/types/member';
+import { getMember } from 'src/redux/slices/member';
 
-export const ListRole: FC<RolesTransactionsProps> = (props) => {
-  const { setViewOpen, setCurrentRole, findNameById } = props;
-  const { roles, roleLength, page, size } = useSelector(
-    (state) => state.roles
+export const ListMember: FC<MemberTransactionsProps> = (props) => {
+  const { setViewOpen, setCurrentMember, findNameById } = props;
+  const { members, memberLength, page, size } = useSelector(
+    (state) => state.member
   );
   
   const { t } = useTranslation();
@@ -30,19 +30,19 @@ export const ListRole: FC<RolesTransactionsProps> = (props) => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     dispatch(setPagination(newPage, size));
-    dispatch(getRoles(newPage, size));
+    dispatch(getMember(newPage, size));
   };
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setPagination(page, +event.target.value));
-    dispatch(getRoles(page, +event.target.value));
+    dispatch(getMember(page, +event.target.value));
   };
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: any, index: string) => {
     setAnchorEl(event.currentTarget);
-    setCurrentRole(index);
+    setCurrentMember(index);
   };
   const handleClose = (name: string) => {
     setAnchorEl(null);
@@ -53,10 +53,9 @@ export const ListRole: FC<RolesTransactionsProps> = (props) => {
   };
 
   useEffect(() => {  
-    getRoles()
+    getMember()
   },[])
   
-
   return (
     <Card>
       <Scrollbar>
@@ -64,14 +63,15 @@ export const ListRole: FC<RolesTransactionsProps> = (props) => {
           <TableHead>
             <TableRow>
               <TableCell>{''}</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Permissions</TableCell>
+              <TableCell>FullName</TableCell>
+              <TableCell>Username</TableCell>
+              <TableCell>Roles</TableCell>
               <TableCell>{''}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {roles &&
-              roles.slice(0, page * size + size).map((transaction, index: number) => {
+            {members &&
+              members.slice(0, page * size + size).map((transaction, index: number) => {
                 return (
                   <TableRow
                     key={transaction._id}
@@ -102,19 +102,26 @@ export const ListRole: FC<RolesTransactionsProps> = (props) => {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <Typography variant="subtitle2">{transaction.name}</Typography>
+                        <Typography variant="subtitle2">{transaction.fullName}</Typography>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div>
                         <Typography variant="subtitle2">
-
-                        {transaction.permissions.map(permission => findNameById(permission)).join(", ")}
+                        {transaction.username}
+                        </Typography>
+                      
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div>
+                      <Typography variant="subtitle2">
+                        {transaction?.roles.map((id:string) => findNameById(id)).join(", ")}
                         </Typography>
                       </div>
                     </TableCell>
                     
-                    <TableCell align='right'>
+                    <TableCell>
                       <IconButton
                         onClick={(event) => handleClick(event, transaction?._id || '')}
                         size="small"
@@ -136,7 +143,7 @@ export const ListRole: FC<RolesTransactionsProps> = (props) => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 15]}
         component="div"
-        count={roleLength || 0}
+        count={memberLength || 0}
         rowsPerPage={size}
         page={page}
         onPageChange={handleChangePage}
