@@ -201,9 +201,7 @@ export const SideNav: FC<SideNavProps> = (props) => {
                 borderStyle: 'solid',
                 borderWidth: 1,
                 display: 'flex',
-                height: 40,
                 p: '4px',
-                width: 40,
               }}
             >
               <Logo />
