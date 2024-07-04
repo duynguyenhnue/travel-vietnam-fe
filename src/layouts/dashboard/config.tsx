@@ -63,6 +63,35 @@ export const useSections = () => {
               },
             ],
           },
+         
+          {
+            title: 'Members',
+            icon: (
+              <SvgIcon fontSize="small">
+                <Person />
+              </SvgIcon>
+            ),
+            path: paths.member,
+          },
+          {
+            title: 'Roles',
+            icon: (
+              <SvgIcon fontSize="small">
+                <Person />
+              </SvgIcon>
+            ),
+            path: paths.roles,
+          },
+          {
+            title: 'Permissions',
+            icon: (
+              <SvgIcon fontSize="small">
+                <Person />
+              </SvgIcon>
+            ),
+            path: paths.permissions,
+          },
+          
         ],
       },
     ];
