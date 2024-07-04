@@ -8,19 +8,18 @@ import { Button, SvgIcon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { ViewOpenStateType } from 'src/types/hr/candidate';
+import { ListMember } from 'src/sections/member/list-member';
+import { getMember } from 'src/redux/slices/member';
+import NewMember from 'src/sections/member/new-member';
+import EditMember from 'src/sections/member/edit-member';
+import DeleteMember from 'src/sections/member/delete-member';
+import ViewMember from 'src/sections/member/view-member';
 import { getRoles } from 'src/redux/slices/roles';
-import { ListRole } from 'src/sections/roles/list-roles';
-import NewRole from 'src/sections/roles/new-roles';
-import EditRole from 'src/sections/roles/edit-roles';
-import ViewRole from 'src/sections/roles/view-roles';
-import DeleteRole from 'src/sections/roles/delete-roles';
-import { getPermissions } from 'src/redux/slices/permissions';
 
-
-const RolesPage = () => {
+const MemberPage = () => {
   const settings = useSettings();
   const [open, setOpen] = useState<boolean>(false);
-  const [currentRole, setCurrentRole] = useState<string>('');
+  const [currentMember, setCurrentMember] = useState<string>('');
   const [viewOpen, setViewOpen] = useState<ViewOpenStateType>({
     send_email: false,
     view: false,
@@ -32,24 +31,22 @@ const RolesPage = () => {
   const handleOpen = () => setOpen(true);
   const dispatch = useDispatch();
 
-  const { roles, page, size } = useSelector((state) => state.roles);
-  const { permissions } = useSelector((state) => state.permissions);
+  const { members, page, size } = useSelector((state) => state.member);
+  const { roles } = useSelector((state) => state.roles);
 
   useEffect(() => {
+    dispatch(getMember(page,size));
     dispatch(getRoles(page,size));
-    dispatch(getPermissions(0, 5));
   }, []);
 
-  const role = roles && roles?.find((item) => item._id === currentRole);
-
+  const member = members && members?.find((item) => item._id === currentMember);
   const findNameById = (id: string) => {
-    const foundItem = permissions && permissions.find(item => item._id === id);
-    return foundItem ? foundItem.actions.name : null;
+    const foundItem = roles && roles.find(item => item._id === id);
+    return foundItem ? foundItem.name : null;
     };
-
   return (
     <>
-      <Seo title="Roles" />
+      <Seo title="Member" />
       <Box
         component="main"
         sx={{
@@ -73,7 +70,7 @@ const RolesPage = () => {
                 spacing={4}
               >
                 <div>
-                  <Typography variant="h4">Role</Typography>
+                  <Typography variant="h4">Member</Typography>
                 </div>
                 <div>
                   <Stack
@@ -89,47 +86,48 @@ const RolesPage = () => {
                       onClick={handleOpen}
                       variant="contained"
                     >
-                      New Role
+                      New Member
                     </Button>
                   </Stack>
                 </div>
               </Stack>
             </Grid>
             <Grid xs={12}>
-              <ListRole
+              <ListMember
                 setViewOpen={setViewOpen}
-                setCurrentRole={setCurrentRole}
+                setCurrentMember={setCurrentMember}
                 findNameById={findNameById}
               />
             </Grid>
             <Grid xs={12}>
-              <NewRole
+              <NewMember
                 open={open}
                 setOpen={setOpen}
-                permissions={permissions||[]}
+                roles={roles || []}
               />
             </Grid>
             <Grid xs={12}>
-              <EditRole
+              <EditMember
                 open={viewOpen}
                 setOpen={setViewOpen}
-                role={role&& role}
-                currentRole={currentRole}
-                permissions={permissions||[]}
+                member={member && member}
+                currentMember={currentMember}
+                roles={roles || []}
               />
             </Grid>
             <Grid xs={12}>
-              <DeleteRole
+              <DeleteMember
                 open={viewOpen}
                 setOpen={setViewOpen}
-                role={role && role}
+                member={member && member}
+                findNameById={findNameById}
               />
             </Grid>
             <Grid xs={12}>
-              <ViewRole
+              <ViewMember
                 open={viewOpen}
                 setOpen={setViewOpen}
-                role={role&& role}
+                member={member&& member}
                 findNameById={findNameById}
               />
             </Grid>
@@ -139,4 +137,4 @@ const RolesPage = () => {
     </>
   );
 };
-export default RolesPage;
+export default MemberPage;

@@ -14,15 +14,11 @@ export type RegisterRequestType = {
 };
 
 export type LoginRequestType = {
-  email?: string;
-  password?: string;
-  socialNetwork?: string;
-  socialToken?: string;
-  applicationType?: string;
-  fullName?: string;
+  username: string;
+  password: string;
 };
 
 export type LoginResponseType = {
   accessToken: string;
-  tokenType: string;
+  authenticated: string;
 };
