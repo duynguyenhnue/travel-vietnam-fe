@@ -1,15 +1,6 @@
 import React from 'react';
 import { EmailTemplateType } from 'src/types/hr/candidate';
 
-function getExpireTimeToReplyEmail(numberDay: number) {
-  const now = new Date();
-  now.setDate(now.getDate() + numberDay);
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const year = now.getFullYear();
-  return `${day}-${month}-${year}`;
-}
-
 const HRAcceptedEmailTemplate = (props: EmailTemplateType) => {
   const { candidate } = props;
   return (
@@ -76,8 +67,9 @@ const HRAcceptedEmailTemplate = (props: EmailTemplateType) => {
             fontSize: '15px',
           }}
         >
-          We are pleased to offer you the position of {candidate?.role} at STARACK. This is a
-          fulltime position with a start date of {candidate?.onboardDate}.
+          We are thrilled to welcome you as one of our new {candidate?.role} at STARACK. Your skills
+          have truly impressed us, and we are excited for you to join us in working on some of the
+          most exciting projects.
         </span>
         <br />
         <span
@@ -105,9 +97,8 @@ const HRAcceptedEmailTemplate = (props: EmailTemplateType) => {
             fontSize: '15px',
           }}
         >
-          We were impressed with your skills and experience, and believe you would be a valuable
-          addition to our team. Please find attached a more detailed offer letter outlining the
-          terms of your employment.
+          Please meet with <strong>your manager, Justin Nguyen</strong>, in the software development
+          department for your orientation, subject materials, and project details.
         </span>
         <br />
         <span
@@ -135,12 +126,156 @@ const HRAcceptedEmailTemplate = (props: EmailTemplateType) => {
             fontSize: '15px',
           }}
         >
-          To accept this offer, please sign and return the offer letter by{' '}
-          {getExpireTimeToReplyEmail(2)}. We look forward to welcoming you aboard!
+          On your first day, please bring your <strong>Identification Card</strong>
         </span>
       </p>
       <p style={{ marginLeft: '20px', textAlign: 'left' }}>
-        <br />
+        <span
+          style={{
+            color: 'rgb(29, 28, 29)',
+            fontFamily: 'Slack-Lato, Slack-Fractions, appleLogo, sans-serif',
+            fontStyle: 'normal',
+            fontVariantLigatures: 'common-ligatures',
+            fontVariantCaps: 'normal',
+            fontWeight: 400,
+            letterSpacing: 'normal',
+            orphans: 2,
+            textAlign: 'left',
+            textIndent: 0,
+            textTransform: 'none',
+            widows: 2,
+            wordSpacing: 0,
+            WebkitTextStrokeWidth: 0,
+            whiteSpace: 'normal',
+            textDecorationThickness: 'initial',
+            textDecorationStyle: 'initial',
+            textDecorationColor: 'initial',
+            float: 'none',
+            display: 'inline !important',
+            fontSize: '15px',
+          }}
+        >
+          <strong>Onboarding date: {candidate?.onboardDate}</strong>
+        </span>
+      </p>
+      <p style={{ marginLeft: '20px', textAlign: 'left' }}>
+        <span
+          style={{
+            color: 'rgb(29, 28, 29)',
+            fontFamily: 'Slack-Lato, Slack-Fractions, appleLogo, sans-serif',
+            fontStyle: 'normal',
+            fontVariantLigatures: 'common-ligatures',
+            fontVariantCaps: 'normal',
+            fontWeight: 400,
+            letterSpacing: 'normal',
+            orphans: 2,
+            textAlign: 'left',
+            textIndent: 0,
+            textTransform: 'none',
+            widows: 2,
+            wordSpacing: 0,
+            WebkitTextStrokeWidth: 0,
+            whiteSpace: 'normal',
+            textDecorationThickness: 'initial',
+            textDecorationStyle: 'initial',
+            textDecorationColor: 'initial',
+            float: 'none',
+            display: 'inline !important',
+            fontSize: '15px',
+          }}
+        >
+          <strong>Office</strong>: Starack Vietnam, 20/01 Tran Quoc Hoan Street, Hanoi
+        </span>
+      </p>
+      <p style={{ marginLeft: '20px', textAlign: 'left' }}>
+        <span
+          style={{
+            color: 'rgb(29, 28, 29)',
+            fontFamily: 'Slack-Lato, Slack-Fractions, appleLogo, sans-serif',
+            fontStyle: 'normal',
+            fontVariantLigatures: 'common-ligatures',
+            fontVariantCaps: 'normal',
+            fontWeight: 400,
+            letterSpacing: 'normal',
+            orphans: 2,
+            textAlign: 'left',
+            textIndent: 0,
+            textTransform: 'none',
+            widows: 2,
+            wordSpacing: 0,
+            WebkitTextStrokeWidth: 0,
+            whiteSpace: 'normal',
+            textDecorationThickness: 'initial',
+            textDecorationStyle: 'initial',
+            textDecorationColor: 'initial',
+            float: 'none',
+            display: 'inline !important',
+            fontSize: '15px',
+          }}
+        >
+          No need to bring your food, as we offer a canteen service.
+        </span>
+      </p>
+      <p style={{ marginLeft: '20px', textAlign: 'left' }}>
+        <span
+          style={{
+            color: 'rgb(29, 28, 29)',
+            fontFamily: 'Slack-Lato, Slack-Fractions, appleLogo, sans-serif',
+            fontStyle: 'normal',
+            fontVariantLigatures: 'common-ligatures',
+            fontVariantCaps: 'normal',
+            fontWeight: 400,
+            letterSpacing: 'normal',
+            orphans: 2,
+            textAlign: 'left',
+            textIndent: 0,
+            textTransform: 'none',
+            widows: 2,
+            wordSpacing: 0,
+            WebkitTextStrokeWidth: 0,
+            whiteSpace: 'normal',
+            textDecorationThickness: 'initial',
+            textDecorationStyle: 'initial',
+            textDecorationColor: 'initial',
+            float: 'none',
+            display: 'inline !important',
+            fontSize: '15px',
+          }}
+        >
+          We look forward to your contributions to the success of Starack. Should you need any
+          information, feel free to contact me anytime.
+        </span>
+      </p>
+      <p style={{ marginLeft: '20px', textAlign: 'left' }}>
+        <span
+          style={{
+            color: 'rgb(29, 28, 29)',
+            fontFamily: 'Slack-Lato, Slack-Fractions, appleLogo, sans-serif',
+            fontStyle: 'normal',
+            fontVariantLigatures: 'common-ligatures',
+            fontVariantCaps: 'normal',
+            fontWeight: 400,
+            letterSpacing: 'normal',
+            orphans: 2,
+            textAlign: 'left',
+            textIndent: 0,
+            textTransform: 'none',
+            widows: 2,
+            wordSpacing: 0,
+            WebkitTextStrokeWidth: 0,
+            whiteSpace: 'normal',
+            textDecorationThickness: 'initial',
+            textDecorationStyle: 'initial',
+            textDecorationColor: 'initial',
+            float: 'none',
+            display: 'inline !important',
+            fontSize: '15px',
+          }}
+        >
+          Wishing you a bright future and a great experience with us!
+        </span>
+      </p>
+      <p style={{ marginLeft: '20px', textAlign: 'left' }}>
         <span
           style={{
             color: 'rgb(29, 28, 29)',
@@ -194,7 +329,10 @@ const HRAcceptedEmailTemplate = (props: EmailTemplateType) => {
           textDecorationColor: 'initial',
         }}
       >
-        <strong style={{ color: 'rgb(29, 28, 29)', fontSize: '18px' }}> Truong Nguyen</strong>
+        <strong style={{ color: 'rgb(29, 28, 29)', fontSize: '18px' }}>Tony Nguyen</strong>
+        <strong style={{ color: 'rgb(29, 28, 29)', fontSize: '18px' }}>
+          Human Resources Manager
+        </strong>
         <strong
           style={{
             fontFamily: 'Slack-Lato, Slack-Fractions, appleLogo, sans-serif',

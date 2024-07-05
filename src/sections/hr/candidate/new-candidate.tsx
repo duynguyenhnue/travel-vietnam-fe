@@ -71,6 +71,7 @@ const NewCandidate = (props: NewCandidateType) => {
         handleClose();
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
+        formik.resetForm();
         handleClose();
       } catch (err) {
         toast.error('Create Candidate false');
@@ -79,32 +80,6 @@ const NewCandidate = (props: NewCandidateType) => {
       }
     },
   });
-  const listStatus = [
-    {
-      value: '',
-      label: '',
-    },
-    {
-      value: 'reject',
-      label: 'Reject',
-    },
-    {
-      value: 'schedule_interview',
-      label: 'Schedule Interview',
-    },
-    {
-      value: 'interviewed',
-      label: 'Interviewed',
-    },
-    {
-      value: 'pass',
-      label: 'Pass',
-    },
-    {
-      value: 'onboard',
-      label: 'Onboard',
-    },
-  ];
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -188,15 +163,23 @@ const NewCandidate = (props: NewCandidateType) => {
             xs={12}
             md={6}
           >
-            <TextField
-              error={!!(formik.touched.projectExperience && formik.errors.projectExperience)}
-              fullWidth
-              helperText={formik.touched.projectExperience && formik.errors.projectExperience}
-              label={t(tokens.nav.projectExperience)}
-              name="projectExperience"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              value={formik.values.projectExperience}
+            <DatePicker
+              format="dd/MM/yyyy"
+              label="DOB"
+              onChange={(value) => {
+                formik.setFieldValue('dob', value, true);
+              }}
+              value={formik.values.dob}
+              slotProps={{
+                textField: {
+                  variant: 'outlined',
+                  required: false,
+                  name: 'dob',
+                  error: !!(formik.touched.dob && Boolean(formik.errors.dob)),
+                  helperText: formik.touched.dob && formik.errors.dob,
+                  fullWidth: true,
+                },
+              }}
             />
           </Grid>
           <Grid
@@ -221,31 +204,32 @@ const NewCandidate = (props: NewCandidateType) => {
             md={6}
           >
             <TextField
-              select
+              error={!!(formik.touched.role && formik.errors.role)}
+              required
               fullWidth
-              label={t(tokens.nav.status)}
-              SelectProps={{
-                native: true,
-              }}
+              helperText={formik.touched.role && formik.errors.role}
+              label={t(tokens.nav.role)}
+              name="role"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              value={formik.values.status}
-              name="status"
-              required
-              helperText={formik.touched.status && formik.errors.status}
-              variant="filled"
-              error={!!(formik.touched.status && formik.errors.status)}
-            >
-              {listStatus.map((option) => (
-                <option
-                  key={option.value}
-                  value={option.value}
-                  disabled={option.value ? false : true}
-                >
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
+              value={formik.values.role}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
+            <TextField
+              error={!!(formik.touched.projectExperience && formik.errors.projectExperience)}
+              fullWidth
+              helperText={formik.touched.projectExperience && formik.errors.projectExperience}
+              label={t(tokens.nav.projectExperience)}
+              name="projectExperience"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.projectExperience}
+            />
           </Grid>
           <Grid
             item
@@ -263,66 +247,6 @@ const NewCandidate = (props: NewCandidateType) => {
               value={formik.values.skillsSummary}
             />
           </Grid>
-          <Grid
-            item
-            xs={12}
-            md={6}
-          >
-            <TextField
-              error={!!(formik.touched.certificate && formik.errors.certificate)}
-              fullWidth
-              helperText={formik.touched.certificate && formik.errors.certificate}
-              label={t(tokens.nav.certificate)}
-              name="certificate"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              value={formik.values.certificate}
-            />
-          </Grid>
-
-          <Grid
-            item
-            xs={12}
-            md={6}
-          >
-            <DatePicker
-              format="dd/MM/yyyy"
-              label="DOB"
-              onChange={(value) => {
-                formik.setFieldValue('dob', value, true);
-              }}
-              value={formik.values.dob}
-              slotProps={{
-                textField: {
-                  variant: 'outlined',
-                  required: false,
-                  name: 'dob',
-                  error: !!(formik.touched.dob && Boolean(formik.errors.dob)),
-                  helperText: formik.touched.dob && formik.errors.dob,
-                  fullWidth: true,
-                },
-              }}
-            />
-          </Grid>
-
-          <Grid
-            item
-            xs={12}
-            md={6}
-          >
-            <TextField
-              error={!!(formik.touched.role && formik.errors.role)}
-              required
-              fullWidth
-              helperText={formik.touched.role && formik.errors.role}
-              label={t(tokens.nav.role)}
-              name="role"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              value={formik.values.role}
-            />
-          </Grid>
-
           <Grid
             item
             xs={12}

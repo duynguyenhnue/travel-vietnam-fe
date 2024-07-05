@@ -183,7 +183,10 @@ const HRRejectedEmailTemplate = (props: EmailTemplateType) => {
           textDecorationColor: 'initial',
         }}
       >
-        <strong style={{ color: 'rgb(29, 28, 29)', fontSize: '18px' }}> Truong Nguyen</strong>
+        <strong style={{ color: 'rgb(29, 28, 29)', fontSize: '18px' }}>Tony Nguyen</strong>
+        <strong style={{ color: 'rgb(29, 28, 29)', fontSize: '18px' }}>
+          Human Resources Manager
+        </strong>
         <strong
           style={{
             fontFamily: 'Slack-Lato, Slack-Fractions, appleLogo, sans-serif',
