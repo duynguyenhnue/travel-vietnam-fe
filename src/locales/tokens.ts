@@ -12,6 +12,7 @@ export const tokens = {
     name: 'nav.name',
     contact: 'nav.contact',
     interviewInformation: 'nav.interviewInformation',
+    interview: 'nav.interview',
     projectExperience: 'nav.projectExperience',
     universityMajor: 'nav.universityMajor',
     certificate: 'nav.certificate',

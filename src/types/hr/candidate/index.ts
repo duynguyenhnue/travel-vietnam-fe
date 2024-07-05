@@ -1,26 +1,26 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 
 export type CandidateState = {
   loading: boolean;
   candidates: CandidateType[] | null;
   candidateLength: number | undefined;
-  page: number,
-  size: number,
-  filterStatus: string,
+  page: number;
+  size: number;
+  filterStatus: string;
   errorMessage: string | null;
 };
 
 export type CandidateActionType = {
-  data?: CandidateType,
-  message: string,
-  status: number,
-  content?: CandidateType[] | null
-  totalElements?: number
+  data?: CandidateType;
+  message: string;
+  status: number;
+  content?: CandidateType[] | null;
+  totalElements?: number;
 };
 export type PaginationType = {
-  page: number,
-  size: number
-}
+  page: number;
+  size: number;
+};
 
 export type CandidateType = {
   _id?: string;
@@ -28,6 +28,7 @@ export type CandidateType = {
   status: string;
   contact: Contact;
   interviewInformation: InterviewInformation;
+  interview: string;
   dob: string;
   universityMajor: string;
   projectExperience: string;
