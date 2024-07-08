@@ -64,28 +64,29 @@ const ViewCandidate = (props: ViewCandidateType) => {
                 align={align}
                 disableGutters
                 divider
-                label={t(tokens.nav.status)}
-                value={(candidate && candidate.status) || ''}
+                label={t(tokens.nav.universityMajor)}
+                value={(candidate && candidate.universityMajor) || ''}
               />
               <PropertyListItem
                 align={align}
                 disableGutters
                 divider
-                label={t(tokens.nav.contact)}
-              >
-                <Typography
-                  color="text.secondary"
-                  variant="body2"
-                >
-                  {t(tokens.nav.email)}: {candidate && candidate.contact.email}
-                </Typography>
-                <Typography
-                  color="text.secondary"
-                  variant="body2"
-                >
-                  {t(tokens.nav.phone)}: {candidate && candidate.contact.phone}
-                </Typography>
-              </PropertyListItem>
+                label={t(tokens.nav.skillsSummary)}
+                value={(candidate && candidate.skillsSummary) || ''}
+              />
+              <PropertyListItem
+                align={align}
+                disableGutters
+                divider
+                label={'CV'}
+                value={
+                  candidate?.cvUrl && (
+                    <Link to={candidate?.cvUrl || ''}>
+                      {candidate?.cvUrl.split('/')[candidate?.cvUrl.split('/').length - 1]}
+                    </Link>
+                  )
+                }
+              />
               <PropertyListItem
                 align={align}
                 disableGutters
@@ -112,43 +113,15 @@ const ViewCandidate = (props: ViewCandidateType) => {
                 align={align}
                 disableGutters
                 divider
-                label="DOB"
-                value={
-                  candidate && candidate.dob
-                    ? `${new Date(candidate.dob).getDay()}-${
-                        new Date(candidate.dob).getMonth() + 1
-                      }-${new Date(candidate.dob).getFullYear()}`
-                    : ''
-                }
-              />
-
-              <PropertyListItem
-                align={align}
-                disableGutters
-                divider
-                label={t(tokens.nav.universityMajor)}
-                value={(candidate && candidate.universityMajor) || ''}
+                label={t(tokens.nav.interview)}
+                value={(candidate && candidate.interview) || ''}
               />
               <PropertyListItem
                 align={align}
                 disableGutters
                 divider
-                label={t(tokens.nav.projectExperience)}
-                value={(candidate && candidate.projectExperience) || ''}
-              />
-              <PropertyListItem
-                align={align}
-                disableGutters
-                divider
-                label={t(tokens.nav.skillsSummary)}
-                value={(candidate && candidate.skillsSummary) || ''}
-              />
-              <PropertyListItem
-                align={align}
-                disableGutters
-                divider
-                label={t(tokens.nav.certificate)}
-                value={(candidate && candidate.certificate) || ''}
+                label={t(tokens.nav.status)}
+                value={(candidate && candidate.status) || ''}
               />
               <PropertyListItem
                 align={align}
@@ -161,13 +134,33 @@ const ViewCandidate = (props: ViewCandidateType) => {
                 align={align}
                 disableGutters
                 divider
-                label={'CV'}
+                label={t(tokens.nav.contact)}
+              >
+                <Typography
+                  color="text.secondary"
+                  variant="body2"
+                >
+                  {t(tokens.nav.email)}: {candidate && candidate.contact.email}
+                </Typography>
+                <Typography
+                  color="text.secondary"
+                  variant="body2"
+                >
+                  {t(tokens.nav.phone)}: {candidate && candidate.contact.phone}
+                </Typography>
+              </PropertyListItem>
+
+              <PropertyListItem
+                align={align}
+                disableGutters
+                divider
+                label="DOB"
                 value={
-                  candidate?.cvUrl && (
-                    <Link to={candidate?.cvUrl || ''}>
-                      {candidate?.cvUrl.split('/')[candidate?.cvUrl.split('/').length - 1]}
-                    </Link>
-                  )
+                  candidate && candidate.dob
+                    ? `${new Date(candidate.dob).getDay()}-${
+                        new Date(candidate.dob).getMonth() + 1
+                      }-${new Date(candidate.dob).getFullYear()}`
+                    : ''
                 }
               />
             </PropertyList>

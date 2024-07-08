@@ -9,6 +9,7 @@ export const en = {
   [tokens.nav.name]: 'Name',
   [tokens.nav.contact]: 'Contact',
   [tokens.nav.interviewInformation]: 'Interview information',
+  [tokens.nav.interview]: 'Interview',
   [tokens.nav.projectExperience]: 'Project experience',
   [tokens.nav.universityMajor]: 'University Major',
   [tokens.nav.certificate]: 'Certificate',

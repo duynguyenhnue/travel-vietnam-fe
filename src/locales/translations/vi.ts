@@ -9,6 +9,7 @@ export const vi = {
   [tokens.nav.name]: 'Tên',
   [tokens.nav.contact]: 'Liên hệ',
   [tokens.nav.interviewInformation]: 'Thông tin phỏng vấn',
+  [tokens.nav.interview]: 'Phỏng vấn',
   [tokens.nav.projectExperience]: 'Kinh nghiệm dự án',
   [tokens.nav.universityMajor]: 'Chuyên ngành đại học',
   [tokens.nav.certificate]: 'Giấy chứng nhận',
