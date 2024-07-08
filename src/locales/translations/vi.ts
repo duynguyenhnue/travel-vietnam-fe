@@ -32,4 +32,6 @@ export const vi = {
   [tokens.nav.yes]: 'Đồng ý',
   [tokens.nav.no]: 'Không',
   [tokens.nav.doYouWantToDeleteItOrNot]: 'Bạn có muốn xóa ứng viên này không',
+  [tokens.nav.history]: 'Lịch sử',
+  [tokens.nav.doYouWantToRestoreItOrNot]: 'Bạn có muốn khôi phục ứng viên này không?',
 };

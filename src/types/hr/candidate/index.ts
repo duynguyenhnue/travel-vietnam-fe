@@ -37,6 +37,7 @@ export type CandidateType = {
   role: string;
   cvUrl: string;
   onboardDate: string;
+  deleted?: boolean;
 };
 export type InterviewInformation = {
   dateTime: string;
@@ -71,6 +72,7 @@ export type ViewOpenStateType = {
   view: boolean;
   edit: boolean;
   delete: boolean;
+  restore?: boolean;
 };
 
 export type DeleteCandidateType = {

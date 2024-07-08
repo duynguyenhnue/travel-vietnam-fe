@@ -32,4 +32,6 @@ export const en = {
   [tokens.nav.yes]: 'Yes',
   [tokens.nav.no]: 'No',
   [tokens.nav.doYouWantToDeleteItOrNot]: 'Do you want to delete this candidate?',
+  [tokens.nav.history]: 'History',
+  [tokens.nav.doYouWantToRestoreItOrNot]: 'Do you want to restore this candidate?',
 };

@@ -50,6 +50,10 @@ export const useSections = () => {
                 title: t(tokens.nav.candidate),
                 path: paths.hr.candidate,
               },
+              {
+                title: t(tokens.nav.history),
+                path: paths.hr.history,
+              },
             ],
           },
 

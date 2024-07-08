@@ -12,7 +12,7 @@ import type { SeverityPillColor } from 'src/components/common/alert/severity-pil
 import { SeverityPill } from 'src/components/common/alert/severity-pill';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { IconButton, Menu, MenuItem, TableHead } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import TablePagination from '@mui/material/TablePagination';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
@@ -36,6 +36,7 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
   );
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const handleChangePage = (event: unknown, newPage: number) => {
     dispatch(setPagination(newPage, size));
@@ -196,15 +197,23 @@ export const CandidateTransactions: FC<CandidateTransactionsProps> = (props) => 
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={() => handleClose('send_email')}>Send Email</MenuItem>
+        {!(location.pathname === '/hr/history') && (
+          <>
+            <MenuItem onClick={() => handleClose('send_email')}>Send Email</MenuItem>
+            <MenuItem onClick={() => handleClose('edit')}>Edit</MenuItem>
+          </>
+        )}
         <MenuItem onClick={() => handleClose('view')}>View</MenuItem>
-        <MenuItem onClick={() => handleClose('edit')}>Edit</MenuItem>
         <MenuItem
           onClick={() => handleClose('delete')}
           sx={{ color: 'error.dark' }}
         >
           Delete
         </MenuItem>
+
+        {location.pathname === '/hr/history' && (
+          <MenuItem onClick={() => handleClose('restore')}>Restore</MenuItem>
+        )}
       </Menu>
     </Card>
   );

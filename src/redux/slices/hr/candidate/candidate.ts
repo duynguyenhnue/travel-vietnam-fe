@@ -76,7 +76,13 @@ export const candidateSlice = createSlice({
         );
 
         if (indexToUpdate !== undefined && indexToUpdate !== -1 && state.candidates) {
-          state.candidates[indexToUpdate] = action.payload.data;
+          if(action.payload.data.deleted !== state.candidates[indexToUpdate].deleted){
+            state.candidates.splice(indexToUpdate, 1);
+            toast.success('Restore candidate successful');
+          }else{
+            state.candidates[indexToUpdate] = action.payload.data;
+            toast.success('Edit candidate successful');
+          }
         }
       }
     },
@@ -171,7 +177,6 @@ export const editCandidate = (candidate: CandidateType, id: string) => {
     try {
       dispatch(candidateSlice.actions.editCandidateRequest());
       const result = await axios.put(`${envConfig.serverURL}/hr/candidate/${id}`, candidate);
-      toast.success('Edit candidate successful');
       dispatch(candidateSlice.actions.editCandidateSuccess(result.data));
     } catch (error) {
       const errorMessage =
@@ -184,11 +189,11 @@ export const editCandidate = (candidate: CandidateType, id: string) => {
   };
 };
 
-export const deleteCandidate = (id: string) => {
+export const deleteCandidate = (id: string, deleted: boolean) => {
   return async () => {
     try {
       dispatch(candidateSlice.actions.deleteCandidateRequest());
-      await axios.delete(`${envConfig.serverURL}/hr/candidate/${id}`);
+      await axios.delete(`${envConfig.serverURL}/hr/candidate/${id}?deleted=${deleted}`);
       toast.success('Delete candidate successful');
       dispatch(candidateSlice.actions.deleteCandidateSuccess(id));
       await dispatch(

@@ -6,6 +6,7 @@ import { Outlet } from 'react-router-dom';
 import AuthProvider from 'src/contexts/auth-provider';
 
 const CandidatesPage = lazy(() => import('src/pages/hr/candidate'));
+const HistoryPage = lazy(() => import('src/pages/history/index'));
 
 export const hrRoutes: RouteObject[] = [
   {
@@ -25,6 +26,10 @@ export const hrRoutes: RouteObject[] = [
           {
             path: '/hr/candidate',
             element: <CandidatesPage />,
+          },
+          {
+            path: '/hr/history',
+            element: <HistoryPage />,
           },
         ],
       },

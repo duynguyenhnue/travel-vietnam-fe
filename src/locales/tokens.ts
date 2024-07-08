@@ -35,5 +35,7 @@ export const tokens = {
     no: 'nav.no',
     sendEmail: 'nav.sendEmail',
     doYouWantToDeleteItOrNot: 'nav.doYouWantToDeleteItOrNot',
-  },
+    history: 'nav.history',
+    doYouWantToRestoreItOrNot: 'nav.doYouWantToRestoreItOrNot',
+  }
 };

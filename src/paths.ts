@@ -12,6 +12,7 @@ export const paths = {
   blank: '/blank',
   hr: {
     candidate: '/hr/candidate',
+    history: '/hr/history',
   },
   member: '/member',
   roles: '/roles',

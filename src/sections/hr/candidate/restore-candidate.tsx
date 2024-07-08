@@ -1,39 +1,38 @@
 import { Button, CardHeader, Grid, Modal, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
-import { deleteCandidate } from 'src/redux/slices/hr/candidate/candidate';
 import { useDispatch } from 'src/redux/store';
 import { DeleteCandidateType } from 'src/types/hr/candidate';
 import { CardContentStyle } from './styles';
-import { useLocation } from 'react-router';
+import { editCandidate } from 'src/redux/slices/hr/candidate/candidate';
 
-const DeleteCandidate = (props: DeleteCandidateType) => {
+const RestoreCandidate = (props: DeleteCandidateType) => {
   const { open, setOpen, candidate } = props;
   const { t } = useTranslation();
-  const location = useLocation();
   const handleClose = () => {
-    setOpen({ send_email: false, view: false, edit: false, delete: false });
+    setOpen({ send_email: false, view: false, edit: false, delete: false, restore: false });
   };
   const dispatch = useDispatch();
 
-  const handleDelete = async (): Promise<void> => {
+  const handleRestore = async (): Promise<void> => {
+
     if (candidate && candidate._id) {
-      if(location.pathname === "/hr/history") {
-        await dispatch(deleteCandidate(candidate._id, true));
-      }else{
-        await dispatch(deleteCandidate(candidate._id, false));
-      }
-      
+      const updatedCandidate = {
+        ...candidate,  
+        deleted: false
+      };
+
+      await dispatch(editCandidate(updatedCandidate, candidate._id));
       handleClose();
     }
-  };
+  };  
 
   return (
     <Modal
-      open={open.delete}
+      open={open.restore || false}
       onClose={handleClose}
-      aria-labelledby="new-candidate"
-      aria-describedby="new-candidate"
+      aria-labelledby="restore-candidate"
+      aria-describedby="restore-candidate"
     >
       <CardContentStyle>
         <Grid
@@ -41,14 +40,14 @@ const DeleteCandidate = (props: DeleteCandidateType) => {
           spacing={3}
         >
           <CardHeader
-            title={t(tokens.nav.doYouWantToDeleteItOrNot)}
+            title={t(tokens.nav.doYouWantToRestoreItOrNot)}
             subheader=""
             sx={{ pb: 2 }}
           />
           <Grid
             item
             xs={12}
-            display={open.delete ? 'block' : 'none'}
+            display={'block'}
           >
             <Typography
               variant="inherit"
@@ -75,7 +74,7 @@ const DeleteCandidate = (props: DeleteCandidateType) => {
             <Button
               variant="contained"
               type="submit"
-              onClick={handleDelete}
+              onClick={handleRestore}
               sx={{ bgcolor: 'success.main', ml: 1 }}
             >
               {t(tokens.nav.yes)}
@@ -87,4 +86,4 @@ const DeleteCandidate = (props: DeleteCandidateType) => {
   );
 };
 
-export default DeleteCandidate;
+export default RestoreCandidate;
