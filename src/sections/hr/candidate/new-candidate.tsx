@@ -22,6 +22,33 @@ const NewCandidate = (props: NewCandidateType) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>('');
 
+  const listStatus = [
+    {
+      value: '',
+      label: '',
+    },
+    {
+      value: 'reject',
+      label: 'Reject',
+    },
+    {
+      value: 'schedule_interview',
+      label: 'Schedule Interview',
+    },
+    {
+      value: 'interviewed',
+      label: 'Interviewed',
+    },
+    {
+      value: 'pass',
+      label: 'Pass',
+    },
+    {
+      value: 'onboard',
+      label: 'Onboard',
+    },
+  ];
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -42,6 +69,7 @@ const NewCandidate = (props: NewCandidateType) => {
       role: '',
       cvUrl: '',
       onboardDate: '',
+      interview: '',
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255).required('Name is required'),
@@ -116,7 +144,7 @@ const NewCandidate = (props: NewCandidateType) => {
       setFileName(file.name);
     }
     setDragOver(false);
-  };
+  };  
 
   return (
     <Modal
@@ -283,6 +311,54 @@ const NewCandidate = (props: NewCandidateType) => {
               onChange={handleFileChange}
               ref={hiddenInputRef}
               style={{ display: 'none' }}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
+            <TextField
+              select
+              fullWidth
+              label={t(tokens.nav.status)}
+              SelectProps={{
+                native: true,
+              }}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.status}
+              name="status"
+              error={!!(formik.touched.status && formik.errors.status)} 
+              required
+              helperText={formik.touched.status && formik.errors.status ? formik.errors.status : ''}
+              variant="filled"
+            >
+              {listStatus.map((option) => (
+                <option
+                  key={option.value}
+                  value={option.value}
+                  disabled={!option.value}
+                >
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
+            <TextField
+              error={!!(formik.touched.interview && formik.errors.interview)}
+              fullWidth
+              helperText={formik.touched.interview && formik.errors.interview}
+              label={t(tokens.nav.interview)}
+              name="interview"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.interview}
             />
           </Grid>
 

@@ -44,10 +44,11 @@ const EditCandidate = (props: EditCandidateType) => {
       onboardDate: candidate?.onboardDate || '',
       cvUrl: candidate?.cvUrl || '',
       submit: null,
+      interview: '',
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255).required('Name is required'),
-      status: Yup.string().max(255).required('Status is required'),
+      // status: Yup.string().max(255).required('Status is required'),
       role: Yup.string().required('Role is required'),
       // dob: Yup.string().max(255).required('DOB is required'),
       // universityMajor: Yup.string().max(255).required('University major is required'),
@@ -380,6 +381,55 @@ const EditCandidate = (props: EditCandidateType) => {
               onChange={handleFileChange}
               ref={hiddenInputRef}
               style={{ display: 'none' }}
+            />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
+            <TextField
+              select
+              fullWidth
+              label={t(tokens.nav.status)}
+              SelectProps={{
+                native: true,
+              }}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.status}
+              name="status"
+              error={!!(formik.touched.status && formik.errors.status)}
+              required
+              helperText={formik.touched.status && formik.errors.status ? formik.errors.status : ''}
+              variant="filled"
+            >
+              {listStatus.map((option) => (
+                <option
+                  key={option.value}
+                  value={option.value}
+                  disabled={!option.value}
+                >
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
+            <TextField
+              error={!!(formik.touched.interview && formik.errors.interview)}
+              fullWidth
+              helperText={formik.touched.interview && formik.errors.interview}
+              label={t(tokens.nav.interview)}
+              name="interview"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.interview}
             />
           </Grid>
 
