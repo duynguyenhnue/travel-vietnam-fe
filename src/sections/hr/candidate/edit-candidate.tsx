@@ -48,7 +48,7 @@ const EditCandidate = (props: EditCandidateType) => {
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255).required('Name is required'),
-      // status: Yup.string().max(255).required('Status is required'),
+      status: Yup.string().max(255).required('Status is required'),
       role: Yup.string().required('Role is required'),
       // dob: Yup.string().max(255).required('DOB is required'),
       // universityMajor: Yup.string().max(255).required('University major is required'),
