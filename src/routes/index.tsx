@@ -5,10 +5,6 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 
 import { authRoutes } from './auth';
 import AuthProvider from 'src/contexts/auth-provider';
-import { hrRoutes } from './hr';
-import { permissionsRoutes } from './permissions';
-import { rolesRoutes } from './roles';
-import { memberRoutes } from './member';
 
 const HomePage = lazy(() => import('src/pages/index'));
 const Error404Page = lazy(() => import('src/pages/404'));
@@ -45,9 +41,4 @@ export const routes: RouteObject[] = [
     ),
   },
   ...authRoutes,
-  ...hrRoutes,
-  ...permissionsRoutes,
-  ...rolesRoutes,
-  ...memberRoutes,
-  ...rolesRoutes,
 ];
