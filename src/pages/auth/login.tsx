@@ -21,20 +21,26 @@ import { useMounted } from 'src/hooks/use-mounted';
 import { useEffect } from 'react';
 
 interface LoginValues {
-  username: string;
+  email: string;
   password: string;
   submit: null;
 }
 
 const initialValues: LoginValues = {
-  username: '',
+  email: '',
   password: '',
   submit: null,
 };
 
 const validationSchema = Yup.object({
-  username: Yup.string().max(255).required('Username is required'),
-  password: Yup.string().max(255).required('Password is required'),
+  email: Yup.string()
+    .email('Invalid email format') 
+    .max(100, 'Email must be at most 100 characters')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(8, 'Password must be at least 8 characters') 
+    .max(50, 'Password must be at most 50 characters')
+    .required('Password is required'),
 });
 
 const LoginPage = () => {
@@ -50,7 +56,7 @@ const LoginPage = () => {
     onSubmit: async (values, helpers): Promise<void> => {
       try {
         const loginData = {
-          username: values.username,
+          email: values.email,
           password: values.password,
         };
         await dispatch(login(loginData));
@@ -121,15 +127,15 @@ const LoginPage = () => {
           <Stack spacing={3}>
             <TextField
               autoFocus
-              error={!!(formik.touched.username && formik.errors.username)}
+              error={!!(formik.touched.email && formik.errors.email)}
               fullWidth
-              helperText={formik.touched.username && formik.errors.username}
-              label="Username"
-              name="username"
+              helperText={formik.touched.email && formik.errors.email}
+              label="email"
+              name="email"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               type="text"
-              value={formik.values.username}
+              value={formik.values.email}
             />
             <TextField
               error={!!(formik.touched.password && formik.errors.password)}

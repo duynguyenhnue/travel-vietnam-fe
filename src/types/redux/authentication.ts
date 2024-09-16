@@ -14,11 +14,12 @@ export type RegisterRequestType = {
 };
 
 export type LoginRequestType = {
-  username: string;
+  email: string;
   password: string;
 };
 
 export type LoginResponseType = {
-  accessToken: string;
-  authenticated: string;
+  access_token: string;
+  refresh_token?: string;
+  authenticated?: string;
 };

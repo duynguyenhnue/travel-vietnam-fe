@@ -5,6 +5,7 @@ import { dispatch } from '../store';
 import {
   AuthenticationState,
   LoginRequestType,
+  LoginResponseType,
   RegisterRequestType,
 } from 'src/types/redux/authentication';
 import { envConfig, localStorageConfig } from 'src/config';
@@ -101,12 +102,12 @@ export const login = (loginData: LoginRequestType) => {
   return async () => {
     try {
       dispatch(authenticationSlice.actions.loginRequest());
-      const result = await axios.post(`${envConfig.serverURL}/login`, loginData);
-      const token: string | null = result.data ? result.data.data.token : null;
-      
-      if (token) {
-        const jwt = token;
-        localStorage.setItem(localStorageConfig.accessToken, jwt);
+      const result = await axios.post(`${envConfig.serverURL}/auth/login`, loginData);
+      const data: LoginResponseType = result.data ? result.data.data : null;
+
+      if (data) {
+        localStorage.setItem(localStorageConfig.accessToken, data.access_token);
+        localStorage.setItem(localStorageConfig.refreshToken, data?.refresh_token || "");
       }
 
       dispatch(authenticationSlice.actions.loginSuccess());
@@ -122,9 +123,16 @@ export const login = (loginData: LoginRequestType) => {
 
 
 export const logout = () => {
-  return () => {
+  return async () => {
     dispatch(authenticationSlice.actions.logout());
+    const refreshToken = localStorage.getItem(localStorageConfig.refreshToken);
     localStorage.removeItem(localStorageConfig.accessToken);
+    localStorage.removeItem(localStorageConfig.refreshToken)
+    
+    
+    await axios.post(`${envConfig.serverURL}/auth/logout`, {
+      refresh_token: refreshToken,
+    })
   };
 };
 
