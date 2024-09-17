@@ -68,7 +68,7 @@ const initialValues: RegisterValues = {
     ward: ''
   },
   phone: {
-    country: '',
+    country: '+ 84',
     number: ''
   },
   role: 'User',
@@ -142,6 +142,17 @@ const RegisterPage = () => {
           email: values.email.toLowerCase(),
           password: values.password,
           fullName: values.fullName,
+          dateOfBirth: values.dateOfBirth,
+          address: {
+            province: values.address.province,
+            district: values.address.district,
+            ward: values.address.ward,
+          },
+          phone: {
+            country: values.phone.country,
+            number: values.phone.number
+          },
+
         };
         await dispatch(register(registerData));
 

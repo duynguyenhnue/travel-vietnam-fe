@@ -85,7 +85,7 @@ export const register = (registerData: RegisterRequestType) => {
   return async () => {
     try {
       dispatch(authenticationSlice.actions.registerRequest());
-      await axios.post('/auth/signup', registerData);
+      await axios.post(`${envConfig.serverURL}/auth/register`, registerData);
       dispatch(authenticationSlice.actions.registerSuccess());
       toast.success('Registration saved! Please check your email for confirmation.');
     } catch (error) {
