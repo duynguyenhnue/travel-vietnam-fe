@@ -12,6 +12,9 @@ import {
   SvgIcon,
   TextField,
   Typography,
+  MenuItem,
+  OutlinedInput,
+  FormControl,
 } from '@mui/material';
 
 import { RouterLink } from 'src/components/common/router/router-link';
@@ -21,36 +24,114 @@ import { useDispatch, useSelector } from 'src/redux/store';
 import { useMounted } from 'src/hooks/use-mounted';
 import { useRouter } from 'src/hooks/use-router';
 import { register } from 'src/redux/slices/authentication';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dayjs } from 'dayjs';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { MuiTelInput } from 'mui-tel-input';
+
+interface Address {
+  province: string,
+  district: string,
+  ward: string,
+}
+
+interface Phone {
+  country: string,
+  number: string,
+}
 
 interface RegisterValues {
   email: string;
-  name: string;
+  fullName: string;
   password: string;
   confirmPassword: string;
   policy: boolean;
+  dateOfBirth: Dayjs | null;
+  address: Address;
+  phone: Phone;
+  role: string;
+  status: string;
 }
 
 const initialValues: RegisterValues = {
   email: '',
-  name: '',
+  fullName: '',
   password: '',
   confirmPassword: '',
   policy: false,
+  dateOfBirth: null,
+  address: {
+    province: '',
+    district: '',
+    ward: ''
+  },
+  phone: {
+    country: '+ 84',
+    number: ''
+  },
+  role: 'User',
+  status: 'Active'
 };
 
+interface Location {
+  id: string;
+  name: string;
+}
+
 const validationSchema = Yup.object({
-  email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-  name: Yup.string().max(255).required('Name is required'),
-  password: Yup.string().min(7).max(255).required('Password is required'),
-  confirmPassword: Yup.string().required('Confirm password is required'),
-  policy: Yup.boolean().oneOf([true], 'This field must be checked'),
+  email: Yup.string()
+    .email('Must be a valid email')
+    .max(255, 'Email must be at most 255 characters')
+    .required('Email is required'),
+
+  fullName: Yup.string()
+    .max(255, 'Full name must be at most 255 characters')
+    .required('Full name is required'),
+
+  password: Yup.string()
+    .min(7, 'Password must be at least 7 characters')
+    .max(255, 'Password must be at most 255 characters')
+    .required('Password is required'),
+
+  confirmPassword: Yup.string()
+    .required('Confirm password is required'),
+
+  policy: Yup.boolean()
+    .oneOf([true], 'This field must be checked'),
+
+  dateOfBirth: Yup.date()
+    .required('Date of birth is required'),
+
+  address: Yup.object({
+    province: Yup.string()
+      .required('Province is required'),
+    district: Yup.string()
+      .required('District is required'),
+    ward: Yup.string()
+      .required('Ward is required'),
+  }),
+
+  phone: Yup.object({
+    country: Yup.string()
+      .required('Country code is required'),
+    number: Yup.string()
+      .max(9, 'Number phone must be at most 9 characters')
+      .matches(/^\d{8,11}$/, 'Phone number must be between 8 and 11 digits')
+      .required('Phone number is required'),
+  })
 });
+
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useMounted();
   const { loading } = useSelector((state) => state.authentication);
+  const [provinces, setProvinces] = useState<Location[]>([]);
+  const [districts, setDistricts] = useState<Location[]>([]);
+  const [wards, setWards] = useState<Location[]>([]);
 
   const formik = useFormik({
     initialValues,
@@ -60,7 +141,18 @@ const RegisterPage = () => {
         const registerData = {
           email: values.email.toLowerCase(),
           password: values.password,
-          fullName: values.name,
+          fullName: values.fullName,
+          dateOfBirth: values.dateOfBirth,
+          address: {
+            province: values.address.province,
+            district: values.address.district,
+            ward: values.address.ward,
+          },
+          phone: {
+            country: values.phone.country,
+            number: values.phone.number
+          },
+
         };
         await dispatch(register(registerData));
 
@@ -76,6 +168,24 @@ const RegisterPage = () => {
     },
   });
 
+  useEffect(() => {
+    axios.get('https://esgoo.net/api-tinhthanh/1/0.htm')
+      .then(response => setProvinces(response.data.data))
+  }, []);
+
+  useEffect(() => {
+    if (formik.values.address.province) {
+      axios.get(`https://esgoo.net/api-tinhthanh/2/${formik.values.address.province}.htm`)
+        .then(response => setDistricts(response.data.data))
+    }
+  }, [formik.values.address.province]);
+
+  useEffect(() => {
+    if (formik.values.address.district) {
+      axios.get(`https://esgoo.net/api-tinhthanh/3/${formik.values.address.district}.htm`)
+        .then(response => setWards(response.data.data))
+    }
+  }, [formik.values.address.district]);
   return (
     <>
       <Seo title="Register" />
@@ -122,14 +232,14 @@ const RegisterPage = () => {
         >
           <Stack spacing={3}>
             <TextField
-              error={!!(formik.touched.name && formik.errors.name)}
+              error={!!(formik.touched.fullName && formik.errors.fullName)}
               fullWidth
-              helperText={formik.touched.name && formik.errors.name}
-              label="Full name"
-              name="name"
+              helperText={formik.touched.fullName && formik.errors.fullName}
+              label="fullName"
+              name="fullName"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              value={formik.values.name}
+              value={formik.values.fullName}
             />
             <TextField
               error={!!(formik.touched.email && formik.errors.email)}
@@ -167,6 +277,95 @@ const RegisterPage = () => {
               type="password"
               value={formik.values.confirmPassword}
             />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Date of Birth"
+                value={formik.values.dateOfBirth}
+                onChange={(date: Dayjs | null) => formik.setFieldValue('dateOfBirth', date)}
+              />
+            </LocalizationProvider>
+
+            <TextField
+              select
+              label="Province"
+              name="address.province"
+              value={formik.values.address?.province}
+              onChange={(value) => formik.setFieldValue('address.province', value.target.value)}
+              onBlur={formik.handleBlur}
+              error={formik.touched.address?.province && !!formik.errors.address?.province}
+              helperText={formik.touched.address?.province && formik.errors.address?.province}
+              fullWidth
+            >
+              {provinces.map(province => (
+                <MenuItem key={province.id} value={province.id}>
+                  {province.name}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <TextField
+              select
+              label="District"
+              name="address.district"
+              value={formik.values.address?.district}
+              onChange={(value) => formik.setFieldValue('address.district', value.target.value)}
+              onBlur={formik.handleBlur}
+              error={formik.touched.address?.district && !!formik.errors.address?.district}
+              helperText={formik.touched.address?.district && formik.errors.address?.district}
+              fullWidth
+              disabled={!formik.values.address?.province}
+            >
+              {districts.map(district => (
+                <MenuItem key={district.id} value={district.id}>
+                  {district.name}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <TextField
+              select
+              label="Ward"
+              name="address.ward"
+              value={formik.values.address?.ward}
+              onChange={(value) => formik.setFieldValue('address.ward', value.target.value)}
+              onBlur={formik.handleBlur}
+              error={formik.touched.address?.ward && !!formik.errors.address?.ward}
+              helperText={formik.touched.address?.ward && formik.errors.address?.ward}
+              fullWidth
+              disabled={!formik.values.address?.district}
+            >
+              {wards.map(ward => (
+                <MenuItem key={ward.id} value={ward.id}>
+                  {ward.name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <Box sx={{ display: 'flex', gap: '10px' }}>
+              <MuiTelInput
+                sx={{ width: '170px' }}
+                value={formik.values.phone.country}
+                name="phone.country"
+                onChange={(value) => formik.setFieldValue('phone.country', value)}
+                onBlur={formik.handleBlur}
+                error={formik.touched.phone?.country && !!formik.errors.phone?.country}
+                helperText={formik.touched.phone?.country && formik.errors.phone?.country}
+                defaultCountry="VN"
+              />
+              <FormControl fullWidth error={formik.touched.phone?.number && !!formik.errors.phone?.number}>
+                <OutlinedInput
+                  sx={{ flex: 1 }}
+                  value={formik.values.phone.number}
+                  name="phone.number"
+                  placeholder="000 000 000"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.phone?.number && formik.errors.phone?.number && (
+                  <FormHelperText>{formik.errors.phone?.number}</FormHelperText>
+                )}
+              </FormControl>
+            </Box>
+
           </Stack>
           <Box
             sx={{
