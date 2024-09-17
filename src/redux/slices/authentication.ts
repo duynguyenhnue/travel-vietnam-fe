@@ -102,6 +102,7 @@ export const login = (loginData: LoginRequestType) => {
   return async () => {
     try {
       dispatch(authenticationSlice.actions.loginRequest());
+            console.log(`${envConfig.serverURL}/auth/login`);
       const result = await axios.post(`${envConfig.serverURL}/auth/login`, loginData);
       const data: LoginResponseType = result.data ? result.data.data : null;
 
