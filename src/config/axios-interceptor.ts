@@ -33,6 +33,7 @@ const setupAxiosInterceptors = (onUnauthenticated: any) => {
           const newAccessToken = await axios.post(`${envConfig.serverURL}/auth/refresh-token`, {
             refreshToken,
           });
+
           localStorage.setItem(ACCESS_TOKEN, newAccessToken.data.accessToken);
           const originalRequest = err.config;
           originalRequest.headers.Authorization = `Bearer ${newAccessToken.data.data.accessToken}`;
@@ -52,49 +53,3 @@ const setupAxiosInterceptors = (onUnauthenticated: any) => {
 };
 
 export default setupAxiosInterceptors;
-
-const onRequestSuccess = async (config: any) => {
-  const token = localStorage.getItem(ACCESS_TOKEN);
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-};
-
-const onResponseSuccess = (response: any) => response;
-
-const onResponseError = async (err: any) => {
-  if (err) {
-    let status = null;
-    if (err.status) {
-      status = err.status || err.response.status;
-    } else if (err.response != null) {
-      status = err.response.status;
-    }
-
-    if (status === 403 || status === 401) {
-      try {
-        const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-        const newAccessToken = await axios.post(`${envConfig.serverURL}/auth/refresh-token`, {
-          refresh_token: refreshToken,
-        });
-        localStorage.setItem(ACCESS_TOKEN, newAccessToken.data.data.access_token);
-        const originalRequest = err.config;
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken.data.accessToken}`;
-        return axios(originalRequest);
-      } catch (error) {
-        localStorage.removeItem(ACCESS_TOKEN);
-        localStorage.removeItem(REFRESH_TOKEN);
-        onUnauthenticated();
-      }
-    }
-  }
-  return Promise.reject(err);
-};
-
-axios.interceptors.request.use(onRequestSuccess);
-axios.interceptors.response.use(onResponseSuccess, onResponseError);
-
-function onUnauthenticated() {
-  throw new Error('Function not implemented.');
-}

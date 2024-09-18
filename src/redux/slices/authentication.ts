@@ -77,7 +77,7 @@ export const authenticationSlice = createSlice({
     resetPasswordFailure: (state: AuthenticationState, action: ResetPasswordFailureAction) => {
       state.loading = false;
       state.errorMessage = action.payload;
-    }
+    },
   },
 });
 
@@ -102,13 +102,12 @@ export const login = (loginData: LoginRequestType) => {
   return async () => {
     try {
       dispatch(authenticationSlice.actions.loginRequest());
-            console.log(`${envConfig.serverURL}/auth/login`);
       const result = await axios.post(`${envConfig.serverURL}/auth/login`, loginData);
       const data: LoginResponseType = result.data ? result.data.data : null;
 
       if (data) {
         localStorage.setItem(localStorageConfig.accessToken, data.access_token);
-        localStorage.setItem(localStorageConfig.refreshToken, data?.refresh_token || "");
+        localStorage.setItem(localStorageConfig.refreshToken, data?.refresh_token || '');
       }
 
       dispatch(authenticationSlice.actions.loginSuccess());
@@ -122,18 +121,16 @@ export const login = (loginData: LoginRequestType) => {
   };
 };
 
-
 export const logout = () => {
   return async () => {
     dispatch(authenticationSlice.actions.logout());
     const refreshToken = localStorage.getItem(localStorageConfig.refreshToken);
     localStorage.removeItem(localStorageConfig.accessToken);
-    localStorage.removeItem(localStorageConfig.refreshToken)
-    
-    
+    localStorage.removeItem(localStorageConfig.refreshToken);
+
     await axios.post(`${envConfig.serverURL}/auth/logout`, {
       refresh_token: refreshToken,
-    })
+    });
   };
 };
 
