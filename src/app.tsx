@@ -11,7 +11,6 @@ import 'src/global.css';
 import 'src/locales/i18n';
 
 import { RTL } from 'src/components/common/toggle-rtl/rtl';
-import { SettingsButton } from 'src/components/common/settings/settings-button';
 import { SettingsDrawer } from 'src/components/common/settings/settings-drawer';
 import { Toaster } from 'src/components/common/snack-bar/toaster';
 import { SettingsConsumer, SettingsProvider } from 'src/contexts/settings';
@@ -57,7 +56,7 @@ export const App: FC = () => {
                 <RTL direction={settings.direction}>
                   <CssBaseline />
                   {element}
-                  <SettingsButton onClick={settings.handleDrawerOpen} />
+                  {/* <SettingsButton onClick={settings.handleDrawerOpen} /> */}
                   <SettingsDrawer
                     canReset={settings.isCustom}
                     onClose={settings.handleDrawerClose}

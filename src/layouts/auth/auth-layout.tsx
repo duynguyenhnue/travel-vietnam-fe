@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 
-import { Logo } from 'src/components/common/logo/logo';
 import { RouterLink } from 'src/components/common/router/router-link';
 import { paths } from 'src/paths';
 
@@ -109,7 +108,10 @@ export const Layout: FC<LayoutProps> = (props) => {
                   width: 24,
                 }}
               >
-                <Logo />
+                <img
+                  src="/assets/logo.svg"
+                  alt="Logo"
+                />
               </Box>
               <Box
                 sx={{
@@ -121,7 +123,7 @@ export const Layout: FC<LayoutProps> = (props) => {
                   lineHeight: 2.5,
                 }}
               >
-                STARACK Admin
+                Travel Vietnamese
               </Box>
             </Stack>
           </Box>

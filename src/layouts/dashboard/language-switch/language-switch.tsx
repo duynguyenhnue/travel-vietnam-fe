@@ -27,6 +27,11 @@ export const LanguageSwitch: FC = () => {
         <IconButton
           onClick={popover.handleOpen}
           ref={popover.anchorRef}
+          sx={{
+            '&:hover': {
+              backgroundColor: (theme) => theme.palette.primary.dark,
+            },
+          }}
         >
           <Box
             sx={{
@@ -34,6 +39,8 @@ export const LanguageSwitch: FC = () => {
               '& img': {
                 width: '100%',
               },
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
             <img src={flag} />

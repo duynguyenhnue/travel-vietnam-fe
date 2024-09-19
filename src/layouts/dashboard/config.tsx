@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SvgIcon } from '@mui/material';
 import HomeSmileIcon from 'src/icons/untitled-ui/duocolor/home-smile';
-import { tokens } from 'src/locales/tokens';
 import { paths } from 'src/paths';
 import { Person, AssignmentInd } from '@mui/icons-material';
 
@@ -30,7 +29,7 @@ export const useSections = () => {
       {
         items: [
           {
-            title: t(tokens.nav.overview),
+            title: '',
             path: paths.dashboard.index,
             icon: (
               <SvgIcon fontSize="small">
@@ -45,16 +44,7 @@ export const useSections = () => {
                 <AssignmentInd />
               </SvgIcon>
             ),
-            items: [
-              {
-                title: t(tokens.nav.candidate),
-                path: paths.hr.candidate,
-              },
-              {
-                title: t(tokens.nav.history),
-                path: paths.hr.history,
-              },
-            ],
+            items: [],
           },
 
           {

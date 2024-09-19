@@ -1,29 +1,24 @@
 import { Suspense, lazy } from 'react';
 import type { RouteObject } from 'react-router';
 import { Outlet, Route, Routes } from 'react-router-dom';
-import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 
-import { authRoutes } from './auth';
-import AuthProvider from 'src/contexts/auth-provider';
-import { homeRoutes } from './home';
+import { UserLayout } from 'src/layouts/user/layout';
 
-const HomePage = lazy(() => import('src/pages/index'));
+const HomePage = lazy(() => import('src/pages/home/index'));
 const Error404Page = lazy(() => import('src/pages/404'));
 
-export const routes: RouteObject[] = [
+export const homeRoutes: RouteObject[] = [
   {
     element: (
-      <AuthProvider>
-        <DashboardLayout>
-          <Suspense>
-            <Outlet />
-          </Suspense>
-        </DashboardLayout>
-      </AuthProvider>
+      <UserLayout>
+        <Suspense>
+          <Outlet />
+        </Suspense>
+      </UserLayout>
     ),
     children: [
       {
-        path: '/dashboard',
+        path: '/',
         element: <HomePage />,
       },
     ],
@@ -41,6 +36,4 @@ export const routes: RouteObject[] = [
       </Suspense>
     ),
   },
-  ...authRoutes,
-  ...homeRoutes,
 ];
