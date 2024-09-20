@@ -1,21 +1,22 @@
-import { Dayjs } from "dayjs";
+import { Dayjs } from 'dayjs';
 
 export type AuthenticationState = {
   loading: boolean;
   isAuthenticated: boolean;
   errorMessage: string | null;
   forgotEmailSent: boolean;
+  open: string | null;
 };
 
 interface Address {
-  province: string,
-  district: string,
-  ward: string,
+  province: string;
+  district: string;
+  ward: string;
 }
 
 interface Phone {
-  country: string,
-  number: string,
+  country: string;
+  number: string;
 }
 
 export type RegisterRequestType = {
@@ -27,7 +28,7 @@ export type RegisterRequestType = {
   dateOfBirth: Dayjs | null;
   address: Address;
   phone: Phone;
-}
+};
 
 export type LoginRequestType = {
   email: string;

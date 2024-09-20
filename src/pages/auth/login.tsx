@@ -1,24 +1,14 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Link,
-  Stack,
-  SvgIcon,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { RouterLink } from 'src/components/common/router/router-link';
+import { Button, CircularProgress, Stack, TextField, Typography, useTheme } from '@mui/material';
 import { Seo } from 'src/components/common/performance/seo';
 import { paths } from 'src/paths';
 import { useDispatch, useSelector } from 'src/redux/store';
-import { login } from '../../redux/slices/authentication';
+import { handleOpenDialog, login } from '../../redux/slices/authentication';
 import { useRouter } from 'src/hooks/use-router';
 import { useMounted } from 'src/hooks/use-mounted';
 import { useEffect } from 'react';
+import { useDialog } from 'src/hooks/use-dialog';
 
 interface LoginValues {
   email: string;
@@ -34,11 +24,11 @@ const initialValues: LoginValues = {
 
 const validationSchema = Yup.object({
   email: Yup.string()
-    .email('Invalid email format') 
+    .email('Invalid email format')
     .max(100, 'Email must be at most 100 characters')
     .required('Email is required'),
   password: Yup.string()
-    .min(8, 'Password must be at least 8 characters') 
+    .min(8, 'Password must be at least 8 characters')
     .max(50, 'Password must be at most 50 characters')
     .required('Password is required'),
 });
@@ -47,8 +37,10 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useMounted();
+  const theme = useTheme();
+  const dialog = useDialog();
 
-  const { loading, errorMessage, isAuthenticated } = useSelector((state) => state.authentication);
+  const { loading, isAuthenticated } = useSelector((state) => state.authentication);
 
   const formik = useFormik({
     initialValues,
@@ -60,10 +52,8 @@ const LoginPage = () => {
           password: values.password,
         };
         await dispatch(login(loginData));
-
-        if (isAuthenticated && errorMessage !== '') {
-          router.push(paths.dashboard.index);
-        }
+        dialog.handleClose();
+        dispatch(handleOpenDialog(''));
       } catch (err) {
         if (isMounted()) {
           helpers.setStatus({ success: false });
@@ -76,7 +66,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push(paths.dashboard.index);
+      router.push(paths.index);
     }
   }, [dispatch, isAuthenticated]);
 
@@ -84,23 +74,6 @@ const LoginPage = () => {
     <>
       <Seo title="Login" />
       <div>
-        <Box sx={{ mb: 4 }}>
-          <Link
-            color="text.primary"
-            component={RouterLink}
-            href={paths.dashboard.index}
-            sx={{
-              alignItems: 'center',
-              display: 'inline-flex',
-            }}
-            underline="hover"
-          >
-            <SvgIcon sx={{ mr: 1 }}>
-              <ArrowLeftIcon />
-            </SvgIcon>
-            <Typography variant="subtitle2">Back</Typography>
-          </Link>
-        </Box>
         <Stack
           sx={{ mb: 4 }}
           spacing={1}
@@ -109,15 +82,16 @@ const LoginPage = () => {
           <Typography
             color="text.secondary"
             variant="body2"
+            display="flex"
           >
             Don&apos;t have an account? &nbsp;
-            <Link
-              href={paths.auth.register}
-              underline="hover"
+            <Typography
+              color={theme.palette.primary.main}
               variant="subtitle2"
+              onClick={() => dispatch(handleOpenDialog('register'))}
             >
               Sign up
-            </Link>
+            </Typography>
           </Typography>
         </Stack>
         <form

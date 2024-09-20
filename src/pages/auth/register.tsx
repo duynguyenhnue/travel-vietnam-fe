@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import {
   Box,
   Button,
@@ -9,21 +8,20 @@ import {
   FormHelperText,
   Link,
   Stack,
-  SvgIcon,
   TextField,
   Typography,
   MenuItem,
   OutlinedInput,
   FormControl,
+  useTheme,
 } from '@mui/material';
 
-import { RouterLink } from 'src/components/common/router/router-link';
 import { Seo } from 'src/components/common/performance/seo';
 import { paths } from 'src/paths';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { useMounted } from 'src/hooks/use-mounted';
 import { useRouter } from 'src/hooks/use-router';
-import { register } from 'src/redux/slices/authentication';
+import { handleOpenDialog, register } from 'src/redux/slices/authentication';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
@@ -32,14 +30,14 @@ import axios from 'axios';
 import { MuiTelInput } from 'mui-tel-input';
 
 interface Address {
-  province: string,
-  district: string,
-  ward: string,
+  province: string;
+  district: string;
+  ward: string;
 }
 
 interface Phone {
-  country: string,
-  number: string,
+  country: string;
+  number: string;
 }
 
 interface RegisterValues {
@@ -65,14 +63,14 @@ const initialValues: RegisterValues = {
   address: {
     province: '',
     district: '',
-    ward: ''
+    ward: '',
   },
   phone: {
     country: '+ 84',
-    number: ''
+    number: '',
   },
   role: 'User',
-  status: 'Active'
+  status: 'Active',
 };
 
 interface Location {
@@ -95,39 +93,32 @@ const validationSchema = Yup.object({
     .max(255, 'Password must be at most 255 characters')
     .required('Password is required'),
 
-  confirmPassword: Yup.string()
-    .required('Confirm password is required'),
+  confirmPassword: Yup.string().required('Confirm password is required'),
 
-  policy: Yup.boolean()
-    .oneOf([true], 'This field must be checked'),
+  policy: Yup.boolean().oneOf([true], 'This field must be checked'),
 
-  dateOfBirth: Yup.date()
-    .required('Date of birth is required'),
+  dateOfBirth: Yup.date().required('Date of birth is required'),
 
   address: Yup.object({
-    province: Yup.string()
-      .required('Province is required'),
-    district: Yup.string()
-      .required('District is required'),
-    ward: Yup.string()
-      .required('Ward is required'),
+    province: Yup.string().required('Province is required'),
+    district: Yup.string().required('District is required'),
+    ward: Yup.string().required('Ward is required'),
   }),
 
   phone: Yup.object({
-    country: Yup.string()
-      .required('Country code is required'),
+    country: Yup.string().required('Country code is required'),
     number: Yup.string()
       .max(9, 'Number phone must be at most 9 characters')
       .matches(/^\d{8,11}$/, 'Phone number must be between 8 and 11 digits')
       .required('Phone number is required'),
-  })
+  }),
 });
-
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useMounted();
+  const theme = useTheme();
   const { loading } = useSelector((state) => state.authentication);
   const [provinces, setProvinces] = useState<Location[]>([]);
   const [districts, setDistricts] = useState<Location[]>([]);
@@ -150,9 +141,8 @@ const RegisterPage = () => {
           },
           phone: {
             country: values.phone.country,
-            number: values.phone.number
+            number: values.phone.number,
           },
-
         };
         await dispatch(register(registerData));
 
@@ -169,44 +159,30 @@ const RegisterPage = () => {
   });
 
   useEffect(() => {
-    axios.get('https://esgoo.net/api-tinhthanh/1/0.htm')
-      .then(response => setProvinces(response.data.data))
+    axios
+      .get('https://esgoo.net/api-tinhthanh/1/0.htm')
+      .then((response) => setProvinces(response.data.data));
   }, []);
 
   useEffect(() => {
     if (formik.values.address.province) {
-      axios.get(`https://esgoo.net/api-tinhthanh/2/${formik.values.address.province}.htm`)
-        .then(response => setDistricts(response.data.data))
+      axios
+        .get(`https://esgoo.net/api-tinhthanh/2/${formik.values.address.province}.htm`)
+        .then((response) => setDistricts(response.data.data));
     }
   }, [formik.values.address.province]);
 
   useEffect(() => {
     if (formik.values.address.district) {
-      axios.get(`https://esgoo.net/api-tinhthanh/3/${formik.values.address.district}.htm`)
-        .then(response => setWards(response.data.data))
+      axios
+        .get(`https://esgoo.net/api-tinhthanh/3/${formik.values.address.district}.htm`)
+        .then((response) => setWards(response.data.data));
     }
   }, [formik.values.address.district]);
   return (
     <>
       <Seo title="Register" />
       <div>
-        <Box sx={{ mb: 4 }}>
-          <Link
-            color="text.primary"
-            component={RouterLink}
-            href={paths.auth.login}
-            sx={{
-              alignItems: 'center',
-              display: 'inline-flex',
-            }}
-            underline="hover"
-          >
-            <SvgIcon sx={{ mr: 1 }}>
-              <ArrowLeftIcon />
-            </SvgIcon>
-            <Typography variant="subtitle2">Back</Typography>
-          </Link>
-        </Box>
         <Stack
           sx={{ mb: 4 }}
           spacing={1}
@@ -215,15 +191,16 @@ const RegisterPage = () => {
           <Typography
             color="text.secondary"
             variant="body2"
+            display="flex"
           >
             Already have an account? &nbsp;
-            <Link
-              href={paths.auth.login}
-              underline="hover"
+            <Typography
+              color={theme.palette.primary.main}
               variant="subtitle2"
+              onClick={() => dispatch(handleOpenDialog('login'))}
             >
-              Log in
-            </Link>
+              login
+            </Typography>
           </Typography>
         </Stack>
         <form
@@ -296,8 +273,11 @@ const RegisterPage = () => {
               helperText={formik.touched.address?.province && formik.errors.address?.province}
               fullWidth
             >
-              {provinces.map(province => (
-                <MenuItem key={province.id} value={province.id}>
+              {provinces.map((province) => (
+                <MenuItem
+                  key={province.id}
+                  value={province.id}
+                >
                   {province.name}
                 </MenuItem>
               ))}
@@ -315,8 +295,11 @@ const RegisterPage = () => {
               fullWidth
               disabled={!formik.values.address?.province}
             >
-              {districts.map(district => (
-                <MenuItem key={district.id} value={district.id}>
+              {districts.map((district) => (
+                <MenuItem
+                  key={district.id}
+                  value={district.id}
+                >
                   {district.name}
                 </MenuItem>
               ))}
@@ -334,8 +317,11 @@ const RegisterPage = () => {
               fullWidth
               disabled={!formik.values.address?.district}
             >
-              {wards.map(ward => (
-                <MenuItem key={ward.id} value={ward.id}>
+              {wards.map((ward) => (
+                <MenuItem
+                  key={ward.id}
+                  value={ward.id}
+                >
                   {ward.name}
                 </MenuItem>
               ))}
@@ -351,7 +337,10 @@ const RegisterPage = () => {
                 helperText={formik.touched.phone?.country && formik.errors.phone?.country}
                 defaultCountry="VN"
               />
-              <FormControl fullWidth error={formik.touched.phone?.number && !!formik.errors.phone?.number}>
+              <FormControl
+                fullWidth
+                error={formik.touched.phone?.number && !!formik.errors.phone?.number}
+              >
                 <OutlinedInput
                   sx={{ flex: 1 }}
                   value={formik.values.phone.number}
@@ -365,7 +354,6 @@ const RegisterPage = () => {
                 )}
               </FormControl>
             </Box>
-
           </Stack>
           <Box
             sx={{

@@ -1,37 +1,37 @@
 import { tokens } from '../tokens';
 
 export const vi = {
+  // Common
   [tokens.common.languageChanged]: 'Ngôn ngữ đã được cập nhật',
-  [tokens.nav.overview]: 'Tổng quát',
-  [tokens.nav.candidate]: 'Ứng viên',
-  [tokens.nav.newCandidate]: 'Ứng viên mới',
-  [tokens.nav.updateCandidate]: 'Cập nhật ứng viên',
-  [tokens.nav.name]: 'Tên',
-  [tokens.nav.contact]: 'Liên hệ',
-  [tokens.nav.interviewInformation]: 'Thông tin phỏng vấn',
-  [tokens.nav.interview]: 'Phỏng vấn',
-  [tokens.nav.projectExperience]: 'Kinh nghiệm dự án',
-  [tokens.nav.universityMajor]: 'Chuyên ngành đại học',
-  [tokens.nav.certificate]: 'Giấy chứng nhận',
-  [tokens.nav.role]: 'Chức vụ',
-  [tokens.nav.skillsSummary]: 'Tóm tắt kỹ năng',
-  [tokens.nav.status]: 'Trạng thái',
-  [tokens.nav.email]: 'E-mail',
-  [tokens.nav.phone]: 'Điện thoại',
-  [tokens.nav.time]: 'Thời gian',
-  [tokens.nav.onboardDate]: 'Ngày bắt đầu đi làm',
-  [tokens.nav.link]: 'Link',
-  [tokens.nav.rowsPerPage]: 'Hàng trên mỗi trang',
-  [tokens.nav.view]: 'Chi tiết',
-  [tokens.nav.edit]: 'Chỉnh sửa',
-  [tokens.nav.delete]: 'Xóa',
-  [tokens.nav.update]: 'Cập nhật',
-  [tokens.nav.create]: 'Tạo',
-  [tokens.nav.sendEmail]: 'Gửi Email',
-  [tokens.nav.cancel]: 'Hủy',
-  [tokens.nav.yes]: 'Đồng ý',
-  [tokens.nav.no]: 'Không',
-  [tokens.nav.doYouWantToDeleteItOrNot]: 'Bạn có muốn xóa ứng viên này không',
-  [tokens.nav.history]: 'Lịch sử',
-  [tokens.nav.doYouWantToRestoreItOrNot]: 'Bạn có muốn khôi phục ứng viên này không?',
+  [tokens.common.hotels]: 'Khách sạn',
+  [tokens.common.airportTransfer]: 'Đưa đón sân bay',
+  [tokens.common.flights]: 'Vé máy bay',
+  [tokens.common.date]: 'Ngày',
+  [tokens.common.time]: 'Thời gian',
+
+  // Nav
+  [tokens.common.flights]: 'Vé máy bay',
+  [tokens.nav.login]: 'Đăng nhập',
+  [tokens.nav.register]: 'Đăng ký',
+  [tokens.nav.logout]: 'Dăng xuất',
+
+  // Hotels
+  [tokens.hotels.destination]: 'Điểm đến',
+  [tokens.hotels.checkIn]: 'Ngày nhận',
+  [tokens.hotels.checkOut]: 'Ngày trả',
+  [tokens.hotels.guests]: 'Khách',
+
+  // Flights
+  [tokens.flights.from]: 'Từ',
+  [tokens.flights.to]: 'Đến',
+  [tokens.flights.departure]: 'Ngày Khởi hành',
+  [tokens.flights.return]: 'Ngày về',
+  [tokens.flights.passengers]: 'Hành khách',
+
+  // Airport Transfer
+  [tokens.airportTransfer.pickUpLocation]: 'Điểm đón',
+  [tokens.airportTransfer.destinationAirport]: 'Sân bay đến',
+  [tokens.airportTransfer.departure]: 'Ngày khởi hành',
+  [tokens.airportTransfer.return]: 'Ngày về',
+  [tokens.airportTransfer.passengers]: 'Hành khách',
 };

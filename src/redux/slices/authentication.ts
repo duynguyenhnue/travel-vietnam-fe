@@ -21,6 +21,7 @@ const initialState: AuthenticationState = {
   isAuthenticated: false,
   errorMessage: '',
   forgotEmailSent: false,
+  open: '',
 };
 
 export const authenticationSlice = createSlice({
@@ -78,6 +79,9 @@ export const authenticationSlice = createSlice({
       state.loading = false;
       state.errorMessage = action.payload;
     },
+    setDiaLog: (state: AuthenticationState, action: PayloadAction<string>) => {
+      state.open = action.payload;
+    },
   },
 });
 
@@ -124,13 +128,12 @@ export const login = (loginData: LoginRequestType) => {
 export const logout = () => {
   return async () => {
     dispatch(authenticationSlice.actions.logout());
-    const refreshToken = localStorage.getItem(localStorageConfig.refreshToken);
-    localStorage.removeItem(localStorageConfig.accessToken);
-    localStorage.removeItem(localStorageConfig.refreshToken);
 
     await axios.post(`${envConfig.serverURL}/auth/logout`, {
-      refresh_token: refreshToken,
+      refresh_token: localStorage.getItem(localStorageConfig.refreshToken),
     });
+    localStorage.removeItem(localStorageConfig.accessToken);
+    localStorage.removeItem(localStorageConfig.refreshToken);
   };
 };
 
@@ -169,6 +172,12 @@ export const resetPassword = (key: string, newPassword: string) => {
       toast.error(errorMessage);
       dispatch(authenticationSlice.actions.resetPasswordFailure(errorMessage));
     }
+  };
+};
+
+export const handleOpenDialog = (value: string) => {
+  return async () => {
+    dispatch(authenticationSlice.actions.setDiaLog(value));
   };
 };
 
