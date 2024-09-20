@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -10,6 +10,8 @@ import {
   useMediaQuery,
   useTheme,
   Container,
+  Dialog,
+  Stack,
 } from '@mui/material';
 import { alpha } from '@mui/system/colorManipulator';
 import { FaHotel, FaPlane, FaShuttleVan, FaUser } from 'react-icons/fa';
@@ -20,6 +22,13 @@ import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { StyledButton } from 'src/styles/user/nav-bar';
 import { RouterLink } from 'src/components/common/router/router-link';
+import { useDialog } from 'src/hooks/use-dialog';
+import LoginPage from 'src/pages/auth/login';
+import RegisterPage from 'src/pages/auth/register';
+import { useDispatch, useSelector } from 'src/redux/store';
+import { handleOpenDialog, logout } from 'src/redux/slices/authentication';
+import { jwtDecode } from 'jwt-decode';
+import toast from 'react-hot-toast';
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -27,17 +36,40 @@ const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState<(EventTarget & HTMLButtonElement) | null>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const dialog = useDialog();
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { open } = useSelector((state) => state.authentication);
+
+  const [isTokenValid, setIsTokenValid] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem(localStorageConfig.accessToken);
+
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
+        if (decoded.exp && decoded.exp > currentTime) {
+          setIsTokenValid(true);
+        } else {
+          setIsTokenValid(false);
+        }
+      } catch (error) {
+        toast.error('Invalid JWT token');
+        localStorage.removeItem(localStorageConfig.accessToken);
+        localStorage.removeItem(localStorageConfig.refreshToken);
+        setIsTokenValid(false);
+      }
+    }
+  }, [open]);
+
   const handleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
-  const { t } = useTranslation();
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const accessToken = localStorage.getItem(localStorageConfig.accessToken);
 
   const menuItems = [
     { icon: <FaHotel />, label: t(tokens.common.hotels) },
@@ -111,17 +143,35 @@ const NavBar = () => {
                     </MenuItem>
                   ))}
                   <LanguageSwitch />
-                  {accessToken ? (
-                    <MenuItem onClick={handleClose}>
-                      <RouterLink href="/">{t(tokens.nav.logout)}</RouterLink>
+                  {isTokenValid ? (
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        dialog.handleOpen();
+                        dispatch(handleOpenDialog('logout'));
+                      }}
+                    >
+                      {t(tokens.nav.logout)}
                     </MenuItem>
                   ) : (
                     <>
-                      <MenuItem onClick={handleClose}>
-                        <RouterLink href="/auth/login">{t(tokens.nav.login)}</RouterLink>
+                      <MenuItem
+                        onClick={() => {
+                          handleClose();
+                          dialog.handleOpen();
+                          dispatch(handleOpenDialog('login'));
+                        }}
+                      >
+                        {t(tokens.nav.login)}
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <RouterLink href="/auth/register">{t(tokens.nav.register)}</RouterLink>
+                      <MenuItem
+                        onClick={() => {
+                          handleClose();
+                          dialog.handleOpen();
+                          dispatch(handleOpenDialog('register'));
+                        }}
+                      >
+                        {t(tokens.nav.register)}
                       </MenuItem>
                     </>
                   )}
@@ -139,26 +189,38 @@ const NavBar = () => {
                   </StyledButton>
                 ))}
                 <LanguageSwitch />
-                {accessToken ? (
+                {isTokenValid ? (
                   <StyledButton
                     color="inherit"
                     variant="outlined"
+                    onClick={() => {
+                      dialog.handleOpen();
+                      dispatch(handleOpenDialog('logout'));
+                    }}
                   >
-                    <RouterLink href="/">{t(tokens.nav.logout)}</RouterLink>
+                    {t(tokens.nav.logout)}
                   </StyledButton>
                 ) : (
                   <>
                     <StyledButton
                       color="inherit"
                       startIcon={<FaUser />}
+                      onClick={() => {
+                        dialog.handleOpen();
+                        dispatch(handleOpenDialog('login'));
+                      }}
                     >
-                      <RouterLink href="/auth/login">{t(tokens.nav.login)}</RouterLink>
+                      {t(tokens.nav.login)}
                     </StyledButton>
                     <StyledButton
                       color="inherit"
                       variant="outlined"
+                      onClick={() => {
+                        dialog.handleOpen();
+                        dispatch(handleOpenDialog('register'));
+                      }}
                     >
-                      <RouterLink href="/auth/login">{t(tokens.nav.register)}</RouterLink>
+                      {t(tokens.nav.register)}
                     </StyledButton>
                   </>
                 )}
@@ -167,6 +229,55 @@ const NavBar = () => {
           </Toolbar>
         </Container>
       </AppBar>
+      {open !== '' && (
+        <Dialog
+          fullWidth
+          maxWidth="sm"
+          onClose={dialog.handleClose}
+          open={dialog.open}
+        >
+          <Stack p={4}>
+            {open === 'login' && <LoginPage />}
+            {open === 'register' && <RegisterPage />}
+            {open === 'logout' && (
+              <Stack spacing={2}>
+                <Typography
+                  variant="h6"
+                  textAlign="center"
+                >
+                  Bạn có muốn đăng xuất hay không!
+                </Typography>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
+                  justifyContent="space-around"
+                >
+                  <RouterLink href="/">
+                    <StyledButton
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        dispatch(logout());
+                        dialog.handleClose();
+                        setIsTokenValid(false);
+                      }}
+                    >
+                      Đăng xuất
+                    </StyledButton>
+                  </RouterLink>
+                  <StyledButton
+                    variant="outlined"
+                    onClick={dialog.handleClose}
+                  >
+                    Hủy
+                  </StyledButton>
+                </Stack>
+              </Stack>
+            )}
+          </Stack>
+        </Dialog>
+      )}
     </Box>
   );
 };

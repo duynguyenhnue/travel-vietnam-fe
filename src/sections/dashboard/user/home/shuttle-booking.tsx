@@ -11,11 +11,11 @@ export const ShuttleBooking = () => {
       <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
         <TextField
           label={t(tokens.airportTransfer.pickUpLocation)}
-          fullWidth
+          sx={{ width: '30%' }}
         />
         <TextField
           label={t(tokens.airportTransfer.destinationAirport)}
-          fullWidth
+          sx={{ width: '30%' }}
         />
         <TextField
           label={t(tokens.common.date)}
