@@ -74,7 +74,11 @@ export const HotelBooking = () => {
           label={t(tokens.hotels.checkOut)}
           type="date"
           InputLabelProps={{ shrink: true }}
-          sx={{ width: '15%', minWidth: '140px', minHeight: '56px' }}
+          sx={{
+            width: '15%',
+            minWidth: '140px',
+            minHeight: '56px',
+          }}
         />
         <FormControl sx={{ width: '30%', minWidth: '280px', minHeight: '56px' }}>
           <Button
