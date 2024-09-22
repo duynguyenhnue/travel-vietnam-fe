@@ -92,7 +92,7 @@ jobs:
           docker run -d --restart unless-stopped \
             -p 3000:3000 \
             -e VITE_SERVER_URL="https://api.travel-vietnamese.me" \
-            --name frontend_container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest --host 0.0.0.0
+            --name frontend_container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           EOF
 
           # Xóa file private key sau khi hoàn thành
