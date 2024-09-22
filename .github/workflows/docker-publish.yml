@@ -2,9 +2,9 @@ name: Docker
 
 on:
   schedule:
-    - cron: "33 16 * * *" # Lịch trình chạy tự động
+    - cron: "33 16 * * *" # Lịch trình chạy tự động hàng ngày vào 16:33 UTC
   push:
-    branches: ["master"] # Khi có đẩy lên nhánh master
+    branches: ["master"] # Khi có thay đổi trên nhánh master
     tags: ["v*.*.*"] # Khi có nhãn theo định dạng semver
   pull_request:
     branches: ["master"] # Khi có pull request tới nhánh master
@@ -24,6 +24,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      # Debug thông tin đăng nhập Docker
+      - name: Debug environment variables
+        run: |
+          echo "Registry: ${{ env.REGISTRY }}"
+          echo "Username: ${{ secrets.DOCKERHUB_USERNAME }}"
 
       - name: Install cosign
         if: github.event_name != 'pull_request'
