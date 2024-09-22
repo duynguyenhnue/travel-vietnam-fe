@@ -84,11 +84,15 @@ jobs:
           # Pull image từ Docker Hub
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
+          # Stop and remove the old container if it exists
+          docker stop frontend_container || true
+          docker rm frontend_container || true
+
           # Chạy container mới, bind port 3000
           docker run -d --restart unless-stopped \
             -p 3000:3000 \
             -e VITE_SERVER_URL="https://api.travel-vietnamese.me" \
-            --name my_container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            --name frontend_container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           EOF
 
           # Xóa file private key sau khi hoàn thành
