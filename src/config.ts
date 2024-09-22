@@ -5,4 +5,5 @@ export const envConfig = {
 
 export const localStorageConfig = {
   accessToken: 'jwt-access-token',
+  refreshToken: 'jwt-refresh-token'
 };

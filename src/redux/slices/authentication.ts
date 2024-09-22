@@ -5,6 +5,7 @@ import { dispatch } from '../store';
 import {
   AuthenticationState,
   LoginRequestType,
+  LoginResponseType,
   RegisterRequestType,
 } from 'src/types/redux/authentication';
 import { envConfig, localStorageConfig } from 'src/config';
@@ -20,6 +21,7 @@ const initialState: AuthenticationState = {
   isAuthenticated: false,
   errorMessage: '',
   forgotEmailSent: false,
+  open: '',
 };
 
 export const authenticationSlice = createSlice({
@@ -76,7 +78,10 @@ export const authenticationSlice = createSlice({
     resetPasswordFailure: (state: AuthenticationState, action: ResetPasswordFailureAction) => {
       state.loading = false;
       state.errorMessage = action.payload;
-    }
+    },
+    setDiaLog: (state: AuthenticationState, action: PayloadAction<string>) => {
+      state.open = action.payload;
+    },
   },
 });
 
@@ -84,7 +89,7 @@ export const register = (registerData: RegisterRequestType) => {
   return async () => {
     try {
       dispatch(authenticationSlice.actions.registerRequest());
-      await axios.post('/auth/signup', registerData);
+      await axios.post(`${envConfig.serverURL}/auth/register`, registerData);
       dispatch(authenticationSlice.actions.registerSuccess());
       toast.success('Registration saved! Please check your email for confirmation.');
     } catch (error) {
@@ -101,12 +106,12 @@ export const login = (loginData: LoginRequestType) => {
   return async () => {
     try {
       dispatch(authenticationSlice.actions.loginRequest());
-      const result = await axios.post(`${envConfig.serverURL}/login`, loginData);
-      const token: string | null = result.data ? result.data.data.token : null;
-      
-      if (token) {
-        const jwt = token;
-        localStorage.setItem(localStorageConfig.accessToken, jwt);
+      const result = await axios.post(`${envConfig.serverURL}/auth/login`, loginData);
+      const data: LoginResponseType = result.data ? result.data.data : null;
+
+      if (data) {
+        localStorage.setItem(localStorageConfig.accessToken, data.access_token);
+        localStorage.setItem(localStorageConfig.refreshToken, data?.refresh_token || '');
       }
 
       dispatch(authenticationSlice.actions.loginSuccess());
@@ -120,11 +125,15 @@ export const login = (loginData: LoginRequestType) => {
   };
 };
 
-
 export const logout = () => {
-  return () => {
+  return async () => {
     dispatch(authenticationSlice.actions.logout());
+
+    await axios.post(`${envConfig.serverURL}/auth/logout`, {
+      refresh_token: localStorage.getItem(localStorageConfig.refreshToken),
+    });
     localStorage.removeItem(localStorageConfig.accessToken);
+    localStorage.removeItem(localStorageConfig.refreshToken);
   };
 };
 
@@ -163,6 +172,12 @@ export const resetPassword = (key: string, newPassword: string) => {
       toast.error(errorMessage);
       dispatch(authenticationSlice.actions.resetPasswordFailure(errorMessage));
     }
+  };
+};
+
+export const handleOpenDialog = (value: string) => {
+  return async () => {
+    dispatch(authenticationSlice.actions.setDiaLog(value));
   };
 };
 
