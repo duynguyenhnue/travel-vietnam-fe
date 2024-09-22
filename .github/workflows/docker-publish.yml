@@ -84,10 +84,6 @@ jobs:
           # Pull image từ Docker Hub
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
-          # Dừng và xóa container cũ nếu có
-          docker stop my_container || true
-          docker rm my_container || true
-
           # Chạy container mới, bind port 3000
           docker run -d --restart unless-stopped \
             -p 3000:3000 \
