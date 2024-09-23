@@ -8,19 +8,8 @@ import type { Theme } from '@mui/material/styles/createTheme';
 import { RouterLink } from 'src/components/common/router/router-link';
 import { Seo } from 'src/components/common/performance/seo';
 import { paths } from 'src/paths';
-import { useRouter } from 'src/hooks/use-router';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router';
 
 const Page = () => {
-  const router = useRouter();
-  const location = useLocation();
-  useEffect(() => {
-    if (location.pathname === '/') {
-      router.push('/dashboard');
-    }
-  }, [router]);
-
   const mdUp = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   return (
@@ -77,7 +66,7 @@ const Page = () => {
           >
             <Button
               component={RouterLink}
-              href={paths.auth.login}
+              href={paths.index}
             >
               Back to Login
             </Button>

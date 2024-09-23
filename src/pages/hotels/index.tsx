@@ -5,31 +5,39 @@ import {
   Grid,
   Card,
   CardMedia,
-  CardContent,
-  Rating,
   Box,
   FormControl,
   MenuItem,
   IconButton,
   Popover,
+  CardActionArea,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import SearchMdIcon from '@untitled-ui/icons-react/build/esm/SearchMd';
 import { tokens } from 'src/locales/tokens';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { useDispatch, useSelector } from 'src/redux/store';
+import { getDestinations } from 'src/redux/slices/hotels';
+import { RouterLink } from 'src/components/common/router/router-link';
 
-export const HotelBooking = () => {
+const HotelPages = () => {
   const { t } = useTranslation();
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [rooms, setRooms] = useState(1);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const dispatch = useDispatch();
+
+  const { locations } = useSelector((state) => state.hotels);
+
+  useEffect(() => {
+    dispatch(getDestinations());
+  }, []);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -57,6 +65,7 @@ export const HotelBooking = () => {
 
   const open = Boolean(anchorEl);
   const id = open ? 'guest-popover' : undefined;
+
   return (
     <Box>
       <Box sx={{ display: 'flex', gap: 2, mb: 4, flexWrap: 'wrap' }}>
@@ -179,68 +188,85 @@ export const HotelBooking = () => {
           <SearchMdIcon />
         </Button>
       </Box>
-      <Typography
-        variant="h6"
-        gutterBottom
-      >
-        Available Hotels
-      </Typography>
+
       <Grid
         container
         spacing={3}
       >
-        {[1, 2, 3].map((hotel) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            key={hotel}
-          >
-            <Card>
-              <CardMedia
-                component="img"
-                height="140"
-                image={`https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80`}
-                alt={`Hotel ${hotel}`}
-              />
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  gutterBottom
+        {locations &&
+          locations.map((location) => (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              key={location.id}
+            >
+              <RouterLink href={`${location.id}`}>
+                <Card
+                  sx={{
+                    position: 'relative',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    transition: 'transform 0.3s',
+                    '&:hover': { transform: 'scale(1.05)' },
+                  }}
                 >
-                  Hotel {hotel}
-                </Typography>
-                <Rating
-                  value={4}
-                  readOnly
-                />
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </Typography>
-                <Typography
-                  variant="h6"
-                  color="primary"
-                  sx={{ mt: 2 }}
-                >
-                  $199/night
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  sx={{ mt: 2 }}
-                >
-                  Book Now
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+                  <CardActionArea component="div">
+                    <CardMedia
+                      component="img"
+                      height="256"
+                      image={location.image_url}
+                      alt={location.name}
+                    />
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        bottom: 0,
+                        right: 0,
+                        left: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        bgcolor: 'rgba(0, 0, 0, 0.5)',
+                        padding: 2,
+                      }}
+                    >
+                      <Box textAlign="center">
+                        <Typography
+                          variant="h5"
+                          color="white"
+                          fontWeight="bold"
+                        >
+                          {location.name}
+                        </Typography>
+
+                        <Typography
+                          variant="body2"
+                          color="white"
+                          mt={1}
+                          sx={{ display: { xs: 'none', md: 'block' } }}
+                        >
+                          {location.description}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardActionArea>
+                  <Box sx={{ padding: 2 }}>
+                    <Typography
+                      variant="body1"
+                      color="text.secondary"
+                    >
+                      {location.description}
+                    </Typography>
+                  </Box>
+                </Card>
+              </RouterLink>
+            </Grid>
+          ))}
       </Grid>
     </Box>
   );
 };
+export default HotelPages;
