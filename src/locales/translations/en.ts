@@ -15,7 +15,7 @@ export const en = {
   [tokens.nav.logout]: 'Logout',
 
   // Hotels
-  [tokens.hotels.destination]: 'Destination',
+  [tokens.hotels.location]: 'Location',
   [tokens.hotels.checkIn]: 'Check In',
   [tokens.hotels.checkOut]: 'Check Out',
   [tokens.hotels.guests]: 'Guests',

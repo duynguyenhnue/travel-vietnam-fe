@@ -5,6 +5,8 @@ export type HotelsState = {
   hotels: HotelType[] | null;
   hotel: HotelType | null;
   rooms: RoomType[] | null;
+  total: number;
+  totalRooms: number;
 };
 
 export type LocationsType = {
@@ -15,20 +17,44 @@ export type LocationsType = {
 };
 
 export interface HotelType {
-  id: string;
+  _id?: string;
   name: string;
-  location_id: string;
-  description: string;
+  address: string;
   rating: number;
-  image_url: string;
+  description: string;
+  amenities: string[];
+  images: string[];
+  checkInPolicy: string;
+  checkOutPolicy: string;
+  cancellationPolicy: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface RoomType {
-  id: string;
-  hotel_id: string;
-  image_url: string;
-  name: string;
-  price: string;
+  maxOccupancy: number;
+  _id: string;
   description: string;
-  availability: boolean;
+  roomType: string;
+  roomNumber: string;
+  price: number;
+  available: boolean;
+  amenities: string[];
+  images: string[];
+  hotelId: string;
+}
+
+export interface SearchHotelAction {
+  limit?: number;
+  page?: number;
+  name?: string;
+}
+
+export interface SearchRoomsByHotelIdAction {
+  limit?: number;
+  page?: number;
+  roomType?: string;
+  price?: number;
+  maxOccupancy?: number;
+  hotelId: string;
 }

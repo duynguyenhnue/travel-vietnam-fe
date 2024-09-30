@@ -1,188 +1,83 @@
-import {
-  Typography,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogActions,
-  styled,
-  List,
-  ListItem,
-  ListItemText,
-  Tooltip,
-  Stepper,
-  Step,
-  StepLabel,
-  Box,
-  FormControl,
-  MenuItem,
-  Paper,
-  TextField,
-} from '@mui/material';
+import { Typography, Grid, Card, Button, CardContent, CardMedia } from '@mui/material';
 import { Stack } from '@mui/system';
-import { SetStateAction, useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { useDialog } from 'src/hooks/use-dialog';
-import { getHotel, getRoomsByHotelId } from 'src/redux/slices/hotels';
-import { useDispatch, useSelector } from 'src/redux/store';
-import { DateRange } from 'react-date-range';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
-import { enGB } from 'date-fns/locale';
-import { FaBed, FaWifi, FaTv, FaParking } from 'react-icons/fa';
 import { RoomType } from 'src/types/redux/hotels';
 
-const PriceTypography = styled(Typography)(({ theme }) => ({
-  fontWeight: 'bold',
-  color: theme.palette.primary.main,
-  marginBottom: theme.spacing(2),
-}));
+type RoomsBookingProps = {
+  rooms: RoomType[] | null;
+};
 
-const roomItems = [
-  { icon: <FaBed />, text: 'King-size bed' },
-  { icon: <FaWifi />, text: 'High-speed Wi-Fi' },
-  { icon: <FaTv />, text: '50-inch Smart TV' },
-  { icon: <FaParking />, text: 'Free parking' },
-];
-
-const steps = ['Select Time', 'View Information', 'Make Payment'];
-
-const RoomsBooking = () => {
-  const { hotelId } = useParams();
-  const dispatch = useDispatch();
-  const dialog = useDialog();
-  const { rooms, hotel } = useSelector((state) => state.hotels);
-  const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
-  const [bank, setBank] = useState('vietinbank');
-  const [activeStep, setActiveStep] = useState(0);
-  const [bookedDates, setBookedDates] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-    key: 'selection',
-  });
-  const room = rooms && rooms.find((room) => room.id === selectedRoom?.id);
-
-  const calculateNights = () => {
-    const { startDate, endDate } = bookedDates;
-    const differenceInTime = endDate.getTime() - startDate.getTime();
-    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-    return differenceInDays >= 0 ? differenceInDays : 0;
-  };
-
-  const handleRoomSelect = (room: any) => {
-    setSelectedRoom(room);
-    dialog.handleOpen();
-  };
-
-  const handleConfirmBooking = () => {
-    // handleNext();
-  };
-  const handleSelect = (ranges: any) => {
-    setBookedDates(ranges.selection);
-  };
-
-  const handleCancel = () => {
-    dialog.handleClose();
-    setBookedDates({
-      startDate: new Date(),
-      endDate: new Date(),
-      key: 'selection',
-    });
-  };
-  const handleBankChange = (event: { target: { value: SetStateAction<string> } }) => {
-    setBank(event.target.value);
-  };
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  useEffect(() => {
-    if (hotelId) {
-      dispatch(getHotel(hotelId));
-      dispatch(getRoomsByHotelId(hotelId));
-    }
-  }, [hotelId, dispatch]);
+const RoomsBooking = (props: RoomsBookingProps) => {
+  const { rooms } = props;
 
   return (
-    hotel && (
-      <Stack spacing={4}>
-        <Stack>
-          <Typography
-            variant="h4"
-            gutterBottom
-          >
-            {hotel.name}
-          </Typography>
-          <Typography
-            variant="body1"
-            gutterBottom
-          >
-            {hotel.description}
-          </Typography>
-        </Stack>
-        <Grid
-          container
-          spacing={2}
-        >
-          {rooms &&
-            rooms.map((room) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                key={room.id}
-              >
-                <Card>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={room.image_url}
-                    alt={`Room ${room.name}`}
-                  />
-                  <CardContent>
-                    <Typography
-                      variant="h6"
-                      gutterBottom
-                    >
-                      {room.name}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                    >
-                      {room.description}
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      color="primary"
-                      sx={{ mt: 2 }}
-                    >
-                      ${room.price}/night
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                      sx={{ mt: 2 }}
-                      onClick={() => handleRoomSelect(room)}
-                    >
-                      Select Room
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-        </Grid>
-        <Dialog
+    <Stack spacing={4}>
+      <Grid
+        container
+        spacing={2}
+      >
+        {rooms &&
+          rooms.map((room) => (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              key={room._id}
+            >
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={room.images[0]}
+                  alt={`Room ${room.roomNumber}`}
+                />
+                <CardContent>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >
+                    Room Number: {room.roomNumber} ({room?.roomType})
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                  >
+                    {room.description}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                  >
+                    ${room.price}/night
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                  >
+                    Max Occupancy: {room.maxOccupancy}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                  >
+                    Amenities: {room.amenities.join(', ')}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                    // onClick={() => handleRoomSelect(room)}
+                  >
+                    Select Room
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+      </Grid>
+      {/* <Dialog
           open={dialog.open}
           onClose={dialog.handleClose}
         >
@@ -349,9 +244,8 @@ const RoomsBooking = () => {
               </Button>
             </Stack>
           </DialogActions>
-        </Dialog>
-      </Stack>
-    )
+        </Dialog> */}
+    </Stack>
   );
 };
 

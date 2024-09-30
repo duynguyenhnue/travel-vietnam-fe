@@ -181,4 +181,34 @@ export const handleOpenDialog = (value: string) => {
   };
 };
 
+export const handleRefreshToken = () => {
+  return async () => {
+    try {
+      dispatch(authenticationSlice.actions.loginRequest());
+
+      const refreshToken = localStorage.getItem(localStorageConfig.refreshToken);
+      if (!refreshToken) {
+        dispatch(authenticationSlice.actions.loginFailure('Refresh token not found'));
+        return;
+      }
+
+      const newAccessToken = await axios.post(`${envConfig.serverURL}/auth/refresh-token`, {
+        refreshToken,
+      });
+
+      localStorage.setItem(localStorageConfig.accessToken, newAccessToken.data.accessToken);
+      dispatch(authenticationSlice.actions.loginSuccess());
+    } catch (error) {
+      const errorMessage: string = error.response
+        ? error.response.data.message
+        : 'Something went wrong';
+      toast.error(errorMessage);
+
+      localStorage.removeItem(localStorageConfig.accessToken);
+      localStorage.removeItem(localStorageConfig.refreshToken);
+      dispatch(authenticationSlice.actions.loginFailure(errorMessage));
+    }
+  };
+};
+
 export default authenticationSlice.reducer;

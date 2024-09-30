@@ -16,7 +16,7 @@ export const vi = {
   [tokens.nav.logout]: 'Dăng xuất',
 
   // Hotels
-  [tokens.hotels.destination]: 'Điểm đến',
+  [tokens.hotels.location]: 'Vị trí',
   [tokens.hotels.checkIn]: 'Ngày nhận',
   [tokens.hotels.checkOut]: 'Ngày trả',
   [tokens.hotels.guests]: 'Khách',

@@ -13,7 +13,7 @@ export const tokens = {
     logout: 'nav.logout',
   },
   hotels: {
-    destination: 'hotels.destination',
+    location: 'hotels.location',
     checkIn: 'hotels.checkIn',
     checkOut: 'hotels.checkOut',
     guests: 'common.guests',

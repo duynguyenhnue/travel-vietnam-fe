@@ -20,7 +20,7 @@ import { AppBar, Toolbar, Typography, Menu, MenuItem, Dialog } from '@mui/materi
 import { RouterLink } from 'src/components/common/router/router-link';
 import LoginPage from 'src/pages/auth/login';
 import RegisterPage from 'src/pages/auth/register';
-import { handleOpenDialog, logout } from 'src/redux/slices/authentication';
+import { handleOpenDialog, handleRefreshToken, logout } from 'src/redux/slices/authentication';
 import { StyledButton } from 'src/styles/user/nav-bar';
 import { LanguageSwitch } from '../language-switch';
 
@@ -57,7 +57,7 @@ export const TopNav: FC<TopNavProps> = (props) => {
         if (decoded.exp && decoded.exp > currentTime) {
           setIsTokenValid(true);
         } else {
-          setIsTokenValid(false);
+          dispatch(handleRefreshToken());
         }
       } catch (error) {
         toast.error('Invalid JWT token');
