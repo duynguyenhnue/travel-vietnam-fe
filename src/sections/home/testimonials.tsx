@@ -1,127 +1,91 @@
 import React from 'react';
-import { Box, Typography, Avatar, Paper } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 import Slider from 'react-slick';
 
-const sliderSettings = {
-  arrows: false,
-  autoplay: true,
-  autoplaySpeed: 5000,
-  infinite: true,
-  speed: 500,
-  swipeToSlide: true,
-  dots: false,
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 1,
-      },
-    },
-    {
-      breakpoint: 600,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-      },
-    },
-  ],
+const Testimonials = () => {
+    const settings = {
+        dots: true,
+        infinite: true,
+        autoplay: true,
+        speed: 1000,
+        swipeToSlide: true,
+        autoplaySpeed: 2000,
+        slidesToShow: 3,
+        responsive: [
+          {
+            breakpoint: 992,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 1,
+              infinite: true,
+              dots: true,
+            },
+          },
+          {
+            breakpoint: 576,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              infinite: true,
+              dots: true,
+            },
+          },
+        ],
+      };
+      
+
+    return (
+        <Slider {...settings}>
+            {["/assets/home/testimonials/ava-1.jpg", "/assets/home/testimonials/ava-2.jpg", "/assets/home/testimonials/ava-2.jpg", "/assets/home/testimonials/ava-3.jpg"].map((avatar, index) => (
+                <div key={index} style={{ padding: '16px', backgroundColor: '#fff', borderRadius: '8px' }}>
+                    <Typography variant="body1" style={{ marginBottom: '16px' }}>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minus sit, explicabo provident hic distinctio
+                        molestias voluptates nobis alias placeat suscipt earum debitits recusandae voluptate illum expedita
+                        corrupti aliquid doloribus delectus?
+                    </Typography>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '16px' }}>
+                        <img src={avatar} style={{ width: '25%', height: '25%', borderRadius: '8px' }} alt="" />
+                        <div>
+                            <Typography variant="h6" style={{ marginBottom: '0', marginTop: '8px' }}>
+                                {index === 0 ? 'John Doe' : index === 1 ? 'Lia Franklin' : 'John Doe'}
+                            </Typography>
+                            <Typography variant="body2">Customer</Typography>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </Slider>
+    );
 };
 
-interface Testimonial {
-  name: string;
-  location: string;
-  image: string;
-  feedback: string;
-}
+const TestimonialSection = () => {
+    return (
+        <Container maxWidth="xl">
+            <Grid container rowSpacing={4}>
+                <Grid item xs={12}>
 
-const testimonials: Testimonial[] = [
-  {
-    name: 'John Doe',
-    location: 'New York, USA',
-    image: '/img/testimonial-1.jpg',
-    feedback:
-      'Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.',
-  },
-  {
-    name: 'Jane Smith',
-    location: 'Los Angeles, USA',
-    image: '/img/testimonial-2.jpg',
-    feedback:
-      'Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.',
-  },
-  {
-    name: 'Michael Johnson',
-    location: 'Chicago, USA',
-    image: '/img/testimonial-3.jpg',
-    feedback:
-      'Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.',
-  },
-  {
-    name: 'Alice Brown',
-    location: 'Miami, USA',
-    image: '/img/testimonial-4.jpg',
-    feedback:
-      'Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.',
-  },
-];
+                    <h3 style={{
+                        background: '#faa935',
+                        fontFamily: '"Island Moments", cursive',
+                        width: 'max-content',
+                        padding: '0px 0.5rem',
+                        paddingRight: '1rem',
+                        borderRadius: '50px',
+                        fontWeight: '500',
+                        fontSize: '1.7rem',
+                        color: '#0b2727'
+                    }}>Fans Love</h3>
+                    <Typography variant="h2" style={{ fontSize: '1.6rem', marginTop: '0.8rem' }}>
+                        What our fans say about us
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Testimonials />
+                </Grid>
+            </Grid>
+        </Container>
+    );
+};
 
-export const TestimonialsSection: React.FC = () => (
-  <Box sx={{ py: 5 }}>
-    <Box sx={{ textAlign: 'center', mb: 5 }}>
-      <Typography
-        variant="h6"
-        component="div"
-        color="primary"
-        sx={{ mb: 1, px: 3, display: 'inline-block', backgroundColor: '#fff' }}
-      >
-        Testimonial
-      </Typography>
-      <Typography
-        variant="h4"
-        component="div"
-      >
-        Our Clients Say!!!
-      </Typography>
-    </Box>
-    <Slider {...sliderSettings}>
-      {testimonials.map((testimonial, index) => (
-        <Box
-          key={index}
-          sx={{ px: 2 }}
-        >
-          <Paper
-            elevation={3}
-            sx={{ p: 4, textAlign: 'center', borderRadius: '8px' }}
-          >
-            <Avatar
-              src={testimonial.image}
-              alt={testimonial.name}
-              sx={{ width: 80, height: 80, margin: '0 auto', mb: 2, boxShadow: 3 }}
-            />
-            <Typography
-              variant="h5"
-              component="div"
-            >
-              {testimonial.name}
-            </Typography>
-            <Typography
-              variant="body2"
-              color="textSecondary"
-            >
-              {testimonial.location}
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ mt: 2 }}
-            >
-              {testimonial.feedback}
-            </Typography>
-          </Paper>
-        </Box>
-      ))}
-    </Slider>
-  </Box>
-);
+export default TestimonialSection;
