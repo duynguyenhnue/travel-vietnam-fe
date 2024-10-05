@@ -109,7 +109,7 @@ export const Layout: FC<LayoutProps> = (props) => {
                 }}
               >
                 <img
-                  src="/assets/logo.svg"
+                  src="/assets/logo.png"
                   alt="Logo"
                 />
               </Box>

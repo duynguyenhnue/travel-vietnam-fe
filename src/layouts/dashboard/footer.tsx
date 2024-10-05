@@ -1,259 +1,111 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-  Link,
-  IconButton,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  useMediaQuery,
-  useTheme,
-  styled,
-} from '@mui/material';
-import { FaPlane, FaHotel, FaCar, FaMapMarkerAlt, FaChevronUp } from 'react-icons/fa';
-import { MdExpandMore, MdBeachAccess, MdHiking, MdRestaurant } from 'react-icons/md';
+import React from 'react';
+import { Container, Grid, Typography, IconButton, List, ListItem, Link as MuiLink } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { GitHub, YouTube, Facebook, Instagram, LocationOn, MailOutline, Phone } from '@mui/icons-material';
 
-const FooterWrapper = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.common.white,
-  padding: theme.spacing(6, 0),
-}));
+const quickLinks1 = [
+  { path: '/home', display: 'Home' },
+  { path: '/about', display: 'About' },
+  { path: '/tours', display: 'Tours' },
+];
 
-const FooterLink = styled(Link)(({ theme }) => ({
-  color: theme.palette.common.white,
-  textDecoration: 'none',
-  '&:hover': {
-    textDecoration: 'underline',
-    color: theme.palette.secondary.light,
-  },
-}));
-
-const BackToTopButton = styled(IconButton)(({ theme }) => ({
-  position: 'fixed',
-  bottom: theme.spacing(2),
-  right: theme.spacing(2),
-  backgroundColor: theme.palette.grey[900],
-  color: theme.palette.common.white,
-  '&:hover': {
-    backgroundColor: theme.palette.grey[700],
-  },
-}));
+const quickLinks2 = [
+  { path: '/gallery', display: 'Gallery' },
+  { path: '/login', display: 'Login' },
+  { path: '/register', display: 'Register' },
+];
 
 const Footer = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [expanded, setExpanded] = useState<boolean | string>(false);
-
-  const handleAccordionChange =
-    (panel: string | boolean | ((prevState: string | boolean) => string | boolean)) =>
-    (event: unknown, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const travelServices = [
-    { name: 'Flights', icon: <FaPlane /> },
-    { name: 'Hotels', icon: <FaHotel /> },
-    { name: 'Car Rentals', icon: <FaCar /> },
-    { name: 'Attractions', icon: <FaMapMarkerAlt /> },
-  ];
-
-  const popularDestinations = [
-    { name: 'Beach Resorts', icon: <MdBeachAccess /> },
-    { name: 'Mountain Retreats', icon: <MdHiking /> },
-    { name: 'City Breaks', icon: <FaMapMarkerAlt /> },
-    { name: 'Culinary Tours', icon: <MdRestaurant /> },
-  ];
-
-  const renderTravelServices = () => {
-    if (isMobile) {
-      return (
-        <Accordion
-          expanded={expanded === 'services'}
-          onChange={handleAccordionChange('services')}
-          sx={{ backgroundColor: 'transparent', color: 'inherit' }}
-        >
-          <AccordionSummary expandIcon={<MdExpandMore color="white" />}>
-            <Typography variant="h6">Travel Services</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Grid
-              container
-              spacing={2}
-            >
-              {travelServices.map((service) => (
-                <Grid
-                  item
-                  xs={6}
-                  key={service.name}
-                >
-                  <FooterLink
-                    href="#"
-                    display="flex"
-                    alignItems="center"
-                  >
-                    {service.icon}
-                    <Box ml={1}>{service.name}</Box>
-                  </FooterLink>
-                </Grid>
-              ))}
-            </Grid>
-          </AccordionDetails>
-        </Accordion>
-      );
-    }
-    return (
-      <Box>
-        <Typography
-          variant="h6"
-          gutterBottom
-        >
-          Travel Services
-        </Typography>
-        <Grid
-          container
-          spacing={2}
-        >
-          {travelServices.map((service) => (
-            <Grid
-              item
-              xs={6}
-              key={service.name}
-            >
-              <FooterLink
-                href="#"
-                display="flex"
-                alignItems="center"
-              >
-                {service.icon}
-                <Box ml={1}>{service.name}</Box>
-              </FooterLink>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    );
-  };
-
   return (
-    <FooterWrapper component="footer">
-      <Container maxWidth="xl">
-        <Grid
-          container
-          spacing={4}
-        >
-          <Grid
-            item
-            xs={12}
-            md={4}
-          >
-            {renderTravelServices()}
+    <footer>
+       <Container maxWidth='xl'>
+        <Grid container spacing={4} sx={{padding: 2.5}}>
+          <Grid item lg={3} xs={12}>
+            <div>
+              <img src="assets/logo.png" alt="Logo" style={{ width: '60%', marginBottom: '1rem' }} />
+              <Typography sx={{ color: 'text.secondary', fontSize: '1rem' }}>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, enim.
+              </Typography>
+              <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginTop: '1rem' }}>
+                <IconButton component={Link} to="#" sx={{ color: 'text.primary' }}>
+                  <YouTube />
+                </IconButton>
+                <IconButton component={Link} to="#" sx={{ color: 'text.primary' }}>
+                  <GitHub />
+                </IconButton>
+                <IconButton component={Link} to="#" sx={{ color: 'text.primary' }}>
+                  <Facebook />
+                </IconButton>
+                <IconButton component={Link} to="#" sx={{ color: 'text.primary' }}>
+                  <Instagram />
+                </IconButton>
+              </div>
+            </div>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            md={4}
-          >
-            <Typography
-              variant="h6"
-              gutterBottom
-            >
-              Popular Destinations
+
+          {/* Quick Links 1 */}
+          <Grid item lg={3} xs={12}>
+            <Typography variant="h5" sx={{ color: 'text.primary', mb: 2 }}>
+              Discover
             </Typography>
-            <Grid
-              container
-              spacing={2}
-            >
-              {popularDestinations.map((destination) => (
-                <Grid
-                  item
-                  xs={6}
-                  key={destination.name}
-                >
-                  <FooterLink
-                    href="#"
-                    display="flex"
-                    alignItems="center"
-                  >
-                    {destination.icon}
-                    <Box ml={1}>{destination.name}</Box>
-                  </FooterLink>
-                </Grid>
+            <List>
+              {quickLinks1.map((item, index) => (
+                <ListItem key={index} sx={{ p: 0 }}>
+                  <MuiLink component={Link} to={item.path} sx={{ color: 'text.secondary', fontSize: '1.2rem' }}>
+                    {item.display}
+                  </MuiLink>
+                </ListItem>
               ))}
-            </Grid>
+            </List>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            md={4}
-          >
-            <Typography
-              variant="h6"
-              gutterBottom
-            >
-              Travel Resources
+
+          {/* Quick Links 2 */}
+          <Grid item lg={3} xs={12}>
+            <Typography variant="h5" sx={{ color: 'text.primary', mb: 2 }}>
+              Quick Links
             </Typography>
-            <FooterLink
-              href="#"
-              display="block"
-              mb={1}
-            >
-              Travel Guide
-            </FooterLink>
-            <FooterLink
-              href="#"
-              display="block"
-              mb={1}
-            >
-              Travel Insurance
-            </FooterLink>
-            <FooterLink
-              href="#"
-              display="block"
-              mb={1}
-            >
-              Travel Tips
-            </FooterLink>
-            <FooterLink
-              href="#"
-              display="block"
-            >
-              FAQs
-            </FooterLink>
+            <List>
+              {quickLinks2.map((item, index) => (
+                <ListItem key={index} sx={{ p: 0 }}>
+                  <MuiLink component={Link} to={item.path} sx={{ color: 'text.secondary', fontSize: '1.2rem' }}>
+                    {item.display}
+                  </MuiLink>
+                </ListItem>
+              ))}
+            </List>
+          </Grid>
+
+          {/* Contact Section */}
+          <Grid item lg={3} xs={12}>
+            <Typography variant="h5" sx={{ color: 'text.primary', mb: 2 }}>
+              Contact
+            </Typography>
+            <List sx={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+              <ListItem sx={{ p: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <LocationOn sx={{ color: '#faa935'}} /> Address:
+                </Typography>
+                <Typography sx={{ fontSize: '1.2rem' }}>Lorem</Typography>
+              </ListItem>
+
+              <ListItem sx={{ p: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <MailOutline sx={{ color: '#faa935' }} /> Email:
+                </Typography>
+                <Typography sx={{ fontSize: '1.2rem' }}>Lorem</Typography>
+              </ListItem>
+
+              <ListItem sx={{ p: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Phone sx={{ color: '#faa935' }} /> Phone:
+                </Typography>
+                <Typography sx={{ fontSize: '1.2rem' }}>Lorem</Typography>
+              </ListItem>
+            </List>
           </Grid>
         </Grid>
-        <Box
-          mt={6}
-          textAlign="center"
-        >
-          <Typography
-            variant="body2"
-            color="text.secondary"
-          >
-            © {new Date().getFullYear()} Your Travel Agency. All rights reserved.
-          </Typography>
-          <FooterLink
-            href="#"
-            mr={2}
-          >
-            Terms of Service
-          </FooterLink>
-          <FooterLink href="#">Privacy Policy</FooterLink>
-        </Box>
       </Container>
-      <BackToTopButton
-        onClick={scrollToTop}
-        aria-label="Back to top"
-      >
-        <FaChevronUp />
-      </BackToTopButton>
-    </FooterWrapper>
+    </footer>
   );
 };
 

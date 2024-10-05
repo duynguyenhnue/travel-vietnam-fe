@@ -29,7 +29,7 @@ export const LanguageSwitch: FC = () => {
           ref={popover.anchorRef}
           sx={{
             '&:hover': {
-              backgroundColor: (theme) => theme.palette.primary.dark,
+              backgroundColor: '#faa935',
             },
           }}
         >
