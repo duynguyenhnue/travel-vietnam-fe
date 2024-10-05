@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid, Typography, Box } from '@mui/material';
 import { styled } from '@mui/system';
-import SearchBar from './searchBar';
+import { StyledTitleComponent } from 'src/styles/common';
 
 // Styled components for custom styles
 const HeroSubtitle = styled(Box)({
@@ -54,17 +54,7 @@ const HeroSection = () => {
         <Grid item lg={6}>
           <HeroContent>
             <HeroSubtitle>
-              <Typography variant="subtitle1" sx={{
-                background: '#faa935',
-                fontFamily: `"Island Moments", cursive`,
-                width: 'max-content',
-                padding: '0px 0.5rem',
-                paddingRight: '1rem',
-                borderRadius: '50px',
-                fontWeight: '500',
-                color: '#0b2727',
-                fontSize: '1.3rem'
-              }}>Know Before You Go</Typography>
+              <StyledTitleComponent>Know Before You Go</StyledTitleComponent>
               <img src="assets/home/hero/world.png" alt="World" style={{ width: '2.3rem', height: '2.3rem' }} />
             </HeroSubtitle>
             <Typography variant="h1">
@@ -95,7 +85,7 @@ const HeroSection = () => {
           </HeroImgBox>
         </Grid>
       </Grid>
-      <SearchBar />
+      {/* <SearchBar /> */}
 
     </Container>
   );

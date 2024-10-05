@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Grid, Box, Typography } from '@mui/material';
+import { StyledTitleComponent } from 'src/styles/common';
 
 const ExperienceSection = () => {
     return (
@@ -7,17 +8,7 @@ const ExperienceSection = () => {
             <Grid container spacing={5}>
                 <Grid item lg={6}>
                     <Box>
-                        <h3 style={{
-                            background: '#faa935',
-                            fontFamily: '"Island Moments", cursive',
-                            width: 'max-content',
-                            padding: '0px 0.5rem',
-                            paddingRight: '1rem',
-                            borderRadius: '50px',
-                            fontWeight: '500',
-                            fontSize: '1.7rem',
-                            color: '#0b2727'
-                        }}>Experience</h3>
+                        <StyledTitleComponent>Experience</StyledTitleComponent>
                         <Typography variant="h3" sx={{ fontSize: '2rem', fontWeight: 500, mt: 2 }}>
                             With our all experience <br /> we will serve you
                         </Typography>

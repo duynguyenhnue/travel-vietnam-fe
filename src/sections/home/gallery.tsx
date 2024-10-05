@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+import { StyledTitleComponent } from 'src/styles/common';
 
 const Gallery = () => {
     const galleryTitleStyle = {
@@ -39,17 +40,7 @@ const Gallery = () => {
         <Container>
             <Row>
                 <Col lg='12'>
-                    <h3 style={{
-                        background: '#faa935',
-                        fontFamily: '"Island Moments", cursive',
-                        width: 'max-content',
-                        padding: '0px 0.5rem',
-                        paddingRight: '1rem',
-                        borderRadius: '50px',
-                        fontWeight: '500',
-                        fontSize: '1.7rem',
-                        color: '#0b2727'
-                    }}>Gallery</h3>
+                    <StyledTitleComponent>Gallery</StyledTitleComponent>
                     <h2 style={galleryTitleStyle}>Visit our customers tour gallery</h2>
                 </Col>
                 <Col lg='12'>

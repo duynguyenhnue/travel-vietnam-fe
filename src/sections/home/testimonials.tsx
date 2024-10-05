@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Grid, Typography } from '@mui/material';
 import Slider from 'react-slick';
+import { StyledTitleComponent } from 'src/styles/common';
 
 const Testimonials = () => {
     const settings = {
@@ -64,18 +65,7 @@ const TestimonialSection = () => {
         <Container maxWidth="xl">
             <Grid container rowSpacing={4}>
                 <Grid item xs={12}>
-
-                    <h3 style={{
-                        background: '#faa935',
-                        fontFamily: '"Island Moments", cursive',
-                        width: 'max-content',
-                        padding: '0px 0.5rem',
-                        paddingRight: '1rem',
-                        borderRadius: '50px',
-                        fontWeight: '500',
-                        fontSize: '1.7rem',
-                        color: '#0b2727'
-                    }}>Fans Love</h3>
+                    <StyledTitleComponent>Fans Love</StyledTitleComponent>
                     <Typography variant="h2" style={{ fontSize: '1.6rem', marginTop: '0.8rem' }}>
                         What our fans say about us
                     </Typography>

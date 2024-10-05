@@ -17,7 +17,7 @@ import { tokens } from 'src/locales/tokens';
 import { LanguageSwitch } from '../language-switch';
 
 const navLinks = [
-  { path: '/home', display: 'Home' },
+  { path: '/', display: 'Home' },
   { path: '/about', display: 'About' },
   { path: '/tours', display: 'Tours' },
   { path: '/hotels', display: 'Hotels' },
