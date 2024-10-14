@@ -2,13 +2,11 @@ import { Suspense, lazy } from 'react';
 import type { RouteObject } from 'react-router';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard';
+import AboutPage from 'src/pages/about';
 
-const HotelsPage = lazy(() => import('src/pages/hotels/index'));
-const HotelBookingPage = lazy(() => import('src/pages/hotels/hotel-booking'));
-// const RoomsBookingPage = lazy(() => import('src/pages/hotels/rooms-booking'));
 const Error404Page = lazy(() => import('src/pages/404'));
 
-export const hotelsRoutes: RouteObject[] = [
+export const aboutRoutes: RouteObject[] = [
   {
     element: (
       <>
@@ -21,17 +19,9 @@ export const hotelsRoutes: RouteObject[] = [
     ),
     children: [
       {
-        path: '/hotels',
-        element: <HotelsPage />,
+        path: '/about',
+        element: <AboutPage />,
       },
-      {
-        path: '/hotels/:locationId',
-        element: <HotelBookingPage />,
-      },
-      // {
-      //   path: '/hotels/:locationId/:hotelId',
-      //   element: <RoomsBookingPage />,
-      // },
     ],
   },
   {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
-import ItemCard from '../common/itemCard';
+import ItemCard from './itemCard';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { getTours } from 'src/redux/slices/tours';
 import { StyledTitleComponent } from 'src/styles/common';

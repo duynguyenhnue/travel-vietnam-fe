@@ -17,16 +17,13 @@ import {
 } from '@mui/material';
 
 import { Seo } from 'src/components/common/performance/seo';
-import { paths } from 'src/paths';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { useMounted } from 'src/hooks/use-mounted';
-import { useRouter } from 'src/hooks/use-router';
 import { handleOpenDialog, register } from 'src/redux/slices/authentication';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { MuiTelInput } from 'mui-tel-input';
 
 interface Address {
@@ -116,7 +113,6 @@ const validationSchema = Yup.object({
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
-  const router = useRouter();
   const isMounted = useMounted();
   const theme = useTheme();
   const { loading } = useSelector((state) => state.authentication);
@@ -147,7 +143,7 @@ const RegisterPage = () => {
         await dispatch(register(registerData));
 
         if (isMounted()) {
-          router.push(paths.auth.login);
+          // router.push(paths.auth.login);
         }
       } catch (err) {
         if (isMounted()) {
@@ -159,24 +155,24 @@ const RegisterPage = () => {
   });
 
   useEffect(() => {
-    axios
-      .get('https://esgoo.net/api-tinhthanh/1/0.htm')
-      .then((response) => setProvinces(response.data.data));
+    fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
+      .then((response) => response.json())
+      .then((data) => setProvinces(data.data));
   }, []);
 
   useEffect(() => {
     if (formik.values.address.province) {
-      axios
-        .get(`https://esgoo.net/api-tinhthanh/2/${formik.values.address.province}.htm`)
-        .then((response) => setDistricts(response.data.data));
+      fetch(`https://esgoo.net/api-tinhthanh/2/${formik.values.address.province}.htm`)
+        .then((response) => response.json())
+        .then((data) => setDistricts(data.data));
     }
   }, [formik.values.address.province]);
 
   useEffect(() => {
     if (formik.values.address.district) {
-      axios
-        .get(`https://esgoo.net/api-tinhthanh/3/${formik.values.address.district}.htm`)
-        .then((response) => setWards(response.data.data));
+      fetch(`https://esgoo.net/api-tinhthanh/3/${formik.values.address.district}.htm`)
+        .then((response) => response.json())
+        .then((data) => setWards(data.data));
     }
   }, [formik.values.address.district]);
   return (
@@ -326,7 +322,7 @@ const RegisterPage = () => {
                 </MenuItem>
               ))}
             </TextField>
-            <Box sx={{ display: 'flex', gap: '10px' }}>
+            <Box sx={{ display: 'flex', gap: '10px', ".MuiInputAdornment-root": {marginTop: '0px !important'}, ".MuiInputBase-input": {paddingTop: '10px !important', paddingBottom: '10px !important'} }}>
               <MuiTelInput
                 sx={{ width: '170px' }}
                 value={formik.values.phone.country}
@@ -346,7 +342,13 @@ const RegisterPage = () => {
                   value={formik.values.phone.number}
                   name="phone.number"
                   placeholder="000 000 000"
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d*$/.test(value)) { 
+                      formik.setFieldValue('phone.number', value);
+                    }
+                  }}
+                  // onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.phone?.number && formik.errors.phone?.number && (

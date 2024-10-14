@@ -17,12 +17,12 @@ const quickLinks2 = [
 
 const Footer = () => {
   return (
-    <footer>
+    <footer style={{border: '0.5px solid rgba(22, 82, 125, 0.08)'}}>
        <Container maxWidth='xl'>
         <Grid container spacing={4} sx={{padding: 2.5}}>
           <Grid item lg={3} xs={12}>
             <div>
-              <img src="assets/logo.png" alt="Logo" style={{ width: '60%', marginBottom: '1rem' }} />
+              <img src="/assets/logo.png" alt="Logo" style={{ width: '60%', marginBottom: '1rem' }} />
               <Typography sx={{ color: 'text.secondary', fontSize: '1rem' }}>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, enim.
               </Typography>

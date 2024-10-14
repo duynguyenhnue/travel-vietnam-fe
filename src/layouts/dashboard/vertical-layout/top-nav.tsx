@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Box, List, ListItem, ListItemText, Drawer, Dialog, Stack, MenuItem, Container } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { localStorageConfig } from 'src/config';
 import { jwtDecode } from 'jwt-decode';
 import toast from 'react-hot-toast';
@@ -80,6 +80,7 @@ export const TopNav = () => {
   }, [open]);
 
   const { t } = useTranslation();
+  const location = useLocation();
   return (
     <AppBar
       position="sticky"
@@ -106,7 +107,7 @@ export const TopNav = () => {
                 style={{ textDecoration: 'none', color: '#0b2727' }}
                 className={({ isActive }) => (isActive ? 'active__link' : '')}
               >
-                <Typography variant="h6" sx={{ fontWeight: 500, fontSize: '1.5rem', '&:hover': { color: '#faa935' }, color: '#0b2727' }}>
+                <Typography variant="h6" sx={{ fontWeight: 500, fontSize: '1.5rem', '&:hover': { color: '#faa935' }, color: location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path)) ? '#faa935' : '#0b2727' }}>
                   {item.display}
                 </Typography>
               </NavLink>

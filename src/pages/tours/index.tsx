@@ -1,11 +1,11 @@
 import { Stack } from '@mui/material';
 import BannerSlider from 'src/sections/common/banner';
 import Discount from 'src/sections/common/discount';
-import FormFieldHotel from 'src/sections/hotels/formField';
+import Explore from 'src/sections/common/explore';
 import HotelArticle from 'src/sections/hotels/hotelArticle';
-import ProposeHotel from 'src/sections/hotels/propose';
+import FormFieldTour from 'src/sections/tours/formField';
 
-const HotelPage = () => {
+const TourPage = () => {
   const banners = [
     {
       image: 'https://tse4.mm.bing.net/th?id=OIG3.qmznknFATLAIp6yx0kfO&pid=ImgGn',
@@ -23,12 +23,12 @@ const HotelPage = () => {
   return (
     <Stack sx={{display: 'flex', flexDirection: 'column', gap: 5, mb: 5}}>
       <BannerSlider banners={banners} />
-      <FormFieldHotel />
-      <Discount type="hotel" />
-      <ProposeHotel />
+      <FormFieldTour />
+      <Discount type="tour" />
+      <Explore />
       <HotelArticle />
     </Stack>
   );
 };
 
-export default HotelPage;
+export default TourPage;

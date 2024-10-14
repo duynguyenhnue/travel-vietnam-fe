@@ -3,11 +3,11 @@ import type { RouteObject } from 'react-router';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 
-const FlightsPage = lazy(() => import('src/pages/flights/index'));
-const FlightBookingPage = lazy(() => import('src/sections/flights/flight-booking'));
+const ToursPage = lazy(() => import('src/pages/tours/index'));
+const TourBookingPage = lazy(() => import('src/pages/tours/tour-booking'));
 const Error404Page = lazy(() => import('src/pages/404'));
 
-export const flightsRoutes: RouteObject[] = [
+export const toursRoutes: RouteObject[] = [
   {
     element: (
       <>
@@ -20,12 +20,12 @@ export const flightsRoutes: RouteObject[] = [
     ),
     children: [
       {
-        path: '/flights',
-        element: <FlightsPage />,
+        path: '/tours',
+        element: <ToursPage />,
       },
       {
-        path: '/flights/:flightId',
-        element: <FlightBookingPage />,
+        path: '/tours/:tourId',
+        element: <TourBookingPage />,
       },
     ],
   },

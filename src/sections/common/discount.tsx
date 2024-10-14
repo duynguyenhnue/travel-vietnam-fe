@@ -25,9 +25,9 @@ const chunkArray = (arr: any, size: any) => {
     }, []);
 };
 
-const Discount = () => {
+const Discount = ({ type }: { type: string }) => {
     const [activePromoIndex, setActivePromoIndex] = useState(0);
-    const promoChunks = chunkArray(promoCodes, 4); 
+    const promoChunks = chunkArray(promoCodes, 4);
 
     const handlePromoPrev = () => {
         setActivePromoIndex(prev => (prev === 0 ? promoChunks.length - 1 : prev - 1));
@@ -39,7 +39,6 @@ const Discount = () => {
                 toast.success("Sao chép mã thành công!");
             })
     }
-
     return (
         <Container maxWidth="xl">
             <StyledTitleComponent>Mã giảm giá</StyledTitleComponent>
@@ -110,7 +109,8 @@ const Discount = () => {
                                                 borderRadius: '20px 0 0 20px',
                                                 padding: '5px 10px',
                                                 fontSize: '12px'
-                                            }}>{promo.apply}</p>
+                                            // }}>{promo.apply}</p>
+                                            }}>{type}</p>
                                         </Card>
                                     </Box>
                                 </Grid>

@@ -8,7 +8,7 @@ import ExperienceSection from 'src/sections/home/experience';
 import Gallery from 'src/sections/home/gallery';
 import TestimonialSection from 'src/sections/home/testimonials';
 import NewsLetter from 'src/sections/home/newsletter';
-import Explore from 'src/sections/home/explore';
+import Explore from 'src/sections/common/explore';
 
 const TravelHomePage = () => {
   return (
