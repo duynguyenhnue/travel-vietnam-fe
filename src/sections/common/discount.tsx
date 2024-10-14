@@ -109,7 +109,7 @@ const Discount = ({ type }: { type: string }) => {
                                                 borderRadius: '20px 0 0 20px',
                                                 padding: '5px 10px',
                                                 fontSize: '12px'
-                                            // }}>{promo.apply}</p>
+                                            // }}>{promo.apply}</p>  
                                             }}>{type}</p>
                                         </Card>
                                     </Box>
