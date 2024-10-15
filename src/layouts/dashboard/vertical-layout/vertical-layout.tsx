@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import type { NavColor } from 'src/types/settings';
 import type { Section } from '../config';
 import { TopNav } from './top-nav';
-import { useMobileNav } from './use-mobile-nav';
 import { Container } from '@mui/material';
 import Footer from '../footer';
 
@@ -15,11 +14,10 @@ interface VerticalLayoutProps {
 
 export const VerticalLayout: FC<VerticalLayoutProps> = (props) => {
   const { children } = props;
-  const mobileNav = useMobileNav();
 
   return (
     <>
-      <TopNav onMobileNavOpen={mobileNav.handleOpen} />
+      <TopNav />
 
       <Container
         maxWidth="xl"
