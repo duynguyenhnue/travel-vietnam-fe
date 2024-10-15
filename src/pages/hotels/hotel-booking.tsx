@@ -1,198 +1,344 @@
-import {
-  TextField,
-  Button,
-  Typography,
-  Box,
-  FormControl,
-  MenuItem,
-  IconButton,
-  Popover,
-  Breadcrumbs,
-  Stack,
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import SearchMdIcon from '@untitled-ui/icons-react/build/esm/SearchMd';
-import { tokens } from 'src/locales/tokens';
-import { useState } from 'react';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import HotelBooking from 'src/sections/hotels/hotel-booking';
-import { RouterLink } from 'src/components/common/router/router-link';
-import { useParams } from 'react-router';
+import React from 'react';
+import { Box, Button, Container, Grid, Typography, Card, CardMedia, CardContent, CardActions, TextField, MenuItem, Rating, Divider } from '@mui/material';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import CancelIcon from '@mui/icons-material/Cancel';
+import MobileFriendlyIcon from '@mui/icons-material/MobileFriendly';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import TranslateIcon from '@mui/icons-material/Translate';
+import Maps from 'src/sections/common/map';
+import Testimonials from 'src/sections/common/testimonials';
+import CustomerReview from 'src/sections/hotels/details/review';
+
+const relatedHotelsToday = () => {
+    const tours = [
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+    ];
+    return (
+        tours.map((tour, index) => (
+            <Card key={index}>
+                <CardMedia
+                    component="img"
+                    height="140"
+                    image={tour.image}
+                    alt={tour.title}
+                />
+                <CardContent>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        {tour.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                        {tour.duration}
+                    </Typography>
+                    {tour.facilities.map((facility, i) => (
+                        <Typography variant="body2" color="textSecondary" key={i}>
+                            {facility}
+                        </Typography>
+                    ))}
+                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                        <Rating value={tour.rating} readOnly size="small" />
+                        <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
+                            {tour.reviews} reviews
+                        </Typography>
+                    </Box>
+                    <Typography variant="h6" sx={{ mt: 1 }}>
+                        {tour.price} per person
+                    </Typography>
+                </CardContent>
+            </Card>
+        ))
+    )
+};
+
+const relatedHotelsVietnam = () => {
+    const tours = [
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+        {
+            title: "Alaska: Westminster to Greenwich River Thames",
+            image: "https://via.placeholder.com/300x200",
+            duration: "Duration 2 hours",
+            facilities: ["Transport Facility", "Family Plan"],
+            price: "$35.00",
+            reviews: 584,
+            rating: 4,
+        },
+    ];
+    return (
+        tours.map((tour, index) => (
+            <Card key={index}>
+                <CardMedia
+                    component="img"
+                    height="140"
+                    image={tour.image}
+                    alt={tour.title}
+                />
+                <CardContent>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        {tour.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                        {tour.duration}
+                    </Typography>
+                    {tour.facilities.map((facility, i) => (
+                        <Typography variant="body2" color="textSecondary" key={i}>
+                            {facility}
+                        </Typography>
+                    ))}
+                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                        <Rating value={tour.rating} readOnly size="small" />
+                        <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
+                            {tour.reviews} reviews
+                        </Typography>
+                    </Box>
+                    <Typography variant="h6" sx={{ mt: 1 }}>
+                        {tour.price} per person
+                    </Typography>
+                </CardContent>
+            </Card>
+        ))
+    )
+};
 
 const HotelBookingPage = () => {
-  const { t } = useTranslation();
-  const [adults, setAdults] = useState(1);
-  const [children, setChildren] = useState(0);
-  const [rooms, setRooms] = useState(1);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { locationId } = useParams();
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'guest-popover' : undefined;
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleIncrease = (type: string) => {
-    if (type === 'Người lớn') {
-      setAdults(adults + 1);
-    } else if (type === 'Trẻ em') {
-      setChildren(children + 1);
-    } else if (type === 'Phòng') {
-      setRooms(rooms + 1);
-    }
-  };
-
-  const handleDecrease = (type: string) => {
-    if (type === 'Người lớn' && adults > 1) {
-      setAdults(adults - 1);
-    } else if (type === 'Trẻ em' && children > 0) {
-      setChildren(children - 1);
-    } else if (type === 'Phòng' && rooms > 1) {
-      setRooms(rooms - 1);
-    }
-  };
-
-  return (
-    <Stack spacing={4}>
-      <Breadcrumbs aria-label="breadcrumb">
-        <RouterLink
-          color="inherit"
-          href="/hotels"
-        >
-          Hotels
-        </RouterLink>
-        <Typography sx={{ color: 'text.primary' }}>{locationId}</Typography>
-      </Breadcrumbs>
-
-      <Box sx={{ display: 'flex', gap: 2, mb: 4, flexWrap: 'wrap' }}>
-        <TextField
-          label={t(tokens.hotels.destination)}
-          sx={{ width: '30%', minWidth: '280px', minHeight: '56px' }}
-        />
-        <TextField
-          label={t(tokens.hotels.checkIn)}
-          type="date"
-          InputLabelProps={{ shrink: true }}
-          sx={{ width: '15%', minWidth: '140px', minHeight: '56px' }}
-        />
-        <TextField
-          label={t(tokens.hotels.checkOut)}
-          type="date"
-          InputLabelProps={{ shrink: true }}
-          sx={{
-            width: '15%',
-            minWidth: '140px',
-            minHeight: '56px',
-          }}
-        />
-        <FormControl sx={{ width: '30%', minWidth: '280px', minHeight: '56px' }}>
-          <Button
-            aria-describedby={id}
-            variant="outlined"
-            onClick={handleClick}
-            sx={{ textTransform: 'none', height: '100%', minHeight: '56px' }}
-            fullWidth
-          >
-            {`Người lớn: ${adults}, Trẻ em: ${children}, Phòng: ${rooms}`}
-          </Button>
-
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            PaperProps={{
-              sx: {
-                width: anchorEl ? anchorEl.clientWidth : 'auto',
-              },
-            }}
-          >
-            <Box p={2}>
-              <MenuItem>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  width="100%"
-                >
-                  <Typography>Người lớn</Typography>
-                  <Box>
-                    <IconButton onClick={() => handleDecrease('Người lớn')}>
-                      <RemoveIcon />
-                    </IconButton>
-                    <Typography display="inline">{adults}</Typography>
-                    <IconButton onClick={() => handleIncrease('Người lớn')}>
-                      <AddIcon />
-                    </IconButton>
-                  </Box>
-                </Box>
-              </MenuItem>
-              <MenuItem>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  width="100%"
-                >
-                  <Typography>Trẻ em</Typography>
-                  <Box>
-                    <IconButton onClick={() => handleDecrease('Trẻ em')}>
-                      <RemoveIcon />
-                    </IconButton>
-                    <Typography display="inline">{children}</Typography>
-                    <IconButton onClick={() => handleIncrease('Trẻ em')}>
-                      <AddIcon />
-                    </IconButton>
-                  </Box>
-                </Box>
-              </MenuItem>
-              <MenuItem>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  width="100%"
-                >
-                  <Typography>Phòng</Typography>
-                  <Box>
-                    <IconButton onClick={() => handleDecrease('Phòng')}>
-                      <RemoveIcon />
-                    </IconButton>
-                    <Typography display="inline">{rooms}</Typography>
-                    <IconButton onClick={() => handleIncrease('Phòng')}>
-                      <AddIcon />
-                    </IconButton>
-                  </Box>
-                </Box>
-              </MenuItem>
+    const features = [
+        { icon: <CancelIcon sx={{ color: '#faa935' }} />, title: "Free Cancellation", description: "Cancel up to 24 hours in advance to receive a full refund" },
+        { icon: <HealthAndSafetyIcon sx={{ color: '#faa935' }} />, title: "Health Precautions", description: "Special health and safety measures apply. Learn more" },
+        { icon: <MobileFriendlyIcon sx={{ color: '#faa935' }} />, title: "Mobile Ticketing", description: "Use your phone or print your voucher" },
+        { icon: <AccessTimeIcon sx={{ color: '#faa935' }} />, title: "Duration 3.5 Hours", description: "Check availability to see starting times." },
+        { icon: <FlashOnIcon sx={{ color: '#faa935' }} />, title: "Instant Confirmation", description: "Don’t wait for the confirmation!" },
+        { icon: <TranslateIcon sx={{ color: '#faa935' }} />, title: "Live Tour Guide In English", description: "English" },
+    ];
+    return (
+        <Container maxWidth="xl" sx={{ mt: 4 }}>
+            <Typography variant="h4" gutterBottom maxWidth="sm">
+                Vintage Double Decker Bus Tour & Thames River Cruise
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography variant="subtitle1" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <LocationOnIcon fontSize='small' /> Gothenburg |
+                </Typography>
+                <Rating name="half-rating-read" defaultValue={4} precision={0.5} readOnly />
+                <Typography variant="subtitle1" color="textSecondary">
+                    (348 reviews)
+                </Typography>
             </Box>
-          </Popover>
-        </FormControl>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ height: '56px' }}
-        >
-          <SearchMdIcon />
-        </Button>
-      </Box>
-      <HotelBooking />
-    </Stack>
-  );
+
+            <Grid container sx={{ mt: 2 }} columnSpacing={4} rowSpacing={2}>
+                <Grid item xs={12} md={8} sx={{ ".MuiPaper-root": { border: 0, borderRadius: 0 }, ".MuiCardContent-root": { padding: 0 } }}>
+                    <Card sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <CardMedia
+                            component="img"
+                            height="400"
+                            image="https://via.placeholder.com/800x400"
+                            alt="Tour Image"
+                        />
+                        <CardContent sx={{ padding: 0 }}>
+                            <Grid container spacing={2}>
+                                {['https://via.placeholder.com/100', 'https://via.placeholder.com/100', 'https://via.placeholder.com/100', 'https://via.placeholder.com/100', 'https://via.placeholder.com/100', 'https://via.placeholder.com/100'].map((src, index) => (
+                                    <Grid item xs={2} key={index}>
+                                        <img src={src} alt={`Thumbnail ${index}`} style={{ width: '100%', height: '100%' }} />
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                    <Box sx={{ mt: 4, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, backgroundColor: '#f9f9f9' }}>
+                        <Grid container spacing={2}>
+                            {features.map((feature, index) => (
+                                <Grid item xs={12} sm={6} key={index}>
+                                    <Box sx={{ display: 'flex', alignItems: 'top', gap: 1 }}>
+                                        {feature.icon}
+                                        <Box>
+                                            <Typography variant="subtitle1" fontWeight="bold">{feature.title}</Typography>
+                                            <Typography variant="body2" color="textSecondary">{feature.description}</Typography>
+                                        </Box>
+                                    </Box>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+                    <Box sx={{ mt: 4 }}>
+                        <Typography variant="h6">Description</Typography>
+                        <Typography variant="body1" color="textSecondary">
+                            See the highlights of London via 2 classic modes of transport on this half-day adventure...
+                        </Typography>
+                    </Box>
+                    <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <Typography variant="h6" sx={{ color: '#faa935', textDecoration: 'underline' }}>
+                            Open In Google Maps
+                        </Typography>
+                        <Maps />
+                    </Box>
+                </Grid>
+
+                <Grid item xs={12} md={4}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h6">Booking</Typography>
+                            <TextField
+                                label="From"
+                                type="date"
+                                defaultValue="2021-10-12"
+                                fullWidth
+                                sx={{ mt: 2 }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <TextField
+                                label="To"
+                                type="date"
+                                defaultValue="2021-10-12"
+                                fullWidth
+                                sx={{ mt: 2 }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <TextField
+                                label="No. Of Guest"
+                                select
+                                defaultValue="2 adults"
+                                fullWidth
+                                sx={{ mt: 2 }}
+                            >
+                                <MenuItem value="1 adult">1 adult</MenuItem>
+                                <MenuItem value="2 adults">2 adults</MenuItem>
+                                <MenuItem value="3 adults">3 adults</MenuItem>
+                            </TextField>
+                            <p style={{ textAlign: 'center' }}>
+                                Subtotal
+                            </p>
+                            <Typography variant="h4" sx={{ textAlign: 'center', color: '#faa935' }}>
+                                $78.90
+                            </Typography>
+                        </CardContent>
+                        <CardActions sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                            <Button variant="contained" sx={{ backgroundColor: '#faa935', "&:hover": { backgroundColor: '#faa935' } }} fullWidth>
+                                Confirm Booking
+                            </Button>
+                            <Button variant="outlined" fullWidth color='inherit'>
+                                Save To Wishlist
+                            </Button>
+                            <Button variant="outlined" fullWidth color='inherit'>
+                                Share The Activity
+                            </Button>
+                        </CardActions>
+                    </Card>
+                </Grid>
+            </Grid>
+            <Divider sx={{ my: 4 }} />
+            <Box sx={{ mt: 4, ".MuiContainer-root": { padding: 0 } }}>
+                <Typography variant="h6">Related Hotels In Today</Typography>
+                <Testimonials Html={relatedHotelsToday()} />
+            </Box>
+            <Divider sx={{ my: 4 }} />
+            <Box sx={{ mt: 4, ".MuiContainer-root": { padding: 0 } }}>
+                <Typography variant="h6">Related Hotels In VietNam</Typography>
+                <Testimonials Html={relatedHotelsVietnam()} />
+            </Box>
+            <Divider sx={{ my: 4 }} />
+            <CustomerReview />
+        </Container>
+    );
 };
 
 export default HotelBookingPage;

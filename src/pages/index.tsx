@@ -1,25 +1,25 @@
 import React from 'react';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { AboutUs } from 'src/sections/home/about';
-import { Services } from 'src/sections/home/services';
-import { PopularDestinations } from 'src/sections/home/destinations';
-import { Packages } from 'src/sections/home/packages';
-import { Booking } from 'src/sections/home/booking';
-import { MeetOurGuides } from 'src/sections/home/guides';
-import { TestimonialsSection } from 'src/sections/home/testimonials';
 import { Stack } from '@mui/material';
+import HeroSection from 'src/sections/home/hero';
+import ServicesSection from 'src/sections/home/service';
+import ExperienceSection from 'src/sections/home/experience';
+import Gallery from 'src/sections/home/gallery';
+import TestimonialSection from 'src/sections/home/testimonials';
+import NewsLetter from 'src/sections/home/newsletter';
+import Explore from 'src/sections/common/explore';
 
 const TravelHomePage = () => {
   return (
-    <Stack>
-      <AboutUs />
-      <Services />
-      <PopularDestinations />
-      <Packages />
-      <Booking />
-      <MeetOurGuides />
-      <TestimonialsSection />
+    <Stack sx={{display: 'flex', flexDirection: 'column', gap: 10}}>
+      <HeroSection />
+      <ServicesSection />
+      <ExperienceSection />
+      <Explore />
+      <Gallery />
+      <TestimonialSection />
+      <NewsLetter />
     </Stack>
   );
 };

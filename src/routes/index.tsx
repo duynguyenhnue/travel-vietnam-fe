@@ -3,7 +3,8 @@ import type { RouteObject } from 'react-router';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 import { hotelsRoutes } from './hotels';
-import { flightsRoutes } from './flights';
+import { toursRoutes } from './tours';
+import { aboutRoutes } from './about';
 
 const HomePage = lazy(() => import('src/pages/index'));
 const Error404Page = lazy(() => import('src/pages/404'));
@@ -40,5 +41,6 @@ export const routes: RouteObject[] = [
     ),
   },
   ...hotelsRoutes,
-  ...flightsRoutes,
+  ...toursRoutes,
+  ...aboutRoutes,
 ];

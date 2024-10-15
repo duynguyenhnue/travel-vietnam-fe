@@ -5,7 +5,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 
 const HotelsPage = lazy(() => import('src/pages/hotels/index'));
 const HotelBookingPage = lazy(() => import('src/pages/hotels/hotel-booking'));
-const RoomsBookingPage = lazy(() => import('src/pages/hotels/rooms-booking'));
+// const RoomsBookingPage = lazy(() => import('src/pages/hotels/rooms-booking'));
 const Error404Page = lazy(() => import('src/pages/404'));
 
 export const hotelsRoutes: RouteObject[] = [
@@ -28,10 +28,10 @@ export const hotelsRoutes: RouteObject[] = [
         path: '/hotels/:locationId',
         element: <HotelBookingPage />,
       },
-      {
-        path: '/hotels/:locationId/:hotelId',
-        element: <RoomsBookingPage />,
-      },
+      // {
+      //   path: '/hotels/:locationId/:hotelId',
+      //   element: <RoomsBookingPage />,
+      // },
     ],
   },
   {
