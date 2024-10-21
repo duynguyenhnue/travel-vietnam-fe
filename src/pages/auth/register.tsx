@@ -322,7 +322,7 @@ const RegisterPage = () => {
                 </MenuItem>
               ))}
             </TextField>
-            <Box sx={{ display: 'flex', gap: '10px', ".MuiInputAdornment-root": {marginTop: '0px !important'}, ".MuiInputBase-input": {paddingTop: '10px !important', paddingBottom: '10px !important'} }}>
+            <Box sx={{ display: 'flex', gap: '10px', ".MuiInputAdornment-root": { marginTop: '0px !important' }, ".MuiInputBase-input": { paddingTop: '10px !important', paddingBottom: '10px !important' } }}>
               <MuiTelInput
                 sx={{ width: '170px' }}
                 value={formik.values.phone.country}
@@ -344,7 +344,7 @@ const RegisterPage = () => {
                   placeholder="000 000 000"
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (/^\d*$/.test(value)) { 
+                    if (/^\d*$/.test(value)) {
                       formik.setFieldValue('phone.number', value);
                     }
                   }}
