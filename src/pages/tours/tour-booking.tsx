@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Container, Grid, Typography, Card, CardMedia, CardContent, CardActions, TextField, MenuItem, Rating, Divider } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -10,6 +10,9 @@ import TranslateIcon from '@mui/icons-material/Translate';
 import Maps from 'src/sections/common/map';
 import Testimonials from 'src/sections/common/testimonials';
 import CustomerReview from 'src/sections/hotels/details/review';
+import { useLocation } from 'react-router';
+import { RootState, useDispatch, useSelector } from 'src/redux/store';
+import { getTourById } from 'src/redux/slices/tours';
 
 const relatedHotelsToday = () => {
     const tours = [
@@ -206,18 +209,33 @@ const HotelBookingPage = () => {
         { icon: <FlashOnIcon sx={{ color: '#faa935' }} />, title: "Instant Confirmation", description: "Don’t wait for the confirmation!" },
         { icon: <TranslateIcon sx={{ color: '#faa935' }} />, title: "Live Tour Guide In English", description: "English" },
     ];
+    const location = useLocation();
+    const pathname = location.pathname;
+    const id = pathname.split('/').pop();
+    const dispatch = useDispatch();
+    const data = useSelector((state: RootState) => state.tours.tour);
+    useEffect(() => {
+        if (id) {
+            dispatch(getTourById(id));
+        }
+    }, [id]);
+    const calculateAverageRating = (reviews: { rating: number }[]) => {
+        if (reviews.length === 0) return 0; 
+        const total = reviews.reduce((acc, review) => acc + review.rating, 0);
+        return (total / reviews.length).toFixed(2); 
+    };
     return (
         <Container maxWidth="xl" sx={{ mt: 4 }}>
             <Typography variant="h4" gutterBottom maxWidth="sm">
-                Vintage Double Decker Bus Tour & Thames River Cruise
+                {data?.title}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Typography variant="subtitle1" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <LocationOnIcon fontSize='small' /> Gothenburg |
                 </Typography>
-                <Rating name="half-rating-read" defaultValue={4} precision={0.5} readOnly />
+                <Rating name="half-rating-read" defaultValue={Number(calculateAverageRating(data?.reviews || []))} precision={0.5} readOnly />
                 <Typography variant="subtitle1" color="textSecondary">
-                    (348 reviews)
+                    ({data?.reviews?.length || 0} reviews)
                 </Typography>
             </Box>
 
@@ -258,7 +276,7 @@ const HotelBookingPage = () => {
                     <Box sx={{ mt: 4 }}>
                         <Typography variant="h6">Description</Typography>
                         <Typography variant="body1" color="textSecondary">
-                            See the highlights of London via 2 classic modes of transport on this half-day adventure...
+                            {data?.desc}
                         </Typography>
                     </Box>
                     <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -336,7 +354,7 @@ const HotelBookingPage = () => {
                 <Testimonials Html={relatedHotelsVietnam()} />
             </Box>
             <Divider sx={{ my: 4 }} />
-            <CustomerReview />
+            <CustomerReview data={data?.reviews || []} />
         </Container>
     );
 };

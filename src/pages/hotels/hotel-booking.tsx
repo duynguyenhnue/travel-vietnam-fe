@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Container, Grid, Typography, Card, CardMedia, CardContent, CardActions, TextField, MenuItem, Rating, Divider } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -10,6 +10,9 @@ import TranslateIcon from '@mui/icons-material/Translate';
 import Maps from 'src/sections/common/map';
 import Testimonials from 'src/sections/common/testimonials';
 import CustomerReview from 'src/sections/hotels/details/review';
+import { useLocation } from 'react-router';
+import { RootState, useDispatch, useSelector } from 'src/redux/store';
+import { getHotelById } from 'src/redux/slices/hotels';
 
 const relatedHotelsToday = () => {
     const tours = [
@@ -206,10 +209,20 @@ const HotelBookingPage = () => {
         { icon: <FlashOnIcon sx={{ color: '#faa935' }} />, title: "Instant Confirmation", description: "Don’t wait for the confirmation!" },
         { icon: <TranslateIcon sx={{ color: '#faa935' }} />, title: "Live Tour Guide In English", description: "English" },
     ];
+    const location = useLocation();
+    const pathname = location.pathname;
+    const id = pathname.split('/').pop();
+    const dispatch = useDispatch();
+    const data = useSelector((state: RootState) => state.tours.tour);
+    useEffect(() => {
+        if (id) {
+            dispatch(getHotelById(id));
+        }
+    }, [id]);
     return (
         <Container maxWidth="xl" sx={{ mt: 4 }}>
             <Typography variant="h4" gutterBottom maxWidth="sm">
-                Vintage Double Decker Bus Tour & Thames River Cruise
+                {data?.title || "Title Hotels"}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Typography variant="subtitle1" color="textSecondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -336,7 +349,7 @@ const HotelBookingPage = () => {
                 <Testimonials Html={relatedHotelsVietnam()} />
             </Box>
             <Divider sx={{ my: 4 }} />
-            <CustomerReview />
+            <CustomerReview data={data?.reviews || []}/>
         </Container>
     );
 };
