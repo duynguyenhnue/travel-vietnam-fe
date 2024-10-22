@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 import ItemCard from './itemCard';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { getTours } from 'src/redux/slices/tours';
@@ -24,13 +24,15 @@ const FeaturedTourList = () => {
 
 const Explore = () => {
     return (
-        <Grid container rowGap={5}>
-            <Grid item lg={12} className='mb-5'>
+        <Container maxWidth="xl">
+            <Grid container rowGap={5}>
+                <Grid item lg={12} className='mb-5'>
                 <StyledTitleComponent>Explore</StyledTitleComponent>
                 <Typography variant="h4" className='featured__tour-title'>Our featured tours</Typography>
             </Grid>
             <FeaturedTourList />
-        </Grid>
+            </Grid>
+        </Container>
     );
 };
 

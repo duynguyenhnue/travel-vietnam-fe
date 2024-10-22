@@ -1,5 +1,6 @@
+import { Container } from '@mui/material';
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { StyledTitleComponent } from 'src/styles/common';
 
@@ -37,7 +38,7 @@ const Gallery = () => {
     ]
 
     return (
-        <Container>
+        <Container maxWidth="xl">
             <Row>
                 <Col lg='12'>
                     <StyledTitleComponent>Gallery</StyledTitleComponent>
