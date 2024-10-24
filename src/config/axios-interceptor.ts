@@ -5,6 +5,7 @@ const ACCESS_TOKEN = localStorageConfig.accessToken;
 const REFRESH_TOKEN = localStorageConfig.refreshToken;
 const TIMEOUT = 1 * 60 * 1000;
 axios.defaults.timeout = TIMEOUT;
+axios.defaults.baseURL = envConfig.serverURL;
 
 const setupAxiosInterceptors = (onUnauthenticated: any) => {
   const onRequestSuccess = async (config: any) => {
