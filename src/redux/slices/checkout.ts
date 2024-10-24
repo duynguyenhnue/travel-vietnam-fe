@@ -34,7 +34,7 @@ export const getPaymentUrl = (params: VnpayParams) => {
       dispatch(checkoutSlice.actions.checkoutRequest());
       const response = await axios.post('/vnpay/create_payment_url', params);
 
-      window.location.href = response.data.paymentUrl;
+      window.location.href = response.data.data.paymentUrl;
       dispatch(checkoutSlice.actions.checkoutSuccess());
     } catch (error) {
       dispatch(checkoutSlice.actions.checkoutFailure(error.message));
