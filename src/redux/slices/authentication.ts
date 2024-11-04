@@ -119,7 +119,7 @@ export const login = (loginData: LoginRequestType) => {
       const errorMessage: string = error.response
         ? error.response.data.message
         : 'Something went wrong';
-      toast.error(errorMessage);
+      toast.error('Invalid email or password');
       dispatch(authenticationSlice.actions.loginFailure(errorMessage));
     }
   };

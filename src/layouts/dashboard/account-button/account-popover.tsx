@@ -32,7 +32,6 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-
   const handleLogout = useCallback(async (): Promise<void> => {
     try {
       onClose?.();

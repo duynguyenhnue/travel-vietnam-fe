@@ -39,7 +39,7 @@ export const toursSlice = createSlice({
   },
 });
 
-export const getTours = (page = 0, limit = 9, city = "") => {
+export const getTours = (page = 0, limit = 9, city = '') => {
   return async () => {
     try {
       dispatch(toursSlice.actions.getRequest());

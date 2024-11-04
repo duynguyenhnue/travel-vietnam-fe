@@ -17,6 +17,7 @@ import { tokens } from 'src/locales/tokens';
 import { LanguageSwitch } from '../language-switch';
 import ProfileIcon from '@mui/icons-material/Person';
 import { getUser } from 'src/redux/slices/user';
+import axios from 'axios';
 
 const navLinks = [
   { path: '/', display: 'Home' },
@@ -58,7 +59,13 @@ export const TopNav = () => {
 
   const { open } = useSelector((state: any) => state.authentication);
 
-  const [isTokenValid, setIsTokenValid] = useState(false);
+  useEffect(() => {
+    if (open === 'login' || open === 'register' || open === 'logout') {
+      dialog.handleOpen();
+    }
+  }, [open]);
+
+  const [isTokenValid, setIsTokenValid] = useState<boolean>();
 
   useEffect(() => {
     const token = localStorage.getItem(localStorageConfig.accessToken);
@@ -72,9 +79,25 @@ export const TopNav = () => {
           dispatch(getUser());
         } else {
           setIsTokenValid(false);
+          const refresh_token = localStorage.getItem(localStorageConfig.refreshToken);
+
+          axios
+            .post(`/auth/refresh-token`, {
+              refresh_token,
+            })
+            .then((response) => {
+              localStorage.setItem(localStorageConfig.accessToken, response.data.data.access_token);
+              setIsTokenValid(true);
+            })
+            .catch(() => {
+              localStorage.removeItem(localStorageConfig.accessToken);
+              localStorage.removeItem(localStorageConfig.refreshToken);
+              setIsTokenValid(false);
+              toast.error('Login session has expired');
+            });
         }
       } catch (error) {
-        toast.error('Invalid JWT token');
+        toast.error('Login session has expired');
         localStorage.removeItem(localStorageConfig.accessToken);
         localStorage.removeItem(localStorageConfig.refreshToken);
         setIsTokenValid(false);
@@ -103,11 +126,15 @@ export const TopNav = () => {
         boxShadow: 'none',
       }}
     >
-      <Container maxWidth='xl'>
+      <Container maxWidth="xl">
         <Toolbar sx={{ display: 'flex', gap: 2.5 }}>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
             <Link to="/">
-              <img src="/assets/logo.png" alt="Logo" style={{ height: '50px' }} />
+              <img
+                src="/assets/logo.png"
+                alt="Logo"
+                style={{ height: '50px' }}
+              />
             </Link>
           </Box>
 
@@ -119,7 +146,19 @@ export const TopNav = () => {
                 style={{ textDecoration: 'none', color: '#0b2727' }}
                 className={({ isActive }) => (isActive ? 'active__link' : '')}
               >
-                <Typography variant="h6" sx={{ fontWeight: 500, fontSize: '1.5rem', '&:hover': { color: '#faa935' }, color: location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path)) ? '#faa935' : '#0b2727' }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 500,
+                    fontSize: '1.5rem',
+                    '&:hover': { color: '#faa935' },
+                    color:
+                      location.pathname === item.path ||
+                      (item.path !== '/' && location.pathname.startsWith(item.path))
+                        ? '#faa935'
+                        : '#0b2727',
+                  }}
+                >
                   {item.display}
                 </Typography>
               </NavLink>
@@ -144,9 +183,9 @@ export const TopNav = () => {
                   border: 'none',
                   borderRadius: '50px',
                   padding: '0.4rem 1.5rem',
-                  ":hover": {
-                    background: '#ff7e01'
-                  }
+                  ':hover': {
+                    background: '#ff7e01',
+                  },
                 }}
               >
                 {t(tokens.nav.login)}
@@ -161,9 +200,9 @@ export const TopNav = () => {
                   border: 'none',
                   borderRadius: '50px',
                   padding: '0.4rem 1.5rem',
-                  ":hover": {
-                    background: '#ff7e01'
-                  }
+                  ':hover': {
+                    background: '#ff7e01',
+                  },
                 }}
               >
                 {t(tokens.nav.register)}
@@ -201,7 +240,10 @@ export const TopNav = () => {
             <Dialog
               fullWidth
               maxWidth="sm"
-              onClose={dialog.handleClose}
+              onClose={() => {
+                dialog.handleClose();
+                dispatch(handleOpenDialog(''));
+              }}
               open={dialog.open}
             >
               <Stack p={4}>
@@ -251,8 +293,7 @@ export const TopNav = () => {
                 )}
               </Stack>
             </Dialog>
-          )
-          }
+          )}
 
           <IconButton
             edge="end"
@@ -265,10 +306,18 @@ export const TopNav = () => {
           </IconButton>
         </Toolbar>
 
-        <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
+        <Drawer
+          anchor="right"
+          open={drawerOpen}
+          onClose={toggleDrawer}
+        >
           <List sx={{ width: 250 }}>
             {navLinks.map((item, index) => (
-              <ListItem button key={index} onClick={toggleDrawer}>
+              <ListItem
+                button
+                key={index}
+                onClick={toggleDrawer}
+              >
                 <NavLink
                   to={item.path}
                   style={{ textDecoration: 'none', color: '#0b2727', width: '100%' }}
@@ -281,6 +330,6 @@ export const TopNav = () => {
           </List>
         </Drawer>
       </Container>
-    </AppBar >
+    </AppBar>
   );
 };

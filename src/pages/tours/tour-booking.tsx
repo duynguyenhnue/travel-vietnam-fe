@@ -214,6 +214,7 @@ const HotelBookingPage = () => {
     const id = pathname.split('/').pop();
     const dispatch = useDispatch();
     const data = useSelector((state: RootState) => state.tours.tour);
+    
     useEffect(() => {
         if (id) {
             dispatch(getTourById(id));
@@ -245,7 +246,7 @@ const HotelBookingPage = () => {
                         <CardMedia
                             component="img"
                             height="400"
-                            image="https://via.placeholder.com/800x400"
+                            image={data?.photos?.[0] || "https://via.placeholder.com/800x400"}
                             alt="Tour Image"
                         />
                         <CardContent sx={{ padding: 0 }}>

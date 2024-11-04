@@ -2,15 +2,11 @@ import { Suspense, lazy } from 'react';
 import type { RouteObject } from 'react-router';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard';
-import { hotelsRoutes } from './hotels';
-import { toursRoutes } from './tours';
-import { aboutRoutes } from './about';
-import { profileRoutes } from './profile';
+import ProfilePage from 'src/pages/profile';
 
-const HomePage = lazy(() => import('src/pages/index'));
 const Error404Page = lazy(() => import('src/pages/404'));
 
-export const routes: RouteObject[] = [
+export const profileRoutes: RouteObject[] = [
   {
     element: (
       <>
@@ -23,8 +19,8 @@ export const routes: RouteObject[] = [
     ),
     children: [
       {
-        path: '/',
-        element: <HomePage />,
+        path: '/profile',
+        element: <ProfilePage />,
       },
     ],
   },
@@ -41,8 +37,4 @@ export const routes: RouteObject[] = [
       </Suspense>
     ),
   },
-  ...hotelsRoutes,
-  ...toursRoutes,
-  ...aboutRoutes,
-  ...profileRoutes,
 ];
