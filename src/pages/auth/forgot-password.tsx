@@ -1,23 +1,20 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import ArrowLeftIcon from '@untitled-ui/icons-react/build/esm/ArrowLeft';
 import {
   Box,
   Button,
   CircularProgress,
-  Link,
   Stack,
   SvgIcon,
   TextField,
   Typography,
 } from '@mui/material';
-
-import { RouterLink } from 'src/components/common/router/router-link';
 import { Seo } from 'src/components/common/performance/seo';
-import { paths } from 'src/paths';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { useMounted } from 'src/hooks/use-mounted';
-import { forgotPassword } from 'src/redux/slices/authentication';
+import { forgotPassword, handleOpenDialog } from 'src/redux/slices/authentication';
+import { Container } from '@mui/system';
+import { ArrowLeftIcon } from '@mui/x-date-pickers';
 
 interface ForgotPasswordValues {
   email: string;
@@ -42,7 +39,7 @@ const ForgotPasswordPage = () => {
     validationSchema,
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        await dispatch(forgotPassword(values.email));
+        await dispatch(forgotPassword());
       } catch (err) {
         if (isMounted()) {
           helpers.setStatus({ success: false });
@@ -55,23 +52,15 @@ const ForgotPasswordPage = () => {
   return (
     <>
       <Seo title="Forgot Password" />
-      <div>
-        <Box sx={{ mb: 4 }}>
-          <Link
-            color="text.primary"
-            component={RouterLink}
-            href={paths.auth.login}
-            sx={{
-              alignItems: 'center',
-              display: 'inline-flex',
-            }}
-            underline="hover"
-          >
-            <SvgIcon sx={{ mr: 1 }}>
-              <ArrowLeftIcon />
-            </SvgIcon>
-            <Typography variant="subtitle2">Back to Login</Typography>
-          </Link>
+      <Container maxWidth="sm">
+        <Box
+          sx={{ mb: 4, display: 'flex', alignItems: 'center' }}
+          onClick={() => dispatch(handleOpenDialog('login'))}
+        >
+          <SvgIcon sx={{ mr: 1 }}>
+            <ArrowLeftIcon />
+          </SvgIcon>
+          <Typography variant="subtitle2">Back to Login</Typography>
         </Box>
         <Stack
           sx={{ mb: 4 }}
@@ -116,7 +105,7 @@ const ForgotPasswordPage = () => {
             </Button>
           </form>
         )}
-      </div>
+      </Container>
     </>
   );
 };

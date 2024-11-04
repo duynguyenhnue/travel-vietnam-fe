@@ -12,8 +12,7 @@ import {
   Typography,
   MenuItem,
   OutlinedInput,
-  FormControl,
-  useTheme,
+  FormControl
 } from '@mui/material';
 
 import { Seo } from 'src/components/common/performance/seo';
@@ -114,7 +113,6 @@ const validationSchema = Yup.object({
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const isMounted = useMounted();
-  const theme = useTheme();
   const { loading } = useSelector((state) => state.authentication);
   const [provinces, setProvinces] = useState<Location[]>([]);
   const [districts, setDistricts] = useState<Location[]>([]);
@@ -191,7 +189,7 @@ const RegisterPage = () => {
           >
             Already have an account? &nbsp;
             <Typography
-              color={theme.palette.primary.main}
+              color="#faa935"
               variant="subtitle2"
               onClick={() => dispatch(handleOpenDialog('login'))}
             >
@@ -376,6 +374,7 @@ const RegisterPage = () => {
             >
               I have read the{' '}
               <Link
+                color="#faa935"
                 component="a"
                 href="#"
               >
@@ -389,7 +388,7 @@ const RegisterPage = () => {
           <Button
             fullWidth
             size="large"
-            sx={{ mt: 3 }}
+            sx={{ mt: 3, background: '#faa935' }}
             type="submit"
             variant="contained"
             disabled={!formik.values.policy || loading}

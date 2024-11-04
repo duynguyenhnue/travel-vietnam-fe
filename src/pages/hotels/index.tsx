@@ -42,11 +42,23 @@ const HotelPage = () => {
       }
     ]
   }
+  const promoCodes = [
+    { title: "Mã 500K | Bangkok", description: "Giảm 5% tối đa 500K", code: "BKTBVNHT500K", apply: "Hotel" },
+    { title: "Mã 750K | Tokyo", description: "Giảm 7% tối đa 750K", code: "TKTBVNHT750K", apply: "Hotel" },
+    { title: "Ưu đãi Sacombank", description: "Giảm 250K cho khách sạn", code: "SACOMBANK250", apply: "Hotel" },
+    { title: "Ưu đãi HSBC", description: "Giảm 300K cho khách sạn", code: "HSBCKS300", apply: "Hotel" },
+    { title: "Mã 600K | Seoul", description: "Giảm 6% tối đa 600K", code: "SEOTBVNHT600K", apply: "Hotel" },
+    { title: "Ưu đãi VIB", description: "Giảm 350K khi đặt khách sạn", code: "VIBKS350", apply: "Hotel" },
+    { title: "Mã 900K | Paris", description: "Giảm 10% tối đa 900K", code: "PRTBVNHT900K", apply: "Hotel" },
+    { title: "Ưu đãi BIDV", description: "Giảm 400K khi đặt khách sạn", code: "BIDVKS400", apply: "Hotel" },
+    { title: "Mã 1 TRIỆU | Dubai", description: "Giảm 10% tối đa 1 triệu", code: "DBTBVNHT1M", apply: "Hotel" },
+    { title: "Ưu đãi Vietcombank", description: "Giảm 500K cho khách sạn", code: "VCBKS500", apply: "Hotel" },
+];
   return (
     <Stack sx={{display: 'flex', flexDirection: 'column', gap: 5, mb: 5}}>
       <BannerSlider banners={banners} />
       <FormFieldHotel />
-      <Discount type="hotel" />
+      <Discount promoCodes={promoCodes} />
       <ProposeHotel />
       <TextArticle data={ data } />
     </Stack>

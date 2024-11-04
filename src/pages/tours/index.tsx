@@ -8,18 +8,32 @@ import FormFieldTour from 'src/sections/tours/formField';
 const TourPage = () => {
   const banners = [
     {
-      image: 'https://tse4.mm.bing.net/th?id=OIG3.qmznknFATLAIp6yx0kfO&pid=ImgGn',
+      image: '/assets/tours/banner1.png',
       link: '',
     },
     {
-      image: 'https://tse2.mm.bing.net/th?id=OIG3.zJ.ycowDWuXmeTFHdDgT&pid=ImgGn',
+      image: '/assets/tours/banner2.png',
       link: '',
     },
     {
-      image: 'https://tse3.mm.bing.net/th?id=OIG1.syaY908k4ES41rygJwVB&pid=ImgGn',
+      image: '/assets/tours/banner3.png',
       link: '',
     },
   ];
+
+  const promoCodes = [
+    { title: "Mã 300K | Phú Quốc", description: "Giảm 5% tối đa 300K", code: "PQTBVNHT300K", apply: "Tour" },
+    { title: "Ưu đãi Agribank", description: "Giảm 200K cho tour", code: "AGRITOUR200", apply: "Tour" },
+    { title: "Mã 600K | Hạ Long", description: "Giảm 7% tối đa 600K", code: "HLTBVNHT600K", apply: "Tour" },
+    { title: "Ưu đãi BIDV", description: "Giảm 250K cho tour", code: "BIDVTOUR250", apply: "Tour" },
+    { title: "Mã 500K | Đà Nẵng", description: "Giảm 10% tối đa 500K", code: "DNTBVNHT500K", apply: "Tour" },
+    { title: "Ưu đãi TPBank", description: "Giảm 300K cho tour", code: "TPBTOUR300", apply: "Tour" },
+    { title: "Mã 800K | Nha Trang", description: "Giảm 8% tối đa 800K", code: "NTTBVNHT800K", apply: "Tour" },
+    { title: "Ưu đãi VPBank", description: "Giảm 400K cho tour", code: "VPBTOUR400", apply: "Tour" },
+    { title: "Mã 1 TRIỆU | Sapa", description: "Giảm 15% tối đa 1 triệu", code: "SPTBVNHT1M", apply: "Tour" },
+    { title: "Ưu đãi Eximbank", description: "Giảm 500K cho tour", code: "EXIMTOUR500", apply: "Tour" }
+  ];  
+
   const data = {
     title: "Khám Phá Các Tour Du Lịch Đặc Sắc Tại Travel World",
     content: [
@@ -45,7 +59,7 @@ const TourPage = () => {
     <Stack sx={{ display: 'flex', flexDirection: 'column', gap: 5, mb: 5 }}>
       <BannerSlider banners={banners} />
       <FormFieldTour />
-      <Discount type="tour" />
+      <Discount promoCodes={promoCodes} />
       <Explore />
       <TextArticle data={ data } />
     </Stack>

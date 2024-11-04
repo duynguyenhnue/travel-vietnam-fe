@@ -10,12 +10,14 @@ import TranslateIcon from '@mui/icons-material/Translate';
 import Maps from 'src/sections/common/map';
 import Testimonials from 'src/sections/common/testimonials';
 import CustomerReview from 'src/sections/hotels/details/review';
-import { useDispatch } from 'src/redux/store';
+import { useDispatch, useSelector } from 'src/redux/store';
 import { getPaymentUrl } from 'src/redux/slices/checkout';
 import { localStorageConfig } from 'src/config';
 import { useDialog } from 'src/hooks/use-dialog';
 import { handleOpenDialog } from 'src/redux/slices/authentication';
 import toast from 'react-hot-toast';
+import { BookingType } from 'src/types/redux/checkout';
+import { useParams } from 'react-router';
 
 const relatedHotelsToday = () => {
   const tours = [
@@ -242,8 +244,11 @@ const relatedHotelsVietnam = () => {
 };
 
 const HotelBookingPage = () => {
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const dialog = useDialog();
+  const { locationId } = useParams();
+  
 
   const handlePayment = () => {
     const access = localStorage.getItem(localStorageConfig.accessToken);
@@ -258,7 +263,10 @@ const HotelBookingPage = () => {
     dispatch(
       getPaymentUrl({
         amount: 78000,
-        orderInfo: 'Vintage Double Decker Bus Tour & Thames River Cruise',
+        bookingType: BookingType.HOTELS,
+        guestSize: 2,
+        userId: user?.id || '',
+        orderId: locationId || '',
       })
     );
   };

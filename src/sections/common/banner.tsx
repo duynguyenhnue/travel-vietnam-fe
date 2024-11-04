@@ -35,7 +35,7 @@ const BannerSlider = ({banners}: {banners: Banner[]}) => {
               component="img"
               src={banner.image}
               alt={`Banner ${index + 1}`}
-              sx={{ width: '100%', height: '400px', objectFit: 'cover' }}
+              sx={{ width: '100%', height: '400px', objectFit: 'fill' }}
             />
           </Box>
         ))}

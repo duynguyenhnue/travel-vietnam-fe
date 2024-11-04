@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Typography,
@@ -22,6 +22,8 @@ const ProfilePage = () => {
   const [mode, setMode] = useState<'information' | 'booking' | 'newsletter' | 'notification'>('information');
   const { user } = useSelector((state) => state.user);
   const [province, setProvince] = useState<string>("");
+  const [image, setImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
     const fetchProvinces = async (): Promise<void> => {
       try {
@@ -33,7 +35,7 @@ const ProfilePage = () => {
               setProvince(item.name);
             }
           }
-        } 
+        }
       } catch (error: unknown) {
         toast.error(`Error fetching provinces: ${String(error)}`);
       }
@@ -43,17 +45,47 @@ const ProfilePage = () => {
       toast.error(`Error fetching provinces: ${String(error)}`);
     });
   }, []);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
+    }
+  };
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
   return (
     <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
       <Box width="25%" bgcolor="white" p={2} borderRadius="8px" boxShadow="0 2px 10px rgba(0,0,0,0.1)">
         <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
-          <Avatar
-            src="https://via.placeholder.com/100"
-            sx={{ width: 100, height: 100, mb: 1 }}
-          />
-          <IconButton sx={{ position: 'relative', bottom: 30, left: 35, backgroundColor: 'white', p: 0.5 }}>
-            <EditIcon fontSize="small" />
-          </IconButton>
+          <Box position="relative">
+            <input
+              ref={fileInputRef}
+              accept="image/*"
+              style={{ display: 'none' }}
+              type="file"
+              onChange={handleImageUpload}
+            />
+            <Avatar
+              src={image || '/assets/avatars/profile.svg'}
+              sx={{ width: 100, height: 100, mb: 1 }}
+            />
+            <IconButton
+              onClick={handleClick}
+              sx={{
+                position: 'absolute',
+                bottom: 10,
+                right: 10,
+                backgroundColor: 'white',
+                p: 0.5,
+              }}
+            >
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </Box>
           <Typography variant="h6">{user?.fullName}</Typography>
           <Box display="flex" gap={1} mt={1}>
             <LocationOnIcon color="disabled" />
@@ -61,7 +93,7 @@ const ProfilePage = () => {
             <Divider orientation="vertical" flexItem />
             <BirthdayCakeIcon color="disabled" fontSize="small" />
             <Typography variant="body2" color="textSecondary">
-                {user?.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : ''}
+              {user?.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : ''}
             </Typography>
           </Box>
         </Box>

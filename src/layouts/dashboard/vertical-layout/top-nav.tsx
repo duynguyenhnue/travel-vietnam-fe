@@ -18,6 +18,7 @@ import { LanguageSwitch } from '../language-switch';
 import ProfileIcon from '@mui/icons-material/Person';
 import { getUser } from 'src/redux/slices/user';
 import axios from 'axios';
+import ForgotPasswordPage from 'src/pages/auth/forgot-password';
 
 const navLinks = [
   { path: '/', display: 'Home' },
@@ -249,6 +250,7 @@ export const TopNav = () => {
               <Stack p={4}>
                 {open === 'login' && <LoginPage />}
                 {open === 'register' && <RegisterPage />}
+                {open === 'forgot-password' && <ForgotPasswordPage />}
                 {open === 'logout' && (
                   <Stack spacing={2}>
                     <Typography

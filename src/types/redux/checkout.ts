@@ -5,5 +5,13 @@ export type CheckoutState = {
 
 export interface VnpayParams {
   amount: number;
-  orderInfo: string;
+  bookingType: BookingType;
+  guestSize: number;
+  userId: string;
+  orderId: string;
+}
+
+export enum BookingType {
+  HOTELS = 'HOTELS',
+  TOURS = 'TOURS',
 }
