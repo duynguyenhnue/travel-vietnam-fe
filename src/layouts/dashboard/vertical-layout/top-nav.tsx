@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Box, List, ListItem, ListItemText, Drawer, Dialog, Stack, MenuItem, Container } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Box, List, ListItem, ListItemText, Drawer, Dialog, Stack, MenuItem, Container, Menu } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { localStorageConfig } from 'src/config';
@@ -15,6 +15,8 @@ import { handleOpenDialog, logout } from 'src/redux/slices/authentication';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { LanguageSwitch } from '../language-switch';
+import ProfileIcon from '@mui/icons-material/Person';
+import { getUser } from 'src/redux/slices/user';
 
 const navLinks = [
   { path: '/', display: 'Home' },
@@ -67,6 +69,7 @@ export const TopNav = () => {
         const currentTime = Date.now() / 1000;
         if (decoded.exp && decoded.exp > currentTime) {
           setIsTokenValid(true);
+          dispatch(getUser());
         } else {
           setIsTokenValid(false);
         }
@@ -78,6 +81,15 @@ export const TopNav = () => {
       }
     }
   }, [open]);
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const openProfileMenu = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const { t } = useTranslation();
   const location = useLocation();
@@ -115,23 +127,11 @@ export const TopNav = () => {
           </Box>
           <LanguageSwitch />
           {isTokenValid ? (
-            <MenuItem
-              onClick={() => {
-                dialog.handleOpen();
-                dispatch(handleOpenDialog('logout'));
-              }}
-              sx={{
-                background: '#faa935',
-                border: 'none',
-                borderRadius: '50px',
-                padding: '0.4rem 1.5rem',
-                ":hover": {
-                  background: '#ff7e01'
-                }
-              }}
+            <IconButton
+              onClick={handleClick}
             >
-              {t(tokens.nav.logout)}
-            </MenuItem>
+              <ProfileIcon />
+            </IconButton>
           ) : (
             <>
               <MenuItem
@@ -170,6 +170,33 @@ export const TopNav = () => {
               </MenuItem>
             </>
           )}
+          <Menu
+            anchorEl={anchorEl}
+            open={openProfileMenu}
+            onClose={handleClose}
+          >
+            <RouterLink href="/profile">
+              <MenuItem>
+                {t(tokens.nav.profile)}
+              </MenuItem>
+            </RouterLink>
+            <MenuItem
+              onClick={() => {
+                // Chuyển hướng đến trang cài đặt
+              }}
+            >
+              {t(tokens.nav.settings)}
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                dialog.handleOpen();
+                dispatch(handleOpenDialog('logout'));
+              }}
+            >
+              {t(tokens.nav.logout)}
+            </MenuItem>
+          </Menu>
+
           {open !== '' && (
             <Dialog
               fullWidth
@@ -197,7 +224,12 @@ export const TopNav = () => {
                       <RouterLink href="/">
                         <StyledButton
                           variant="contained"
-                          color="primary"
+                          sx={{
+                            background: '#faa935',
+                            ":hover": {
+                              background: '#ff7e01'
+                            }
+                          }}
                           onClick={() => {
                             dispatch(logout());
                             dialog.handleClose();
@@ -209,6 +241,7 @@ export const TopNav = () => {
                       </RouterLink>
                       <StyledButton
                         variant="outlined"
+                        color="inherit"
                         onClick={dialog.handleClose}
                       >
                         Hủy
