@@ -1,13 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import { dispatch } from 'src/redux/store';
-import { CheckoutState, VnpayParams } from 'src/types/redux/checkout';
+import { CheckoutState, ParamsReturn, VnPayReturn, VnpayParams } from 'src/types/redux/checkout';
 
 type FailureAction = PayloadAction<string>;
+type VnpayReturnAction = PayloadAction<VnPayReturn>;
 
 const initialState: CheckoutState = {
   loading: false,
+  vnpayReturn: null,
   errorMessage: '',
 };
 
@@ -25,6 +28,17 @@ export const checkoutSlice = createSlice({
       state.loading = false;
       state.errorMessage = action.payload;
     },
+    checkoutReturnRequest: (state: CheckoutState) => {
+      state.loading = true;
+    },
+    checkoutReturnSuccess: (state: CheckoutState, action: VnpayReturnAction) => {
+      state.loading = false;
+      state.vnpayReturn = action.payload;
+    },
+    checkoutReturnFailure: (state: CheckoutState, action: FailureAction) => {
+      state.loading = false;
+      state.errorMessage = action.payload;
+    },
   },
 });
 
@@ -38,6 +52,24 @@ export const getPaymentUrl = (params: VnpayParams) => {
       dispatch(checkoutSlice.actions.checkoutSuccess());
     } catch (error) {
       dispatch(checkoutSlice.actions.checkoutFailure(error.message));
+    }
+  };
+};
+
+export const paymentReturn = (params: ParamsReturn) => {
+  return async () => {
+    try {
+      dispatch(checkoutSlice.actions.checkoutReturnRequest());
+      const response = await axios.get('/vnpay/vnpay_return', { params });
+
+      if (response.data.data.status === 'CONFIRMED') {
+        toast.success('Thanh toán thành công!');
+        dispatch(checkoutSlice.actions.checkoutReturnSuccess(response.data.data));
+      } else {
+        toast.error('Thanh toán thất bại!');
+      }
+    } catch (error) {
+      dispatch(checkoutSlice.actions.checkoutReturnFailure(error.message));
     }
   };
 };
