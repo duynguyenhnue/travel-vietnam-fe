@@ -1,10 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Box, List, ListItem, ListItemText, Drawer, Dialog, Stack, MenuItem, Container, Menu } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Drawer,
+  Dialog,
+  Stack,
+  MenuItem,
+  Container,
+  Menu,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { localStorageConfig } from 'src/config';
-import { jwtDecode } from 'jwt-decode';
-import toast from 'react-hot-toast';
 import LoginPage from 'src/pages/auth/login';
 import RegisterPage from 'src/pages/auth/register';
 import { RouterLink } from 'src/components/common/router/router-link';
@@ -16,8 +29,6 @@ import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { LanguageSwitch } from '../language-switch';
 import ProfileIcon from '@mui/icons-material/Person';
-import { getUser } from 'src/redux/slices/user';
-import axios from 'axios';
 import ForgotPasswordPage from 'src/pages/auth/forgot-password';
 
 const navLinks = [
@@ -72,37 +83,9 @@ export const TopNav = () => {
     const token = localStorage.getItem(localStorageConfig.accessToken);
 
     if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
-        if (decoded.exp && decoded.exp > currentTime) {
-          setIsTokenValid(true);
-          dispatch(getUser());
-        } else {
-          setIsTokenValid(false);
-          const refresh_token = localStorage.getItem(localStorageConfig.refreshToken);
-
-          axios
-            .post(`/auth/refresh-token`, {
-              refresh_token,
-            })
-            .then((response) => {
-              localStorage.setItem(localStorageConfig.accessToken, response.data.data.access_token);
-              setIsTokenValid(true);
-            })
-            .catch(() => {
-              localStorage.removeItem(localStorageConfig.accessToken);
-              localStorage.removeItem(localStorageConfig.refreshToken);
-              setIsTokenValid(false);
-              toast.error('Login session has expired');
-            });
-        }
-      } catch (error) {
-        toast.error('Login session has expired');
-        localStorage.removeItem(localStorageConfig.accessToken);
-        localStorage.removeItem(localStorageConfig.refreshToken);
-        setIsTokenValid(false);
-      }
+      setIsTokenValid(true);
+    } else {
+      setIsTokenValid(false);
     }
   }, [open]);
 
@@ -167,9 +150,7 @@ export const TopNav = () => {
           </Box>
           <LanguageSwitch />
           {isTokenValid ? (
-            <IconButton
-              onClick={handleClick}
-            >
+            <IconButton onClick={handleClick}>
               <ProfileIcon />
             </IconButton>
           ) : (
@@ -216,9 +197,7 @@ export const TopNav = () => {
             onClose={handleClose}
           >
             <RouterLink href="/profile">
-              <MenuItem>
-                {t(tokens.nav.profile)}
-              </MenuItem>
+              <MenuItem>{t(tokens.nav.profile)}</MenuItem>
             </RouterLink>
             <MenuItem
               onClick={() => {
@@ -270,9 +249,9 @@ export const TopNav = () => {
                           variant="contained"
                           sx={{
                             background: '#faa935',
-                            ":hover": {
-                              background: '#ff7e01'
-                            }
+                            ':hover': {
+                              background: '#ff7e01',
+                            },
                           }}
                           onClick={() => {
                             dispatch(logout());
