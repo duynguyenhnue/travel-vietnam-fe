@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import toast from 'react-hot-toast';
 import { dispatch } from 'src/redux/store';
 import { CheckoutState, ParamsReturn, VnPayReturn, VnpayParams } from 'src/types/redux/checkout';
 
@@ -62,12 +61,7 @@ export const paymentReturn = (params: ParamsReturn) => {
       dispatch(checkoutSlice.actions.checkoutReturnRequest());
       const response = await axios.get('/vnpay/vnpay_return', { params });
 
-      if (response.data.data.status === 'CONFIRMED') {
-        toast.success('Thanh toán thành công!');
-        dispatch(checkoutSlice.actions.checkoutReturnSuccess(response.data.data));
-      } else {
-        toast.error('Thanh toán thất bại!');
-      }
+      dispatch(checkoutSlice.actions.checkoutReturnSuccess(response.data.data));
     } catch (error) {
       dispatch(checkoutSlice.actions.checkoutReturnFailure(error.message));
     }
