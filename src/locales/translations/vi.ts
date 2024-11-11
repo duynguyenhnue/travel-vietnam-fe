@@ -13,7 +13,9 @@ export const vi = {
   [tokens.common.flights]: 'Vé máy bay',
   [tokens.nav.login]: 'Đăng nhập',
   [tokens.nav.register]: 'Đăng ký',
-  [tokens.nav.logout]: 'Dăng xuất',
+  [tokens.nav.logout]: 'Đăng xuất',
+  [tokens.nav.settings]: 'Cài đặt',
+  [tokens.nav.profile]: 'Hồ sơ',
 
   // Hotels
   [tokens.hotels.destination]: 'Điểm đến',

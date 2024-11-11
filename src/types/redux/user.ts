@@ -12,5 +12,15 @@ export type UserType = {
   fullName: string;
   id: string;
   nationality: string | null;
+  dateOfBirth: string | null;
   updatedDate: string;
+  phone: {
+    country: string;
+    number: string;
+  };
+  address: {
+    province: string;
+    district: string;
+    ward: string;
+  };
 };

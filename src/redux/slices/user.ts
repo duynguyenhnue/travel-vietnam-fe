@@ -6,6 +6,7 @@ import { dispatch } from '../store';
 import { UserState, UserType } from 'src/types/redux/user';
 import { Response } from 'src/types/redux/response';
 import toast from 'react-hot-toast';
+import { envConfig } from 'src/config';
 
 type GetUserSuccessdAction = PayloadAction<UserType | null>;
 type GetUserFailureAction = PayloadAction<string>;
@@ -39,7 +40,7 @@ export const getUser = () => {
     try {
       dispatch(userSlice.actions.getUserRequest());
 
-      const result: AxiosResponse<Response<UserType>> = await axios.get('/user/');
+      const result: AxiosResponse<Response<UserType>> = await axios.get(`${envConfig.serverURL}/users`);
       dispatch(userSlice.actions.getUserSuccess(result.data.data ? result.data.data : null));
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : 'Something went wrong';

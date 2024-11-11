@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { Button, CircularProgress, Stack, TextField, Typography, useTheme } from '@mui/material';
+import { Button, CircularProgress,  Stack, TextField, Typography } from '@mui/material';
 import { Seo } from 'src/components/common/performance/seo';
 import { paths } from 'src/paths';
 import { useDispatch, useSelector } from 'src/redux/store';
@@ -37,7 +37,6 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const isMounted = useMounted();
-  const theme = useTheme();
   const dialog = useDialog();
 
   const { loading, isAuthenticated } = useSelector((state) => state.authentication);
@@ -86,7 +85,7 @@ const LoginPage = () => {
           >
             Don&apos;t have an account? &nbsp;
             <Typography
-              color={theme.palette.primary.main}
+              color="#faa935"
               variant="subtitle2"
               onClick={() => dispatch(handleOpenDialog('register'))}
             >
@@ -124,9 +123,18 @@ const LoginPage = () => {
               autoComplete="current-password"
             />
           </Stack>
+          <Typography
+            color="#faa935"
+            variant="subtitle2"
+            onClick={() => {
+              dispatch(handleOpenDialog('forgot-password'));
+            }}
+          >
+            Forgot password?
+          </Typography>
           <Button
             fullWidth
-            sx={{ mt: 3 }}
+            sx={{ mt: 3, background: '#faa935' }}
             size="large"
             type="submit"
             variant="contained"

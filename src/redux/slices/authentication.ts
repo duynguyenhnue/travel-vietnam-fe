@@ -137,15 +137,13 @@ export const logout = () => {
   };
 };
 
-export const forgotPassword = (email: string) => {
+export const forgotPassword = () => {
   return async () => {
     try {
       dispatch(authenticationSlice.actions.forgotPasswordRequest());
-      await axios.post(`/auth/reset/reset-password`, {
-        email,
-      });
       dispatch(authenticationSlice.actions.forgotPasswordSuccess());
-      toast.success('Please check your email for reset password link!');
+      toast.success('New password has been sent to your email');
+      dispatch(handleOpenDialog('login'));
     } catch (error) {
       const errorMessage: string = error.response
         ? error.response.data.message

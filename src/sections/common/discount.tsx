@@ -7,15 +7,6 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import toast from 'react-hot-toast';
 import { StyledTitleComponent } from 'src/styles/common';
 
-const promoCodes = [
-    { title: "Mã 350K | Hong Kong", description: "Giảm 5% tối đa 350K", code: "HKTBVNHT350K", apply: "Khách sạn" },
-    { title: "Mã 1 TRIỆU | Hong Kong", description: "Giảm 1 triệu", code: "HKTBVNHT1TR", apply: "Khách sạn" },
-    { title: "Ưu đãi Techcombank", description: "Giảm 200K", code: "TCBKSHE24", apply: "Khách sạn" },
-    { title: "Ưu đãi VPBank", description: "Giảm 200K", code: "VPKS200", apply: "Tour" },
-    { title: "Mã 500K | Singapore", description: "Giảm 10% tối đa 500K", code: "SGTBVNHT500K", apply: "Khách sạn" },
-    { title: "Ưu đãi ANZ", description: "Giảm 300K", code: "ANZ200", apply: "Khách sạn" }
-];
-
 const chunkArray = (arr: any, size: any) => {
     return arr.reduce((acc: any, _: any, index: any) => {
         if (index % size === 0) {
@@ -25,7 +16,7 @@ const chunkArray = (arr: any, size: any) => {
     }, []);
 };
 
-const Discount = ({ type }: { type: string }) => {
+const Discount = ({ promoCodes }: { promoCodes: any }) => {
     const [activePromoIndex, setActivePromoIndex] = useState(0);
     const promoChunks = chunkArray(promoCodes, 4);
 
@@ -60,10 +51,10 @@ const Discount = ({ type }: { type: string }) => {
                             }}
                         >
                             {chunk.map((promo: any, index: number) => (
-                                <Grid
-                                    item xs={12} sm={6} md={4} lg={3}
-                                    key={index}
-                                    sx={{
+                                    <Grid
+                                        item xs={12} sm={6} md={4} lg={3}
+                                        key={index}
+                                        sx={{
                                         flexBasis: 0,
                                         flexGrow: 1,
                                     }}
@@ -109,11 +100,10 @@ const Discount = ({ type }: { type: string }) => {
                                                 borderRadius: '20px 0 0 20px',
                                                 padding: '5px 10px',
                                                 fontSize: '12px'
-                                            // }}>{promo.apply}</p>  
-                                            }}>{type}</p>
-                                        </Card>
-                                    </Box>
-                                </Grid>
+                                            }}>{promo.apply}</p> 
+                                            </Card>
+                                        </Box>
+                                    </Grid>
                             ))}
                         </Grid>
                     ))}
@@ -127,4 +117,4 @@ const Discount = ({ type }: { type: string }) => {
     );
 };
 
-export default Discount;
+export default Discount;   

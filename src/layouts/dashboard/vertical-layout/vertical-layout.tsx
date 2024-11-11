@@ -21,7 +21,7 @@ export const VerticalLayout: FC<VerticalLayoutProps> = (props) => {
 
       <Container
         maxWidth="xl"
-        sx={{ paddingTop: 4, paddingBottom: 4 }}
+        sx={{ paddingTop: 4, paddingBottom: 4, flex: 1 }}
       >
         {children}
       </Container>

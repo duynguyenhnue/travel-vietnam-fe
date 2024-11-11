@@ -8,9 +8,11 @@ export const tokens = {
     time: 'common.time',
   },
   nav: {
+    settings: 'nav.settings',
     login: 'nav.login',
     register: 'nav.register',
     logout: 'nav.logout',
+    profile: 'nav.profile'
   },
   hotels: {
     destination: 'hotels.destination',

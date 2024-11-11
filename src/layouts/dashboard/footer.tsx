@@ -33,10 +33,10 @@ const Footer = () => {
                 <IconButton component={Link} to="#" sx={{ color: 'text.primary' }}>
                   <GitHub />
                 </IconButton>
-                <IconButton component={Link} to="#" sx={{ color: 'text.primary' }}>
+                <IconButton component={Link} to="https://www.facebook.com/chungg.203" sx={{ color: 'text.primary' }}>
                   <Facebook />
                 </IconButton>
-                <IconButton component={Link} to="#" sx={{ color: 'text.primary' }}>
+                <IconButton component={Link} to="https://www.instagram.com/chungg.203" sx={{ color: 'text.primary' }}>
                   <Instagram />
                 </IconButton>
               </div>
@@ -85,21 +85,21 @@ const Footer = () => {
                 <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <LocationOn sx={{ color: '#faa935'}} /> Address:
                 </Typography>
-                <Typography sx={{ fontSize: '1.2rem' }}>Lorem</Typography>
+                <Typography sx={{ fontSize: '1.2rem' }}>Cầu Giấy, Hà Nội</Typography>
               </ListItem>
 
               <ListItem sx={{ p: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <MailOutline sx={{ color: '#faa935' }} /> Email:
                 </Typography>
-                <Typography sx={{ fontSize: '1.2rem' }}>Lorem</Typography>
+                <Typography sx={{ fontSize: '1.2rem' }}>stu715105031@hnue.edu.vn</Typography>
               </ListItem>
 
               <ListItem sx={{ p: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Phone sx={{ color: '#faa935' }} /> Phone:
                 </Typography>
-                <Typography sx={{ fontSize: '1.2rem' }}>Lorem</Typography>
+                <Typography sx={{ fontSize: '1.2rem' }}>(+84) 708200334</Typography>
               </ListItem>
             </List>
           </Grid>

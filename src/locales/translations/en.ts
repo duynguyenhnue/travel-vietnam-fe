@@ -13,6 +13,8 @@ export const en = {
   [tokens.nav.login]: 'Login',
   [tokens.nav.register]: 'Register',
   [tokens.nav.logout]: 'Logout',
+  [tokens.nav.settings]: 'Settings',
+  [tokens.nav.profile]: 'Profile',
 
   // Hotels
   [tokens.hotels.destination]: 'Destination',
