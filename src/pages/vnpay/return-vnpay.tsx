@@ -33,9 +33,9 @@ const VnPayResult: React.FC = () => {
       >
         <Paper
           elevation={3}
-          sx={{ p: 4, maxWidth: 400, textAlign: 'center' }}
+          sx={{ p: 4, maxWidth: 600, textAlign: 'center' }}
         >
-          {vnpayReturn && vnpayReturn?.status === 'CONFIRMED' ? (
+          {vnpayReturn && vnpayReturn?.status === 'CONFIRMED' && params.vnp_BankCode !== 'VNPAY' ? (
             <>
               <CheckCircleOutlineIcon
                 color="success"
@@ -48,12 +48,15 @@ const VnPayResult: React.FC = () => {
               >
                 Thanh toán thành công!
               </Typography>
+
               <Typography
                 variant="body1"
                 mt={2}
               >
-                Số tiền: {vnpayReturn.amount} VND
+                Loại: {vnpayReturn.bookingType}
               </Typography>
+
+              <Typography variant="body1">Số tiền: {vnpayReturn.amount} VND</Typography>
               <Typography variant="body1">Mã giao dịch: {vnpayReturn.txnRef}</Typography>
             </>
           ) : (
