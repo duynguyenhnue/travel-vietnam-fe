@@ -6,13 +6,12 @@ import {
   CircularProgress,
   Checkbox,
   FormHelperText,
-  Link,
   Stack,
   TextField,
   Typography,
   MenuItem,
   OutlinedInput,
-  FormControl
+  FormControl,
 } from '@mui/material';
 
 import { Seo } from 'src/components/common/performance/seo';
@@ -24,6 +23,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import { MuiTelInput } from 'mui-tel-input';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 interface Address {
   province: string;
@@ -117,6 +118,7 @@ const RegisterPage = () => {
   const [provinces, setProvinces] = useState<Location[]>([]);
   const [districts, setDistricts] = useState<Location[]>([]);
   const [wards, setWards] = useState<Location[]>([]);
+  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues,
@@ -175,25 +177,25 @@ const RegisterPage = () => {
   }, [formik.values.address.district]);
   return (
     <>
-      <Seo title="Register" />
+      <Seo title={t(tokens.auth.register.title)} />
       <div>
         <Stack
           sx={{ mb: 4 }}
           spacing={1}
         >
-          <Typography variant="h5">Register</Typography>
+          <Typography variant="h5">{t(tokens.auth.register.title)}</Typography>
           <Typography
             color="text.secondary"
             variant="body2"
             display="flex"
           >
-            Already have an account? &nbsp;
+            {t(tokens.auth.register.haveAccount)} &nbsp;
             <Typography
               color="#faa935"
               variant="subtitle2"
               onClick={() => dispatch(handleOpenDialog('login'))}
             >
-              login
+              {t(tokens.auth.register.loginHere)}
             </Typography>
           </Typography>
         </Stack>
@@ -320,7 +322,17 @@ const RegisterPage = () => {
                 </MenuItem>
               ))}
             </TextField>
-            <Box sx={{ display: 'flex', gap: '10px', ".MuiInputAdornment-root": { marginTop: '0px !important' }, ".MuiInputBase-input": { paddingTop: '10px !important', paddingBottom: '10px !important' } }}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '10px',
+                '.MuiInputAdornment-root': { marginTop: '0px !important' },
+                '.MuiInputBase-input': {
+                  paddingTop: '10px !important',
+                  paddingBottom: '10px !important',
+                },
+              }}
+            >
               <MuiTelInput
                 sx={{ width: '170px' }}
                 value={formik.values.phone.country}
@@ -372,18 +384,11 @@ const RegisterPage = () => {
               color="text.secondary"
               variant="body2"
             >
-              I have read the{' '}
-              <Link
-                color="#faa935"
-                component="a"
-                href="#"
-              >
-                Terms and Conditions
-              </Link>
+              {t(tokens.auth.register.terms)}
             </Typography>
           </Box>
           {!!(formik.touched.policy && formik.errors.policy) && (
-            <FormHelperText error>{formik.errors.policy}</FormHelperText>
+            <FormHelperText error>{t(tokens.auth.register.termsRequired)}</FormHelperText>
           )}
           <Button
             fullWidth
@@ -393,7 +398,7 @@ const RegisterPage = () => {
             variant="contained"
             disabled={!formik.values.policy || loading}
           >
-            {loading ? <CircularProgress /> : 'Register'}
+            {loading ? <CircularProgress /> : t(tokens.auth.register.registerButton)}
           </Button>
         </form>
       </div>

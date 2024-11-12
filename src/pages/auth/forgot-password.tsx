@@ -15,6 +15,8 @@ import { useMounted } from 'src/hooks/use-mounted';
 import { forgotPassword, handleOpenDialog } from 'src/redux/slices/authentication';
 import { Container } from '@mui/system';
 import { ArrowLeftIcon } from '@mui/x-date-pickers';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 interface ForgotPasswordValues {
   email: string;
@@ -31,6 +33,7 @@ const validationSchema = Yup.object({
 const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
   const isMounted = useMounted();
+  const { t } = useTranslation();
 
   const { loading, forgotEmailSent } = useSelector((state) => state.authentication);
 
@@ -51,7 +54,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <>
-      <Seo title="Forgot Password" />
+      <Seo title={t(tokens.auth.forgotPassword.title)} />
       <Container maxWidth="sm">
         <Box
           sx={{ mb: 4, display: 'flex', alignItems: 'center' }}
@@ -60,20 +63,22 @@ const ForgotPasswordPage = () => {
           <SvgIcon sx={{ mr: 1 }}>
             <ArrowLeftIcon />
           </SvgIcon>
-          <Typography variant="subtitle2">Back to Login</Typography>
+          <Typography variant="subtitle2">{t(tokens.auth.forgotPassword.backToLogin)}</Typography>
         </Box>
         <Stack
           sx={{ mb: 4 }}
           spacing={1}
         >
-          <Typography variant="h5">{forgotEmailSent ? 'Email sent' : 'Forgot password'}</Typography>
+          <Typography variant="h5">
+            {forgotEmailSent ? t(tokens.auth.forgotPassword.emailSent) : t(tokens.auth.forgotPassword.title)}
+          </Typography>
           <Typography
             color="text.secondary"
             variant="body2"
           >
             {forgotEmailSent
-              ? `If there is a PTE Magic account registered to ${formik.values.email} we have sent instructions for how to reset your password.`
-              : 'Please insert your email in the input below and we will send an email with the link to reset your password.'}
+              ? t(tokens.auth.forgotPassword.emailSentDescription, { email: formik.values.email })
+              : t(tokens.auth.forgotPassword.description)}
           </Typography>
         </Stack>
         {!forgotEmailSent && (
@@ -86,7 +91,7 @@ const ForgotPasswordPage = () => {
               error={!!(formik.touched.email && formik.errors.email)}
               fullWidth
               helperText={formik.touched.email && formik.errors.email}
-              label="Email Address"
+              label={t(tokens.auth.login.email)}
               name="email"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -101,7 +106,7 @@ const ForgotPasswordPage = () => {
               variant="contained"
               disabled={loading}
             >
-              {loading ? <CircularProgress /> : 'Send reset link'}
+              {loading ? <CircularProgress /> : t(tokens.auth.forgotPassword.sendResetLink)}
             </Button>
           </form>
         )}

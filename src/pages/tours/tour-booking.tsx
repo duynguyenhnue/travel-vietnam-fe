@@ -33,6 +33,8 @@ import toast from 'react-hot-toast';
 import { getPaymentUrl } from 'src/redux/slices/checkout';
 import { BookingType } from 'src/types/redux/checkout';
 import { useDialog } from 'src/hooks/use-dialog';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 const relatedHotelsToday = () => {
   const tours = [
@@ -259,36 +261,37 @@ const relatedHotelsVietnam = () => {
 };
 
 const HotelBookingPage = () => {
+  const { t } = useTranslation();
   const features = [
     {
       icon: <CancelIcon sx={{ color: '#faa935' }} />,
-      title: 'Free Cancellation',
-      description: 'Cancel up to 24 hours in advance to receive a full refund',
+      title: t(tokens.tourBooking.features.freeCancellation.title),
+      description: t(tokens.tourBooking.features.freeCancellation.description),
     },
     {
       icon: <HealthAndSafetyIcon sx={{ color: '#faa935' }} />,
-      title: 'Health Precautions',
-      description: 'Special health and safety measures apply. Learn more',
+      title: t(tokens.tourBooking.features.healthPrecautions.title),
+      description: t(tokens.tourBooking.features.healthPrecautions.description),
     },
     {
       icon: <MobileFriendlyIcon sx={{ color: '#faa935' }} />,
-      title: 'Mobile Ticketing',
-      description: 'Use your phone or print your voucher',
+      title: t(tokens.tourBooking.features.mobileTicketing.title),
+      description: t(tokens.tourBooking.features.mobileTicketing.description),
     },
     {
       icon: <AccessTimeIcon sx={{ color: '#faa935' }} />,
-      title: 'Duration 3.5 Hours',
-      description: 'Check availability to see starting times.',
+      title: t(tokens.tourBooking.features.duration.title),
+      description: t(tokens.tourBooking.features.duration.description),
     },
     {
       icon: <FlashOnIcon sx={{ color: '#faa935' }} />,
-      title: 'Instant Confirmation',
-      description: 'Don’t wait for the confirmation!',
+      title: t(tokens.tourBooking.features.instantConfirmation.title),
+      description: t(tokens.tourBooking.features.instantConfirmation.description),
     },
     {
       icon: <TranslateIcon sx={{ color: '#faa935' }} />,
-      title: 'Live Tour Guide In English',
-      description: 'English',
+      title: t(tokens.tourBooking.features.tourGuide.title),
+      description: t(tokens.tourBooking.features.tourGuide.description),
     },
   ];
   const location = useLocation();
@@ -454,7 +457,7 @@ const HotelBookingPage = () => {
             </Grid>
           </Box>
           <Box sx={{ mt: 4 }}>
-            <Typography variant="h6">Description</Typography>
+            <Typography variant="h6">{t(tokens.tourBooking.description)}</Typography>
             <Typography
               variant="body1"
               color="textSecondary"
@@ -467,7 +470,7 @@ const HotelBookingPage = () => {
               variant="h6"
               sx={{ color: '#faa935', textDecoration: 'underline' }}
             >
-              Open In Google Maps
+              {t(tokens.tourBooking.openInGoogleMaps)}
             </Typography>
             <Maps />
           </Box>
@@ -480,29 +483,25 @@ const HotelBookingPage = () => {
         >
           <Card>
             <CardContent>
-              <Typography variant="h6">Booking</Typography>
+              <Typography variant="h6">{t(tokens.tourBooking.booking.title)}</Typography>
               <TextField
-                label="From"
+                label={t(tokens.tourBooking.booking.from)}
                 type="date"
                 defaultValue="2021-10-12"
                 fullWidth
                 sx={{ mt: 2 }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={{ shrink: true }}
               />
               <TextField
-                label="To"
+                label={t(tokens.tourBooking.booking.to)}
                 type="date"
                 defaultValue="2021-10-12"
                 fullWidth
                 sx={{ mt: 2 }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={{ shrink: true }}
               />
               <TextField
-                label="No. Of Guest"
+                label={t(tokens.tourBooking.booking.guests)}
                 select
                 defaultValue="2 adults"
                 fullWidth
@@ -512,7 +511,7 @@ const HotelBookingPage = () => {
                 <MenuItem value="2 adults">2 adults</MenuItem>
                 <MenuItem value="3 adults">3 adults</MenuItem>
               </TextField>
-              <p style={{ textAlign: 'center' }}>Subtotal</p>
+              <p style={{ textAlign: 'center' }}>{t(tokens.tourBooking.booking.subtotal)}</p>
               <Typography
                 variant="h4"
                 sx={{ textAlign: 'center', color: '#faa935' }}
@@ -527,21 +526,13 @@ const HotelBookingPage = () => {
                 onClick={handlePayment}
                 fullWidth
               >
-                Confirm Booking
+                {t(tokens.tourBooking.booking.confirmBooking)}
               </Button>
-              <Button
-                variant="outlined"
-                fullWidth
-                color="inherit"
-              >
-                Save To Wishlist
+              <Button variant="outlined" fullWidth color="inherit">
+                {t(tokens.tourBooking.booking.saveWishlist)}
               </Button>
-              <Button
-                variant="outlined"
-                fullWidth
-                color="inherit"
-              >
-                Share The Activity
+              <Button variant="outlined" fullWidth color="inherit">
+                {t(tokens.tourBooking.booking.shareActivity)}
               </Button>
             </CardActions>
           </Card>
@@ -549,12 +540,12 @@ const HotelBookingPage = () => {
       </Grid>
       <Divider sx={{ my: 4 }} />
       <Box sx={{ mt: 4, '.MuiContainer-root': { padding: 0 } }}>
-        <Typography variant="h6">Related Hotels In Today</Typography>
+        <Typography variant="h6">{t(tokens.tourBooking.relatedTours.today)}</Typography>
         <Testimonials Html={relatedHotelsToday()} />
       </Box>
       <Divider sx={{ my: 4 }} />
       <Box sx={{ mt: 4, '.MuiContainer-root': { padding: 0 } }}>
-        <Typography variant="h6">Related Hotels In VietNam</Typography>
+        <Typography variant="h6">{t(tokens.tourBooking.relatedTours.vietnam)}</Typography>
         <Testimonials Html={relatedHotelsVietnam()} />
       </Box>
       <Divider sx={{ my: 4 }} />

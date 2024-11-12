@@ -2,6 +2,8 @@ import React from 'react';
 import { Container, Grid, Typography, Box } from '@mui/material';
 import { styled } from '@mui/system';
 import { StyledTitleComponent } from 'src/styles/common';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 // Styled components for custom styles
 const HeroSubtitle = styled(Box)({
@@ -48,21 +50,22 @@ const HeroContent = styled(Box)({
 });
 
 const HeroSection = () => {
+  const { t } = useTranslation();
+
   return (
     <Container maxWidth='xl'>
       <Grid container spacing={2}>
         <Grid item lg={6}>
           <HeroContent>
             <HeroSubtitle>
-              <StyledTitleComponent>Know Before You Go</StyledTitleComponent>
+              <StyledTitleComponent>{t(tokens.hero.title)}</StyledTitleComponent>
               <img src="assets/home/hero/world.png" alt="World" style={{ width: '2.3rem', height: '2.3rem' }} />
             </HeroSubtitle>
             <Typography variant="h1">
-              Traveling opens the door to creating <Highlight>memories</Highlight>
+              {t(tokens.hero.subtitle)} <Highlight>memories</Highlight>
             </Typography>
             <Typography>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam ipsum nobis asperiores soluta voluptas quas voluptates.
-              Molestiae tempora dignissimos, animi praesentium molestias perferendis porro expedita delectus. Soluta natus porro.
+              {t(tokens.hero.description)}
             </Typography>
           </HeroContent>
         </Grid>
@@ -85,8 +88,6 @@ const HeroSection = () => {
           </HeroImgBox>
         </Grid>
       </Grid>
-      {/* <SearchBar /> */}
-
     </Container>
   );
 };
