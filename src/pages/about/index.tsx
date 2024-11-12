@@ -3,6 +3,8 @@ import { Box, Container, Grid, Typography, Card, CardContent, CardMedia, Button 
 import { styled } from '@mui/system';
 import Testimonials from 'src/sections/common/testimonials';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 const StyledContainer = styled(Container)({
   marginTop: '4rem',
@@ -10,31 +12,32 @@ const StyledContainer = styled(Container)({
 });
 
 const relatedTeam = () => {
+  const { t } = useTranslation();
   const team = [
     {
-      name: 'Nguyen Quoc Chung',
+      name: t(tokens.about.team.members.chung.name),
       image: 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/454352570_1021518722683191_3340843354482863502_n.jpg?stp=dst-jpg_s1080x2048&_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHSB6ot_fH5gK_QkfUh-ZAb8_xouXvuYZ3z_Gi5e-5hnV5xHYlhKKXzp1wx4wdi6_IcmEjf-sS1FeFXIk_8nFai&_nc_ohc=wSYIroclYSkQ7kNvgH8vfNg&_nc_zt=23&_nc_ht=scontent.fhan2-5.fna&_nc_gid=ABVSHx0c4hHUMyyiSLX-plk&oh=00_AYD5YjV0pw-p2NznILZFTjKWtk8-FezwP55Wk4rEoVZskA&oe=672EDCF9',
-      description: 'A creative Front-end Developer with a keen eye for design. Chung combines technical expertise with aesthetic sensibility to build engaging user experiences.'
+      description: t(tokens.about.team.members.chung.description),
     },
     {
-      name: 'Nguyen Van Duy',
+      name: t(tokens.about.team.members.duy.name),
       image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-6/440748415_1893292917776645_5960821697220423027_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeFNDSZTYa8Zkq_AeoCmXrgqhU3pNdDST2uFTek10NJPa8kNS_F7rgbOIJntffT_UQ-P-9_gwDuMmE59xz38FN_T&_nc_ohc=yyidaxzaPOkQ7kNvgF7e5Sv&_nc_zt=23&_nc_ht=scontent.fhan20-1.fna&_nc_gid=ASGJmQseEulTpkC41lo1QBU&oh=00_AYBN4ctVGZFOrRk-PKXf6-AjeBgpJ2MheYfEDmsf_glzUQ&oe=672EB5D0',
-      description: 'A versatile developer skilled in both front-end and back-end technologies. Duy brings a balanced approach to development, ensuring seamless integration between user interface and server logic.'
+      description: t(tokens.about.team.members.duy.description),
     },
     {
-      name: 'Pham Thi Chinh',
+      name: t(tokens.about.team.members.chinh.name),
       image: 'https://scontent.fhan2-4.fna.fbcdn.net/v/t39.30808-1/460041178_2220076215018005_861567611400213216_n.jpg?stp=dst-jpg_s480x480&_nc_cat=100&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeHHROx3_YSt3Bne-7NieixOveo4kgSK1b-96jiSBIrVvwQD2QTO9JlKAqCMhZ3ByccM0oXEN-ftN2MVDbYIgwYy&_nc_ohc=woAppT2m_6EQ7kNvgGsCS3y&_nc_zt=24&_nc_ht=scontent.fhan2-4.fna&_nc_gid=AFoNKlSexeJtqgXc3LcihPo&oh=00_AYAwfbqsCu4gP9fGlLrJaZHZDBYsHUteAiypoBhnhR4ScQ&oe=672EE0A5',
-      description: 'A dedicated Business Analyst with an eye for details and user needs. Chinh translates complex requirements into actionable insights, guiding the project towards user-centered solutions.'
+      description: t(tokens.about.team.members.chinh.description),
     },
     {
-      name: 'Dang Quoc Cuong',
+      name: t(tokens.about.team.members.cuong.name),
       image: 'https://scontent.fhan2-4.fna.fbcdn.net/v/t1.6435-9/173934059_1051788482300727_1300059999021673614_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=53a332&_nc_eui2=AeHw9gMJXDKpURwWr36AyUnQhSCXmRuI17SFIJeZG4jXtBqcp-SbeuTSX3m91W6r_d8huW0UGrnexU_xbA-mbWoQ&_nc_ohc=NdLuBWhdj88Q7kNvgEFxn-y&_nc_zt=23&_nc_ht=scontent.fhan2-4.fna&_nc_gid=ALxS12pwSHQin-8nBZ7ABJw&oh=00_AYDVmP6GUsmfOhP7e32JXQ-2yu1Lnwi6zfW_8q4sG5VLxA&oe=67507BD5',
-      description: 'An experienced Business Manager with a strategic mindset. Cuong leads the team with vision and precision, focusing on sustainable growth and operational efficiency.'
+      description: t(tokens.about.team.members.cuong.description),
     },
     {
-      name: 'Duong Thi Anh Duyen',
+      name: t(tokens.about.team.members.duyen.name),
       image: 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-1/461404074_562448949537112_6642337214357582889_n.jpg?stp=dst-jpg_s480x480&_nc_cat=108&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeE9n-K1qOtvNCw8X3mauu0KUZob0hNKM-tRmhvSE0oz6wJAD5L5zRyxbIg4NI7Gaxp-ipdkSMsaukKKv40y_whO&_nc_ohc=YIfK5k4JwkAQ7kNvgGrMl8H&_nc_zt=24&_nc_ht=scontent.fhan2-3.fna&_nc_gid=AoAW94CyTftLKtTaILWvEi7&oh=00_AYAYq-wZk96pQs1gax4Qurt4bcfdLp3doH9Uiut9U8m5dA&oe=672EBF24',
-      description: 'A meticulous Tester dedicated to quality assurance. Duyen ensures that every product release meets the highest standards, finding and resolving issues before they reach the user.'
+      description: t(tokens.about.team.members.duyen.description),
     },
   ];
   
@@ -58,16 +61,18 @@ const relatedTeam = () => {
 
 const AboutUs = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   return (
     <StyledContainer maxWidth="xl">
       <Typography variant="h3" gutterBottom>
-        About Us
+        {t(tokens.about.title)}
       </Typography>
       <Typography variant="body1" sx={{ mb: 4 }}>
-        Welcome to our travel website! We are dedicated to crafting unforgettable travel experiences by offering exceptional hotel accommodations and thrilling tours tailored to your unique desires. Whether you're seeking a peaceful getaway, an adventurous expedition, or an immersive cultural journey, we’re here to make every moment of your trip extraordinary.
+        {t(tokens.about.welcome)}
       </Typography>
       <Typography variant="body1" sx={{ mb: 4 }}>
-        Our team of travel experts brings extensive knowledge and passion for exploring the world’s most remarkable destinations. We partner with trusted providers to offer you high-quality services, personalized itineraries, and support throughout your journey. Let us be your guide as you discover new horizons and create memories that last a lifetime.
+        {t(tokens.about.description)}
       </Typography>
 
       <Grid container spacing={4}>
@@ -81,13 +86,13 @@ const AboutUs = () => {
             />
             <CardContent>
               <Typography variant="h5" gutterBottom>
-                Our Hotels
+                {t(tokens.about.hotels.title)}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                Discover a wide range of hotels that cater to all your needs, from luxury resorts to budget-friendly accommodations.
+                {t(tokens.about.hotels.description)}
               </Typography>
               <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => navigate('/hotels')}>
-                Learn More
+                {t(tokens.about.hotels.learnMore)}
               </Button>
             </CardContent>
           </Card>
@@ -103,13 +108,13 @@ const AboutUs = () => {
             />
             <CardContent>
               <Typography variant="h5" gutterBottom>
-                Our Tours
+                {t(tokens.about.tours.title)}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                Explore exciting tours that take you to the most beautiful and adventurous places around the world.
+                {t(tokens.about.tours.description)}
               </Typography>
               <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => navigate('/tours')}>
-                Learn More
+                {t(tokens.about.tours.learnMore)}
               </Button>
             </CardContent>
           </Card>
@@ -118,35 +123,29 @@ const AboutUs = () => {
 
       <Box sx={{ mt: 6, backgroundColor: '#f5f5f5', p: 4, borderRadius: 2 }}>
         <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold', color: '#003366' }}>
-          Explore the World with Us
+          {t(tokens.about.mission.title)}
         </Typography>
         <Typography variant="body1" sx={{ fontSize: '1.2rem', color: '#333333', mb: 4 }}>
-          We believe that every journey is an opportunity to explore and broaden new horizons. With a team of travel experts, we are committed to providing unique travel experiences that exceed expectations, from relaxing tours to challenging adventures.
-        </Typography>
-        <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', color: '#003366', mt: 4 }}>
-          Our Mission
-        </Typography>
-        <Typography variant="body1" sx={{ fontSize: '1.1rem', color: '#333333' }}>
-          Our mission is to create unforgettable memories for our customers by providing dedicated service and personalized itineraries tailored to individual preferences and styles. With a wide network of partners and extensive knowledge of destinations, we are ready to take you anywhere you want.
+          {t(tokens.about.mission.description)}
         </Typography>
         <Typography variant="body1" sx={{ fontSize: '1.1rem', color: '#333333', mt: 2 }}>
-          Whether it's an adventurous exploration, a relaxing vacation, or a cultural experience, we are always by your side, ensuring that every detail is meticulously taken care of, so you can focus on enjoying your dream trip.
+          {t(tokens.about.mission.details)}
         </Typography>
       </Box>
 
       <Box sx={{ mt: 6 }}>
         <Typography variant="h4" gutterBottom>
-          Meet Our Team
+          {t(tokens.about.team.title)}
         </Typography>
         <Testimonials Html={relatedTeam()} />
       </Box>
 
       <Box sx={{ mt: 6 }}>
         <Typography variant="h4" gutterBottom>
-          Contact Us
+          {t(tokens.about.contact.title)}
         </Typography>
         <Typography variant="body1">
-          Have questions? Feel free to reach out to us at stu715105031@hnue.edu.vn | (+84) 708-200-334 or stu715105064@hnue.edu.vn | (+84) 869-133-621.
+          {t(tokens.about.contact.description)}
         </Typography>
       </Box>
     </StyledContainer>

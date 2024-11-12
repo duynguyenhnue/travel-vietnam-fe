@@ -10,6 +10,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 interface Location {
   id: string;
@@ -17,6 +19,7 @@ interface Location {
 }
 
 export default function Information() {
+  const { t } = useTranslation();
   const { user } = useSelector((state) => state.user);
   const [userDetail, setUserDetail] = useState<UserType | null>(user);
   const [provinces, setProvinces] = useState<Location[]>([]);
@@ -108,29 +111,32 @@ export default function Information() {
       }}
     >
       <Card>
-        <CardHeader subheader="The information can be edited" title="Profile" />
+        <CardHeader 
+          subheader={t(tokens.profile.editInfo)} 
+          title={t(tokens.profile.title)} 
+        />
         <Divider />
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <FormControl fullWidth required>
-            <InputLabel>Full name</InputLabel>
+            <InputLabel>{t(tokens.profile.fullName)}</InputLabel>
             <OutlinedInput
               defaultValue={userDetail?.fullName}
-              label="Full name"
+              label={t(tokens.profile.fullName)}
               name="fullName"
               onChange={handleChange}
             />
           </FormControl>
           <FormControl fullWidth required>
-            <InputLabel>Email address</InputLabel>
+            <InputLabel>{t(tokens.profile.emailAddress)}</InputLabel>
             <OutlinedInput
               defaultValue={userDetail?.email}
-              label="Email address"
+              label={t(tokens.profile.emailAddress)}
               name="email"
               onChange={handleChange}
             />
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel htmlFor="date-of-birth" shrink>Date Of Birth</InputLabel>
+            <InputLabel htmlFor="date-of-birth" shrink>{t(tokens.profile.dateOfBirth)}</InputLabel>
             <OutlinedInput
               id="date-of-birth"
               type="date"
@@ -149,22 +155,24 @@ export default function Information() {
                 handleChange({ target: { name: 'phone.country', value } });
               }}
               defaultCountry="VN"
+              label={t(tokens.profile.phoneNumber)}
             />
             <FormControl fullWidth required>
-              <InputLabel>Phone number</InputLabel>
+              <InputLabel>{t(tokens.profile.phoneNumber)}</InputLabel>
               <OutlinedInput
                 sx={{ flex: 1 }}
                 defaultValue={userDetail?.phone?.number}
                 name="phone.number"
                 onChange={handleChange}
-                placeholder="000 000 000"
+                placeholder={t('000 000 000')}
+                label={t(tokens.profile.phoneNumber)}
               />
             </FormControl>
           </Box>
           <Box sx={{ display: 'flex', gap: '10px' }}>
             <TextField
               select
-              label="Province"
+              label={t(tokens.profile.province)}
               name="address.province"
               value={userDetail?.address?.province}
               onChange={handleChange}
@@ -181,7 +189,7 @@ export default function Information() {
             </TextField>
             <TextField
               select
-              label="District"
+              label={t(tokens.profile.district)}
               name="address.district"
               value={userDetail?.address?.district}
               onChange={handleChange}
@@ -199,7 +207,7 @@ export default function Information() {
             </TextField>
             <TextField
               select
-              label="Ward"
+              label={t(tokens.profile.ward)}
               name="address.ward"
               value={userDetail?.address?.ward}
               onChange={handleChange}
@@ -219,33 +227,38 @@ export default function Information() {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">Save details</Button>
+          <Button variant="contained">{t(tokens.profile.saveDetails)}</Button>
         </CardActions>
       </Card>
       <Card>
-        <CardHeader subheader="The password can be edited" title="Security" />
+        <CardHeader 
+          subheader={t(tokens.profile.editPassword)} 
+          title={t(tokens.profile.security)} 
+        />
         <Divider />
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <FormControl fullWidth required>
-            <InputLabel>New Password</InputLabel>
+            <InputLabel>{t(tokens.profile.newPassword)}</InputLabel>
             <OutlinedInput
-              label="New Password"
+              label={t(tokens.profile.newPassword)}
               name="newPassword"
               type="password"
+              placeholder={t(tokens.profile.newPassword)}
             />
           </FormControl>
           <FormControl fullWidth required>
-            <InputLabel>Confirm Password</InputLabel>
+            <InputLabel>{t(tokens.profile.confirmPassword)}</InputLabel>
             <OutlinedInput
-              label="Confirm Password"
+              label={t(tokens.profile.confirmPassword)}
               name="confirmPassword"
               type="password"
+              placeholder={t(tokens.profile.confirmPassword)}
             />
           </FormControl>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">Save</Button>
+          <Button variant="contained">{t(tokens.profile.save)}</Button>
         </CardActions>
       </Card>
     </Box>

@@ -6,6 +6,8 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import toast from 'react-hot-toast';
 import { StyledTitleComponent } from 'src/styles/common';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 const chunkArray = (arr: any, size: any) => {
     return arr.reduce((acc: any, _: any, index: any) => {
@@ -17,6 +19,7 @@ const chunkArray = (arr: any, size: any) => {
 };
 
 const Discount = ({ promoCodes }: { promoCodes: any }) => {
+    const { t } = useTranslation();
     const [activePromoIndex, setActivePromoIndex] = useState(0);
     const promoChunks = chunkArray(promoCodes, 4);
 
@@ -27,12 +30,12 @@ const Discount = ({ promoCodes }: { promoCodes: any }) => {
     const handleCopyCode = (code: string) => {
         navigator.clipboard.writeText(code)
             .then(() => {
-                toast.success("Sao chép mã thành công!");
+                toast.success(t(tokens.common.copySuccess));
             })
     }
     return (
         <Container maxWidth="xl">
-            <StyledTitleComponent>Mã giảm giá</StyledTitleComponent>
+            <StyledTitleComponent>{t(tokens.discount.title)}</StyledTitleComponent>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                 <IconButton onClick={handlePromoPrev} sx={{ color: '#faa935', border: '1px solid #faa935', position: 'absolute', left: '0', top: '50%', zIndex: '1', transform: 'translateY(-50%)', background: 'white' }}>
                     <NavigateBeforeIcon />
@@ -87,7 +90,7 @@ const Discount = ({ promoCodes }: { promoCodes: any }) => {
                                                     sx={{ background: 'rgba(247,249,250,1.00)', color: '#faa935', width: '100%', display: 'flex', gap: 2 }}
                                                     onClick={() => handleCopyCode(promo.code)}
                                                 >
-                                                    Code: {promo.code}
+                                                    {t(tokens.discount.code)}: {promo.code}
                                                     <ContentCopyIcon sx={{ fontSize: '16px' }} />
                                                 </Button>
                                             </CardContent>

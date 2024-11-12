@@ -2,6 +2,8 @@ import React from 'react';
 import { Card, CardContent, Typography, Button, Box, Rating } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Review, Address } from 'src/types/redux/tours';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 export interface Data {
     _id: string;
@@ -14,6 +16,7 @@ export interface Data {
 }
 
 const ItemCard = ({ data }: { data: Data }) => {
+    const { t } = useTranslation();
     const averageRating = data.reviews.length > 0
         ? data.reviews.reduce((sum, review) => sum + review.rating, 0) / data.reviews.length
         : 5;
@@ -40,7 +43,7 @@ const ItemCard = ({ data }: { data: Data }) => {
                                 borderRadius: '3px 0 0 0'
                             }}
                         >
-                            Featured
+                            {t(tokens.common.featured)}
                         </Box>
                     }
                 </Box>
@@ -52,7 +55,7 @@ const ItemCard = ({ data }: { data: Data }) => {
                         </Box>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '0.8rem', color: '#6e7074' }}>
                             <Rating name="half-rating-read" defaultValue={averageRating} precision={0.5} readOnly />
-                            <p>{averageRating > 0 ? averageRating.toFixed(1) : 'No ratings yet'}</p>
+                            <p>{averageRating > 0 ? `${averageRating.toFixed(1)} ${t(tokens.common.ratings)}` : t(tokens.common.noRatings)}</p>
                         </Box>
                     </Box>
 
@@ -70,27 +73,27 @@ const ItemCard = ({ data }: { data: Data }) => {
 
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
                         <Typography variant="h6" sx={{ color: '#faa935', fontWeight: 700 }}>
-                            ${data.price} <span style={{ fontWeight: 500, color: '#6e7074' }}> {data.departurePoint ? "/ 1 person" : "/ 1 room"}</span>
+                            ${data.price} <span style={{ fontWeight: 500, color: '#6e7074' }}> {data.departurePoint ? t(tokens.common.perPerson) : t(tokens.common.perRoom)}</span>
                         </Typography>
 
                         <Link to={`/${data.departurePoint ? "tours" : "hotels"}/${data._id}`}>
-                            <Button
-                                sx={{
-                                    backgroundColor: '#faa935',
-                                    padding: '0.6rem',
-                                    borderRadius: '14px 0 14px 0',
-                                    transition: '0.5s',
-                                    cursor: 'pointer',
-                                    fontStyle: 'italic',
-                                    '&:hover': {
-                                        transform: 'scale(1.1)',
-                                        color: 'purple'
-                                    }
-                                }}
-                                variant="contained"
-                            >
+                        <Button
+                            sx={{
+                                backgroundColor: '#faa935',
+                                padding: '0.6rem',
+                                borderRadius: '14px 0 14px 0',
+                                transition: '0.5s',
+                                cursor: 'pointer',
+                                fontStyle: 'italic',
+                                '&:hover': {
+                                    transform: 'scale(1.1)',
+                                    color: 'purple'
+                                }
+                            }}
+                            variant="contained"
+                        >
                                 Book Now
-                            </Button>
+                        </Button>
                         </Link>
                     </Box>
                 </CardContent>

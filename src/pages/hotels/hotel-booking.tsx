@@ -24,7 +24,7 @@ import TranslateIcon from '@mui/icons-material/Translate';
 import Maps from 'src/sections/common/map';
 import Testimonials from 'src/sections/common/testimonials';
 import CustomerReview from 'src/sections/hotels/details/review';
-import { useDispatch } from 'src/redux/store';
+import { useDispatch, useSelector, RootState } from 'src/redux/store';
 import { getPaymentUrl } from 'src/redux/slices/checkout';
 import { localStorageConfig } from 'src/config';
 import { useDialog } from 'src/hooks/use-dialog';
@@ -32,6 +32,8 @@ import { handleOpenDialog } from 'src/redux/slices/authentication';
 import toast from 'react-hot-toast';
 import { BookingType } from 'src/types/redux/checkout';
 import { useParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 const relatedHotelsToday = () => {
   const tours = [
@@ -258,9 +260,11 @@ const relatedHotelsVietnam = () => {
 };
 
 const HotelBookingPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const dialog = useDialog();
   const { locationId } = useParams();
+  const { hotel } = useSelector((state: RootState) => state.hotels);
 
   const handlePayment = () => {
     const access = localStorage.getItem(localStorageConfig.accessToken);
@@ -268,7 +272,7 @@ const HotelBookingPage = () => {
     if (!access) {
       dialog.handleOpen();
       dispatch(handleOpenDialog('login'));
-      toast.error('Please login to continue booking');
+      toast.error(t(tokens.booking.loginRequired));
       return;
     }
 
@@ -285,35 +289,36 @@ const HotelBookingPage = () => {
   const features = [
     {
       icon: <CancelIcon sx={{ color: '#faa935' }} />,
-      title: 'Free Cancellation',
-      description: 'Cancel up to 24 hours in advance to receive a full refund',
+      title: t(tokens.hotelBooking.features.freeCancellation.title),
+      description: t(tokens.hotelBooking.features.freeCancellation.description),
     },
     {
       icon: <HealthAndSafetyIcon sx={{ color: '#faa935' }} />,
-      title: 'Health Precautions',
-      description: 'Special health and safety measures apply. Learn more',
+      title: t(tokens.hotelBooking.features.healthPrecautions.title),
+      description: t(tokens.hotelBooking.features.healthPrecautions.description),
     },
     {
       icon: <MobileFriendlyIcon sx={{ color: '#faa935' }} />,
-      title: 'Mobile Ticketing',
-      description: 'Use your phone or print your voucher',
+      title: t(tokens.hotelBooking.features.mobileTicketing.title),
+      description: t(tokens.hotelBooking.features.mobileTicketing.description),
     },
     {
       icon: <AccessTimeIcon sx={{ color: '#faa935' }} />,
-      title: 'Duration 3.5 Hours',
-      description: 'Check availability to see starting times.',
+      title: t(tokens.hotelBooking.features.duration.title),
+      description: t(tokens.hotelBooking.features.duration.description),
     },
     {
       icon: <FlashOnIcon sx={{ color: '#faa935' }} />,
-      title: 'Instant Confirmation',
-      description: 'Don’t wait for the confirmation!',
+      title: t(tokens.hotelBooking.features.instantConfirmation.title),
+      description: t(tokens.hotelBooking.features.instantConfirmation.description),
     },
     {
       icon: <TranslateIcon sx={{ color: '#faa935' }} />,
-      title: 'Live Tour Guide In English',
-      description: 'English',
+      title: t(tokens.hotelBooking.features.service.title),
+      description: t(tokens.hotelBooking.features.service.description),
     },
   ];
+
   return (
     <Container
       maxWidth="xl"
@@ -324,7 +329,7 @@ const HotelBookingPage = () => {
         gutterBottom
         maxWidth="sm"
       >
-        Vintage Double Decker Bus Tour & Thames River Cruise
+        {t(tokens.hotelBooking.title)}
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Typography
@@ -332,11 +337,11 @@ const HotelBookingPage = () => {
           color="textSecondary"
           sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
         >
-          <LocationOnIcon fontSize="small" /> Gothenburg |
+          <LocationOnIcon fontSize="small" /> {t(tokens.hotelBooking.location)} |
         </Typography>
         <Rating
           name="half-rating-read"
-          defaultValue={4}
+          defaultValue={hotel?.rating || 0}
           precision={0.5}
           readOnly
         />
@@ -344,7 +349,7 @@ const HotelBookingPage = () => {
           variant="subtitle1"
           color="textSecondary"
         >
-          (348 reviews)
+          ({300} {t(tokens.reviews.reviews)})
         </Typography>
       </Box>
 
@@ -440,13 +445,12 @@ const HotelBookingPage = () => {
             </Grid>
           </Box>
           <Box sx={{ mt: 4 }}>
-            <Typography variant="h6">Description</Typography>
+            <Typography variant="h6">{t(tokens.hotelBooking.description)}</Typography>
             <Typography
               variant="body1"
               color="textSecondary"
             >
-              See the highlights of London via 2 classic modes of transport on this half-day
-              adventure...
+              {hotel?.description || 'No description available'}
             </Typography>
           </Box>
           <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -454,7 +458,7 @@ const HotelBookingPage = () => {
               variant="h6"
               sx={{ color: '#faa935', textDecoration: 'underline' }}
             >
-              Open In Google Maps
+              {t(tokens.hotelBooking.openInGoogleMaps)}
             </Typography>
             <Maps />
           </Box>
@@ -467,29 +471,25 @@ const HotelBookingPage = () => {
         >
           <Card>
             <CardContent>
-              <Typography variant="h6">Booking</Typography>
+              <Typography variant="h6">{t(tokens.hotelBooking.booking.title)}</Typography>
               <TextField
-                label="From"
+                label={t(tokens.hotelBooking.booking.from)}
                 type="date"
                 defaultValue="2021-10-12"
                 fullWidth
                 sx={{ mt: 2 }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={{ shrink: true }}
               />
               <TextField
-                label="To"
+                label={t(tokens.hotelBooking.booking.to)}
                 type="date"
                 defaultValue="2021-10-12"
                 fullWidth
                 sx={{ mt: 2 }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={{ shrink: true }}
               />
               <TextField
-                label="No. Of Guest"
+                label={t(tokens.hotelBooking.booking.guests)}
                 select
                 defaultValue="2 adults"
                 fullWidth
@@ -499,7 +499,7 @@ const HotelBookingPage = () => {
                 <MenuItem value="2 adults">2 adults</MenuItem>
                 <MenuItem value="3 adults">3 adults</MenuItem>
               </TextField>
-              <p style={{ textAlign: 'center' }}>Subtotal</p>
+              <p style={{ textAlign: 'center' }}>{t(tokens.hotelBooking.booking.subtotal)}</p>
               <Typography
                 variant="h4"
                 sx={{ textAlign: 'center', color: '#faa935' }}
@@ -510,25 +510,25 @@ const HotelBookingPage = () => {
             <CardActions sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Button
                 variant="contained"
-                onClick={handlePayment}
                 sx={{ backgroundColor: '#faa935', '&:hover': { backgroundColor: '#faa935' } }}
+                onClick={handlePayment}
                 fullWidth
               >
-                Confirm Booking
+                {t(tokens.hotelBooking.booking.confirmBooking)}
               </Button>
               <Button
                 variant="outlined"
                 fullWidth
                 color="inherit"
               >
-                Save To Wishlist
+                {t(tokens.hotelBooking.booking.saveWishlist)}
               </Button>
               <Button
                 variant="outlined"
                 fullWidth
                 color="inherit"
               >
-                Share The Activity
+                {t(tokens.hotelBooking.booking.shareActivity)}
               </Button>
             </CardActions>
           </Card>
@@ -536,12 +536,12 @@ const HotelBookingPage = () => {
       </Grid>
       <Divider sx={{ my: 4 }} />
       <Box sx={{ mt: 4, '.MuiContainer-root': { padding: 0 } }}>
-        <Typography variant="h6">Related Hotels In Today</Typography>
+        <Typography variant="h6">{t(tokens.hotelBooking.relatedHotels.today)}</Typography>
         <Testimonials Html={relatedHotelsToday()} />
       </Box>
       <Divider sx={{ my: 4 }} />
       <Box sx={{ mt: 4, '.MuiContainer-root': { padding: 0 } }}>
-        <Typography variant="h6">Related Hotels In VietNam</Typography>
+        <Typography variant="h6">{t(tokens.hotelBooking.relatedHotels.vietnam)}</Typography>
         <Testimonials Html={relatedHotelsVietnam()} />
       </Box>
       <Divider sx={{ my: 4 }} />

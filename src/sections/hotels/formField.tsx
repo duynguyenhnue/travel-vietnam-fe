@@ -6,6 +6,8 @@ import { enGB } from 'date-fns/locale';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { StyledTitleComponent } from 'src/styles/common';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 interface Location {
     id: string;
@@ -13,6 +15,7 @@ interface Location {
 }
 
 const FormFieldHotel = () => {
+    const { t } = useTranslation();
     const [city, setCity] = useState('');
     const [hotelName, setHotelName] = useState('');
     const [adults, setAdults] = useState(1);
@@ -79,24 +82,21 @@ const FormFieldHotel = () => {
     return (
         <Container maxWidth="xl">
             <StyledTitleComponent>
-                Đặt Khách Sạn
+                {t(tokens.hotels.bookHotel)}
             </StyledTitleComponent>
 
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         select
-                        label="Thành phố"
+                        label={t(tokens.hotels.city)}
                         name="address.province"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
                         fullWidth
                     >
                         {provinces.map((province) => (
-                            <MenuItem
-                                key={province.name}
-                                value={province.name}
-                            >
+                            <MenuItem key={province.name} value={province.name}>
                                 {province.name}
                             </MenuItem>
                         ))}
@@ -106,7 +106,7 @@ const FormFieldHotel = () => {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
-                        label="Tên khách sạn"
+                        label={t(tokens.hotels.hotelName)}
                         value={hotelName}
                         onChange={(e) => setHotelName(e.target.value)}
                         sx={{ mb: 2 }}
@@ -116,7 +116,7 @@ const FormFieldHotel = () => {
                 <Grid item xs={12} sm={6}>
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <TextField
-                            label="Ngày Check-in / Check-out"
+                            label={t(tokens.hotels.checkInOut)}
                             value={`${formatDate(bookedDates.startDate)} - ${formatDate(bookedDates.endDate)}`}
                             onClick={handleClickDate}
                             fullWidth
@@ -159,9 +159,9 @@ const FormFieldHotel = () => {
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <TextField
                             id="guest-selector"
-                            label="Khách hàng"
+                            label={t(tokens.hotels.customer)}
                             variant="outlined"
-                            value={`Người lớn: ${adults}${children !== 0 ? `, Trẻ em: ${children}` : ''}`}
+                            value={`${t(tokens.hotels.adults)}: ${adults}${children !== 0 ? `, ${t(tokens.hotels.children)}: ${children}` : ''}`}
                             onClick={handleClick}
                             fullWidth
                             InputProps={{
@@ -187,10 +187,9 @@ const FormFieldHotel = () => {
                             }}
                         >
                             <Box>
-                                {/* Người lớn */}
                                 <MenuItem>
                                     <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                                        <Typography>Người lớn</Typography>
+                                        <Typography>{t(tokens.hotels.adults)}</Typography>
                                         <Box display="flex" alignItems="center" gap="10px">
                                             <IconButton onClick={() => handleDecrease('Người lớn')} disabled={adults <= 1}>
                                                 <RemoveIcon />
@@ -203,10 +202,9 @@ const FormFieldHotel = () => {
                                     </Box>
                                 </MenuItem>
 
-                                {/* Trẻ em */}
                                 <MenuItem>
                                     <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                                        <Typography>Trẻ em</Typography>
+                                        <Typography>{t(tokens.hotels.children)}</Typography>
                                         <Box display="flex" alignItems="center" gap="10px">
                                             <IconButton onClick={() => handleDecrease('Trẻ em')} disabled={children <= 0}>
                                                 <RemoveIcon />
@@ -219,10 +217,9 @@ const FormFieldHotel = () => {
                                     </Box>
                                 </MenuItem>
 
-                                {/* Số phòng */}
                                 <MenuItem>
                                     <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                                        <Typography>Số phòng</Typography>
+                                        <Typography>{t(tokens.hotels.rooms)}</Typography>
                                         <Box display="flex" alignItems="center" gap="10px">
                                             <IconButton onClick={() => handleDecrease('Số phòng')} disabled={room <= 0}>
                                                 <RemoveIcon />

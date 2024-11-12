@@ -2,23 +2,26 @@ import React from 'react'
 import { Box, Container, Grid, Typography } from '@mui/material'
 import { Col } from 'reactstrap'
 import ServiceCard from './serviceCard'
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 const ServicesSection = () => {
+    const { t } = useTranslation();
     const servicesData = [
         {
             imgUrl: "./assets/home/service/weather.png",
-            title: `Calculate Weather`,
-            desc: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.`,
+            title: t(tokens.service.weather.title),
+            desc: t(tokens.service.weather.description),
         },
         {
             imgUrl: './assets/home/service/guide.png',
-            title: `Best Tour Guide`,
-            desc: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.`,
+            title: t(tokens.service.guide.title),
+            desc: t(tokens.service.guide.description),
         },
         {
             imgUrl: './assets/home/service/customization.png',
-            title: 'Customization',
-            desc: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.`,
+            title: t(tokens.service.customization.title),
+            desc: t(tokens.service.customization.description),
         },
     ]
     return (
@@ -35,7 +38,7 @@ const ServicesSection = () => {
                                 fontFamily: '"Island Moments", cursive'
                             }}
                         >
-                            What we serve
+                            {t(tokens.service.title)}
                         </Typography>
                         <Typography
                             variant="h3"
@@ -44,7 +47,7 @@ const ServicesSection = () => {
                                 fontWeight: 500
                             }}
                         >
-                            We offer our best services
+                            {t(tokens.service.subtitle)}
                         </Typography>
                     </Grid>
                     <Grid item lg={9}>

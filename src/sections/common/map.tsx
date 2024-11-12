@@ -4,6 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Circle, useMapEvents } from 'react-leaflet';
 import { Box, Button } from '@mui/material';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 const destination: LatLngTuple = [21.03805874352914, 105.78426837711922];
 
@@ -45,6 +47,7 @@ function MapEvents({ setMapInstance }: { setMapInstance: (map: any) => void }) {
 }
 
 export default function Maps() {
+    const { t } = useTranslation();
     const [center, setCenter] = useState<LatLngTuple>([21.03029206227961, 105.76805458681068]);
     const [mapInstance, setMapInstance] = useState<any>(null);
 
@@ -97,6 +100,7 @@ export default function Maps() {
                     right: '20px',
                     zIndex: 1000,
                 }}
+                title={t(tokens.common.currentLocation)}
             >
                 <MyLocationIcon />
             </Button>
