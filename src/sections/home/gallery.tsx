@@ -3,8 +3,11 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { StyledTitleComponent } from 'src/styles/common';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 const Gallery = () => {
+    const { t } = useTranslation();
     const galleryTitleStyle = {
         fontSize: '1.6rem',
         marginBottom: '2.5rem',
@@ -41,8 +44,8 @@ const Gallery = () => {
         <Container maxWidth="xl">
             <Row>
                 <Col lg='12'>
-                    <StyledTitleComponent>Gallery</StyledTitleComponent>
-                    <h2 style={galleryTitleStyle}>Visit our customers tour gallery</h2>
+                    <StyledTitleComponent>{t(tokens.gallery.title)}</StyledTitleComponent>
+                    <h2 style={galleryTitleStyle}>{t(tokens.gallery.subtitle)}</h2>
                 </Col>
                 <Col lg='12'>
                     <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 768: 1, 992: 4 }}>

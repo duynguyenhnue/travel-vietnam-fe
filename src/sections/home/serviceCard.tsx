@@ -1,8 +1,18 @@
-import React from 'react'
-import { Box, Typography } from '@mui/material'
+import React from 'react';
+import { Box, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-const ServiceCard = ({ item }: any) => {
-    const { imgUrl, title, desc } = item
+interface ServiceCardProps {
+  item: {
+    imgUrl: string;
+    title: string;
+    desc: string;
+  };
+}
+
+const ServiceCard = ({ item }: ServiceCardProps) => {
+    const { t } = useTranslation();
+    const { imgUrl, title, desc } = item;
 
     return (
         <Box
@@ -27,7 +37,7 @@ const ServiceCard = ({ item }: any) => {
                     lineHeight: '50px',
                 }}
             >
-                <img src={imgUrl} alt={title} style={{ width: '100%' }} />
+                <img src={imgUrl} alt={t(title)} style={{ width: '100%' }} />
             </Box>
             <Typography
                 variant="h6"
@@ -36,7 +46,7 @@ const ServiceCard = ({ item }: any) => {
                     fontWeight: 500,
                 }}
             >
-                {title}
+                {t(title)}
             </Typography>
             <Typography
                 variant="body2"
@@ -45,10 +55,10 @@ const ServiceCard = ({ item }: any) => {
                     color: '#6e7074', 
                 }}
             >
-                {desc}
+                {t(desc)}
             </Typography>
         </Box>
-    )
+    );
 }
 
-export default ServiceCard
+export default ServiceCard;

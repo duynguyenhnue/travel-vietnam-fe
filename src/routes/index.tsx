@@ -8,6 +8,7 @@ import { aboutRoutes } from './about';
 import { profileRoutes } from './profile';
 
 const HomePage = lazy(() => import('src/pages/index'));
+const VnPayResult = lazy(() => import('src/pages/vnpay/return-vnpay'));
 const Error404Page = lazy(() => import('src/pages/404'));
 
 export const routes: RouteObject[] = [
@@ -25,6 +26,10 @@ export const routes: RouteObject[] = [
       {
         path: '/',
         element: <HomePage />,
+      },
+      {
+        path: '/vnpay/vnpay_return',
+        element: <VnPayResult />,
       },
     ],
   },

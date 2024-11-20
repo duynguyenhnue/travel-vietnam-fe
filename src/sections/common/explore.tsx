@@ -4,6 +4,8 @@ import ItemCard from './itemCard';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { getTours } from 'src/redux/slices/tours';
 import { StyledTitleComponent } from 'src/styles/common';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 const FeaturedTourList = () => {
     const dispatch = useDispatch();
@@ -23,14 +25,17 @@ const FeaturedTourList = () => {
 };
 
 const Explore = () => {
+    const { t } = useTranslation();
     return (
         <Container maxWidth="xl">
             <Grid container rowGap={5}>
                 <Grid item lg={12} className='mb-5'>
-                <StyledTitleComponent>Explore</StyledTitleComponent>
-                <Typography variant="h4" className='featured__tour-title'>Our featured tours</Typography>
-            </Grid>
-            <FeaturedTourList />
+                    <StyledTitleComponent>{t(tokens.explore.title)}</StyledTitleComponent>
+                    <Typography variant="h4" className='featured__tour-title'>
+                        {t(tokens.explore.subtitle)}
+                    </Typography>
+                </Grid>
+                <FeaturedTourList />
             </Grid>
         </Container>
     );

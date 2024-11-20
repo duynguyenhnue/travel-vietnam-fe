@@ -16,8 +16,11 @@ import {
   CardContent,
   CardHeader
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 function BookingHistory() {
+  const { t } = useTranslation();
   // Dữ liệu giả lập cho lịch sử đặt chỗ
   const bookings = [
     { id: 'BK001', service: 'Consultation', date: '2024-10-20', time: '10:00 AM', status: 'Completed' },
@@ -30,11 +33,11 @@ function BookingHistory() {
   const getStatusChip = (status: string) => {
     switch (status) {
       case 'Completed':
-        return <Chip label="Completed" color="success" />;
+        return <Chip label={t(tokens.bookingHistory.completed)} color="success" />;
       case 'Pending':
-        return <Chip label="Pending" color="warning" />;
+        return <Chip label={t(tokens.bookingHistory.pending)} color="warning" />;
       case 'Cancelled':
-        return <Chip label="Cancelled" color="error" />;
+        return <Chip label={t(tokens.bookingHistory.cancelled)} color="error" />;
       default:
         return <Chip label={status} />;
     }
@@ -43,18 +46,31 @@ function BookingHistory() {
   return (
     <Box>
       <Card>
-        <CardHeader subheader="You can filter booking history by date" title="Booking History" />
+        <CardHeader 
+          subheader={t(tokens.bookingHistory.filterSubheader)} 
+          title={t(tokens.bookingHistory.title)} 
+        />
         <Divider />
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>Booking ID</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>Service</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>Date</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>Time</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>Status</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                    {t(tokens.bookingHistory.bookingId)}
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                    {t(tokens.bookingHistory.service)}
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                    {t(tokens.bookingHistory.date)}
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                    {t(tokens.bookingHistory.time)}
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+                    {t(tokens.bookingHistory.status)}
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -73,7 +89,7 @@ function BookingHistory() {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">Save</Button>
+          <Button variant="contained">{t(tokens.profile.save)}</Button>
         </CardActions>
       </Card>
     </Box>

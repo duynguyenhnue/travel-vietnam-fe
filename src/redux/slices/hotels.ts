@@ -60,7 +60,7 @@ export const getHotelById = (id: string) => {
   return async () => {
     try {
       dispatch(hotelsSlice.actions.getRequest());
-      const result = await axios.get(`${envConfig.serverURL}/hotels/get/${id}`);
+      const result = await axios.get(`${envConfig.serverURL}/hotels/${id}`);
       const tour: HotelType = result.data.data;
       dispatch(hotelsSlice.actions.getHotelSuccess(tour ? tour : null));
     } catch (error) {

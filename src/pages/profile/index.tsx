@@ -8,22 +8,33 @@ import {
   List,
   ListItem,
   ListItemText,
-  Container
+  Container,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import BirthdayCakeIcon from '@mui/icons-material/Cake';
-import LocationOnIcon from '@mui/icons-material/LocationOn'
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Information from 'src/sections/profile/information';
 import BookingHistory from 'src/sections/profile/bookingHistory';
-import { useSelector } from 'src/redux/store';
+import { dispatch, useSelector } from 'src/redux/store';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
+import { getUser } from 'src/redux/slices/user';
 
 const ProfilePage = () => {
-  const [mode, setMode] = useState<'information' | 'booking' | 'newsletter' | 'notification'>('information');
+  const [mode, setMode] = useState<'information' | 'booking' | 'newsletter' | 'notification'>(
+    'information'
+  );
   const { user } = useSelector((state) => state.user);
-  const [province, setProvince] = useState<string>("");
+  const [province, setProvince] = useState<string>('');
   const [image, setImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
+
   useEffect(() => {
     const fetchProvinces = async (): Promise<void> => {
       try {
@@ -58,9 +69,23 @@ const ProfilePage = () => {
     fileInputRef.current?.click();
   };
   return (
-    <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-      <Box width="25%" bgcolor="white" p={2} borderRadius="8px" boxShadow="0 2px 10px rgba(0,0,0,0.1)">
-        <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
+    <Container
+      maxWidth="xl"
+      sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}
+    >
+      <Box
+        width="25%"
+        bgcolor="white"
+        p={2}
+        borderRadius="8px"
+        boxShadow="0 2px 10px rgba(0,0,0,0.1)"
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          mb={3}
+        >
           <Box position="relative">
             <input
               ref={fileInputRef}
@@ -87,33 +112,82 @@ const ProfilePage = () => {
             </IconButton>
           </Box>
           <Typography variant="h6">{user?.fullName}</Typography>
-          <Box display="flex" gap={1} mt={1}>
+          <Box
+            display="flex"
+            gap={1}
+            mt={1}
+          >
             <LocationOnIcon color="disabled" />
-            <Typography variant="body2" color="textSecondary">{province}</Typography>
-            <Divider orientation="vertical" flexItem />
-            <BirthdayCakeIcon color="disabled" fontSize="small" />
-            <Typography variant="body2" color="textSecondary">
+            <Typography
+              variant="body2"
+              color="textSecondary"
+            >
+              {province}
+            </Typography>
+            <Divider
+              orientation="vertical"
+              flexItem
+            />
+            <BirthdayCakeIcon
+              color="disabled"
+              fontSize="small"
+            />
+            <Typography
+              variant="body2"
+              color="textSecondary"
+            >
               {user?.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : ''}
             </Typography>
           </Box>
         </Box>
         <Divider />
         <List>
-          <ListItem button onClick={() => setMode('information')} sx={{ cursor: 'pointer', backgroundColor: mode === 'information' ? 'primary.light' : 'transparent' }}>
-            <ListItemText primary="Profile Informations" />
+          <ListItem
+            button
+            onClick={() => setMode('information')}
+            sx={{
+              cursor: 'pointer',
+              backgroundColor: mode === 'information' ? 'primary.light' : 'transparent',
+            }}
+          >
+            <ListItemText primary={t(tokens.profile.information)} />
           </ListItem>
-          <ListItem button onClick={() => setMode('booking')} sx={{ cursor: 'pointer', backgroundColor: mode === 'booking' ? 'primary.light' : 'transparent' }}>
-            <ListItemText primary="Booking History" />
+          <ListItem
+            button
+            onClick={() => setMode('booking')}
+            sx={{
+              cursor: 'pointer',
+              backgroundColor: mode === 'booking' ? 'primary.light' : 'transparent',
+            }}
+          >
+            <ListItemText primary={t(tokens.profile.booking)} />
           </ListItem>
-          <ListItem button onClick={() => setMode('newsletter')} sx={{ cursor: 'pointer', backgroundColor: mode === 'newsletter' ? 'primary.light' : 'transparent' }}>
-            <ListItemText primary="Newsletter Subscription" />
+          <ListItem
+            button
+            onClick={() => setMode('newsletter')}
+            sx={{
+              cursor: 'pointer',
+              backgroundColor: mode === 'newsletter' ? 'primary.light' : 'transparent',
+            }}
+          >
+            <ListItemText primary={t(tokens.profile.newsletter)} />
           </ListItem>
-          <ListItem button onClick={() => setMode('notification')} sx={{ cursor: 'pointer', backgroundColor: mode === 'notification' ? 'primary.light' : 'transparent' }}>
-            <ListItemText primary="Manage Notifications" />
+          <ListItem
+            button
+            onClick={() => setMode('notification')}
+            sx={{
+              cursor: 'pointer',
+              backgroundColor: mode === 'notification' ? 'primary.light' : 'transparent',
+            }}
+          >
+            <ListItemText primary={t(tokens.profile.notification)} />
           </ListItem>
         </List>
       </Box>
-      <Box flexGrow={1} ml={4}>
+      <Box
+        flexGrow={1}
+        ml={4}
+      >
         {mode === 'information' && <Information />}
         {mode === 'booking' && <BookingHistory />}
       </Box>

@@ -6,6 +6,8 @@ import { enGB } from 'date-fns/locale';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { StyledTitleComponent } from 'src/styles/common';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 interface Location {
     id: string;
@@ -13,6 +15,7 @@ interface Location {
 }
 
 const FormFieldTour = () => {
+    const { t } = useTranslation();
     const [city, setCity] = useState('');
     const [hotelName, setHotelName] = useState('');
     const [adults, setAdults] = useState(1);
@@ -79,24 +82,21 @@ const FormFieldTour = () => {
     return (
         <Container maxWidth="xl">
             <StyledTitleComponent>
-                Đặt Tour
+                {t(tokens.tours.bookTour)}
             </StyledTitleComponent>
 
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         select
-                        label="Thành phố"
+                        label={t(tokens.tours.city)}
                         name="address.province"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
                         fullWidth
                     >
                         {provinces.map((province) => (
-                            <MenuItem
-                                key={province.name}
-                                value={province.name}
-                            >
+                            <MenuItem key={province.name} value={province.name}>
                                 {province.name}
                             </MenuItem>
                         ))}
@@ -106,7 +106,7 @@ const FormFieldTour = () => {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
-                        label="Tên tour"
+                        label={t(tokens.tours.tourName)}
                         value={hotelName}
                         onChange={(e) => setHotelName(e.target.value)}
                         sx={{ mb: 2 }}
@@ -116,7 +116,7 @@ const FormFieldTour = () => {
                 <Grid item xs={12} sm={6}>
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <TextField
-                            label="Ngày Check-in / Check-out"
+                            label={t(tokens.tours.departureDate)}
                             value={`${formatDate(bookedDates.startDate)} - ${formatDate(bookedDates.endDate)}`}
                             onClick={handleClickDate}
                             fullWidth
@@ -159,9 +159,9 @@ const FormFieldTour = () => {
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <TextField
                             id="guest-selector"
-                            label="Khách hàng"
+                            label={t(tokens.tours.passengers)}
                             variant="outlined"
-                            value={`Người lớn: ${adults}${children !== 0 ? `, Trẻ em: ${children}` : ''}`}
+                            value={`${t(tokens.tours.adults)}: ${adults}${children !== 0 ? `, ${t(tokens.tours.children)}: ${children}` : ''}`}
                             onClick={handleClick}
                             fullWidth
                             InputProps={{
@@ -187,10 +187,9 @@ const FormFieldTour = () => {
                             }}
                         >
                             <Box>
-                                {/* Người lớn */}
                                 <MenuItem>
                                     <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                                        <Typography>Người lớn</Typography>
+                                        <Typography>{t(tokens.tours.adults)}</Typography>
                                         <Box display="flex" alignItems="center" gap="10px">
                                             <IconButton onClick={() => handleDecrease('Người lớn')} disabled={adults <= 1}>
                                                 <RemoveIcon />
@@ -203,32 +202,15 @@ const FormFieldTour = () => {
                                     </Box>
                                 </MenuItem>
 
-                                {/* Trẻ em */}
                                 <MenuItem>
                                     <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                                        <Typography>Trẻ em</Typography>
+                                        <Typography>{t(tokens.tours.children)}</Typography>
                                         <Box display="flex" alignItems="center" gap="10px">
                                             <IconButton onClick={() => handleDecrease('Trẻ em')} disabled={children <= 0}>
                                                 <RemoveIcon />
                                             </IconButton>
                                             <Typography>{children}</Typography>
                                             <IconButton onClick={() => handleIncrease('Trẻ em')}>
-                                                <AddIcon />
-                                            </IconButton>
-                                        </Box>
-                                    </Box>
-                                </MenuItem>
-
-                                {/* Số phòng */}
-                                <MenuItem>
-                                    <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                                        <Typography>Số phòng</Typography>
-                                        <Box display="flex" alignItems="center" gap="10px">
-                                            <IconButton onClick={() => handleDecrease('Số phòng')} disabled={room <= 0}>
-                                                <RemoveIcon />
-                                            </IconButton>
-                                            <Typography>{room}</Typography>
-                                            <IconButton onClick={() => handleIncrease('Số phòng')}>
                                                 <AddIcon />
                                             </IconButton>
                                         </Box>

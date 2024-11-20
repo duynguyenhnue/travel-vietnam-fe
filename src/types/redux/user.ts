@@ -10,7 +10,7 @@ export type UserType = {
   createdDate: string;
   email: string;
   fullName: string;
-  id: string;
+  _id: string;
   nationality: string | null;
   dateOfBirth: string | null;
   updatedDate: string;

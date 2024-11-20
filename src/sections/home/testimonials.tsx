@@ -2,8 +2,11 @@ import React from 'react';
 import { Container, Grid, Typography } from '@mui/material';
 import Slider from 'react-slick';
 import { StyledTitleComponent } from 'src/styles/common';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 const Testimonials = () => {
+    const { t } = useTranslation();
     const settings = {
         dots: true,
         infinite: true,
@@ -32,8 +35,7 @@ const Testimonials = () => {
             },
           },
         ],
-      };
-      
+    };
 
     return (
         <Slider {...settings}>
@@ -51,7 +53,7 @@ const Testimonials = () => {
                             <Typography variant="h6" style={{ marginBottom: '0', marginTop: '8px' }}>
                                 {index === 0 ? 'John Doe' : index === 1 ? 'Lia Franklin' : 'John Doe'}
                             </Typography>
-                            <Typography variant="body2">Customer</Typography>
+                            <Typography variant="body2">{t(tokens.testimonials.customer)}</Typography>
                         </div>
                     </div>
                 </div>
@@ -61,13 +63,15 @@ const Testimonials = () => {
 };
 
 const TestimonialSection = () => {
+    const { t } = useTranslation();
+    
     return (
         <Container maxWidth="xl">
             <Grid container rowSpacing={4}>
                 <Grid item xs={12}>
-                    <StyledTitleComponent>Fans Love</StyledTitleComponent>
+                    <StyledTitleComponent>{t(tokens.testimonials.title)}</StyledTitleComponent>
                     <Typography variant="h2" style={{ fontSize: '1.6rem', marginTop: '0.8rem' }}>
-                        What our fans say about us
+                        {t(tokens.testimonials.subtitle)}
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
