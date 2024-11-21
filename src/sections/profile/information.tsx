@@ -117,7 +117,7 @@ export default function Information() {
       dispatch(updateUser(userDetail._id, userDetail));
     }
   }
-  
+
   return (
     <Box
       sx={{
