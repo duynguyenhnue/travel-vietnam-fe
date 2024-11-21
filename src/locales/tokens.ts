@@ -119,6 +119,9 @@ export const tokens = {
     completed: 'bookingHistory.completed',
     pending: 'bookingHistory.pending',
     cancelled: 'bookingHistory.cancelled',
+    amount: 'bookingHistory.amount',
+    failed: 'bookingHistory.failed',
+    confirmed: 'bookingHistory.confirmed',
   },
   discount: {
     title: 'discount.title',

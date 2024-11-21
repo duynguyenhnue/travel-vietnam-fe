@@ -32,6 +32,7 @@ export default function Information() {
   useEffect(() => {
     setUserDetail(user);
   }, [user])
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: string } }): void => {
     const { name, value } = event.target;
     setUserDetail((prev) => {
@@ -74,7 +75,6 @@ export default function Information() {
         toast.error(`Error fetching provinces: ${String(error)}`);
       }
     };
-
     fetchProvinces().catch((error: unknown) => {
       toast.error(`Error fetching provinces: ${String(error)}`);
     });
@@ -189,7 +189,7 @@ export default function Information() {
               select
               label={t(tokens.profile.province)}
               name="address.province"
-              value={userDetail?.address?.province}
+              value={userDetail?.address.province}
               onChange={handleChange}
               fullWidth
             >

@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { GitHub, YouTube, Facebook, Instagram, LocationOn, MailOutline, Phone } from '@mui/icons-material';
 
 const quickLinks1 = [
-  { path: '/home', display: 'Home' },
+  { path: '/', display: 'Home' },
   { path: '/about', display: 'About' },
   { path: '/tours', display: 'Tours' },
+  { path: '/hotels', display: 'Hotels' },
 ];
 
 const quickLinks2 = [

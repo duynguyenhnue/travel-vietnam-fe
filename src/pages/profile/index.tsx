@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemText,
   Container,
+  CircularProgress,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import BirthdayCakeIcon from '@mui/icons-material/Cake';
@@ -20,6 +21,7 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { getUser } from 'src/redux/slices/user';
+import { getBookings } from 'src/redux/slices/booking';
 
 const ProfilePage = () => {
   const [mode, setMode] = useState<'information' | 'booking' | 'newsletter' | 'notification'>(
@@ -33,6 +35,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     dispatch(getUser());
+    dispatch(getBookings());
   }, []);
 
   useEffect(() => {
@@ -73,124 +76,114 @@ const ProfilePage = () => {
       maxWidth="xl"
       sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}
     >
-      <Box
-        width="25%"
-        bgcolor="white"
-        p={2}
-        borderRadius="8px"
-        boxShadow="0 2px 10px rgba(0,0,0,0.1)"
-      >
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          mb={3}
-        >
-          <Box position="relative">
-            <input
-              ref={fileInputRef}
-              accept="image/*"
-              style={{ display: 'none' }}
-              type="file"
-              onChange={handleImageUpload}
-            />
-            <Avatar
-              src={image || '/assets/avatars/profile.svg'}
-              sx={{ width: 100, height: 100, mb: 1 }}
-            />
-            <IconButton
-              onClick={handleClick}
-              sx={{
-                position: 'absolute',
-                bottom: 10,
-                right: 10,
-                backgroundColor: 'white',
-                p: 0.5,
-              }}
+      {
+        !user ?
+          <CircularProgress />
+          :
+          <>
+            <Box
+              width="25%"
+              bgcolor="white"
+              p={2}
+              borderRadius="8px"
+              boxShadow="0 2px 10px rgba(0,0,0,0.1)"
             >
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </Box>
-          <Typography variant="h6">{user?.fullName}</Typography>
-          <Box
-            display="flex"
-            gap={1}
-            mt={1}
-          >
-            <LocationOnIcon color="disabled" />
-            <Typography
-              variant="body2"
-              color="textSecondary"
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                mb={3}
+              >
+                <Box position="relative">
+                  <input
+                    ref={fileInputRef}
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    type="file"
+                    onChange={handleImageUpload}
+                  />
+                  <Avatar
+                    src={image || '/assets/avatars/profile.svg'}
+                    sx={{ width: 100, height: 100, mb: 1 }}
+                  />
+                  <IconButton
+                    onClick={handleClick}
+                    sx={{
+                      position: 'absolute',
+                      bottom: 10,
+                      right: 10,
+                      backgroundColor: 'white',
+                      p: 0.5,
+                    }}
+                  >
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+                <Typography variant="h6">{user?.fullName}</Typography>
+                <Box
+                  display="flex"
+                  gap={1}
+                  mt={1}
+                >
+                  <LocationOnIcon color="disabled" />
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                  >
+                    {province}
+                  </Typography>
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                  />
+                  <BirthdayCakeIcon
+                    color="disabled"
+                    fontSize="small"
+                  />
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                  >
+                    {user?.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : ''}
+                  </Typography>
+                </Box>
+              </Box>
+              <Divider />
+              <List>
+                <ListItem
+                  button
+                  onClick={() => setMode('information')}
+                  sx={{
+                    cursor: 'pointer',
+                    backgroundColor: mode === 'information' ? 'primary.light' : 'transparent',
+                  }}
+                >
+                  <ListItemText primary={t(tokens.profile.information)} />
+                </ListItem>
+                <ListItem
+                  button
+                  onClick={() => setMode('booking')}
+                  sx={{
+                    cursor: 'pointer',
+                    backgroundColor: mode === 'booking' ? 'primary.light' : 'transparent',
+                  }}
+                >
+                  <ListItemText primary={t(tokens.profile.booking)} />
+                </ListItem>
+
+              </List>
+            </Box>
+            <Box
+              flexGrow={1}
+              ml={4}
             >
-              {province}
-            </Typography>
-            <Divider
-              orientation="vertical"
-              flexItem
-            />
-            <BirthdayCakeIcon
-              color="disabled"
-              fontSize="small"
-            />
-            <Typography
-              variant="body2"
-              color="textSecondary"
-            >
-              {user?.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : ''}
-            </Typography>
-          </Box>
-        </Box>
-        <Divider />
-        <List>
-          <ListItem
-            button
-            onClick={() => setMode('information')}
-            sx={{
-              cursor: 'pointer',
-              backgroundColor: mode === 'information' ? 'primary.light' : 'transparent',
-            }}
-          >
-            <ListItemText primary={t(tokens.profile.information)} />
-          </ListItem>
-          <ListItem
-            button
-            onClick={() => setMode('booking')}
-            sx={{
-              cursor: 'pointer',
-              backgroundColor: mode === 'booking' ? 'primary.light' : 'transparent',
-            }}
-          >
-            <ListItemText primary={t(tokens.profile.booking)} />
-          </ListItem>
-          <ListItem
-            button
-            onClick={() => setMode('newsletter')}
-            sx={{
-              cursor: 'pointer',
-              backgroundColor: mode === 'newsletter' ? 'primary.light' : 'transparent',
-            }}
-          >
-            <ListItemText primary={t(tokens.profile.newsletter)} />
-          </ListItem>
-          <ListItem
-            button
-            onClick={() => setMode('notification')}
-            sx={{
-              cursor: 'pointer',
-              backgroundColor: mode === 'notification' ? 'primary.light' : 'transparent',
-            }}
-          >
-            <ListItemText primary={t(tokens.profile.notification)} />
-          </ListItem>
-        </List>
-      </Box>
-      <Box
-        flexGrow={1}
-        ml={4}
-      >
-        {mode === 'information' && <Information />}
-        {mode === 'booking' && <BookingHistory />}
-      </Box>
+              {mode === 'information' && <Information />}
+              {mode === 'booking' && <BookingHistory />}
+            </Box>
+          </>
+      }
+
+
     </Container>
   );
 };
