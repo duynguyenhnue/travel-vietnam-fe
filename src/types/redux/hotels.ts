@@ -1,3 +1,5 @@
+import { Address, Review } from "./tours";
+
 export type HotelsState = {
   loading: boolean;
   errorMessage: string;
@@ -12,15 +14,18 @@ export type LocationsType = {
   name: string;
   description: string;
   image_url: string;
+  latitude?: number;
+  longitude?: number;
 };
 
 export interface HotelType {
-  id: string;
+  _id: string;
   name: string;
-  location_id: string;
+  address: Address;
   description: string;
-  rating: number;
-  image_url: string;
+  photos: string[];
+  reviews: Review[];
+  price: number;
 }
 
 export interface RoomType {

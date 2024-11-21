@@ -12,7 +12,7 @@ use(initReactI18next).init({
       translation: vi,
     },
   },
-  lng: 'en', // ngôn ngữ mặc định
+  lng: 'en',
   fallbackLng: 'en',
   interpolation: {
     escapeValue: false,

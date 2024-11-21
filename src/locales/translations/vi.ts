@@ -30,6 +30,10 @@ export const vi = {
   [tokens.nav.logout]: 'Đăng xuất',
   [tokens.nav.settings]: 'Cài đặt',
   [tokens.nav.profile]: 'Hồ sơ',
+  [tokens.nav.home]: 'Trang chủ',
+  [tokens.nav.about]: 'Về chúng tôi',
+  [tokens.nav.tours]: 'Tour',
+  [tokens.nav.hotels]: 'Khách sạn',
 
   // Hotels
   [tokens.hotels.destination]: 'Điểm đến',
@@ -68,7 +72,7 @@ export const vi = {
   [tokens.profile.ward]: 'Phường/Xã',
   [tokens.profile.security]: 'Bảo mật',
   [tokens.profile.newPassword]: 'Mật khẩu mới',
-  [tokens.profile.confirmPassword]: 'Xác nhận mật khẩu',
+  [tokens.profile.oldPassword]: 'Mật khẩu cũ',
   [tokens.profile.saveDetails]: 'Lưu thông tin',
   [tokens.profile.save]: 'Lưu',
   [tokens.profile.editInfo]: 'Thông tin có thể được chỉnh sửa',

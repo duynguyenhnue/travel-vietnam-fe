@@ -29,6 +29,10 @@ export const en = {
   [tokens.nav.logout]: 'Logout',
   [tokens.nav.settings]: 'Settings',
   [tokens.nav.profile]: 'Profile',
+  [tokens.nav.home]: 'Home',
+  [tokens.nav.about]: 'About',
+  [tokens.nav.tours]: 'Tours',
+  [tokens.nav.hotels]: 'Hotels',
 
   // Hotels
   [tokens.hotels.destination]: 'Destination',
@@ -68,7 +72,7 @@ export const en = {
   [tokens.profile.ward]: 'Ward',
   [tokens.profile.security]: 'Security',
   [tokens.profile.newPassword]: 'New Password',
-  [tokens.profile.confirmPassword]: 'Confirm Password',
+  [tokens.profile.oldPassword]: 'Old Password',
   [tokens.profile.saveDetails]: 'Save details',
   [tokens.profile.save]: 'Save',
   [tokens.profile.editInfo]: 'The information can be edited',

@@ -7,8 +7,6 @@ import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 
-const destination: LatLngTuple = [21.03805874352914, 105.78426837711922];
-
 function ResizableCircle({ center, color }: { center: LatLngTuple; color: string }) {
     const map = useMapEvents({});
     const [radius, setRadius] = useState(500);
@@ -46,7 +44,7 @@ function MapEvents({ setMapInstance }: { setMapInstance: (map: any) => void }) {
     return null;
 }
 
-export default function Maps() {
+export default function Maps({ destination }: { destination: LatLngTuple }) {
     const { t } = useTranslation();
     const [center, setCenter] = useState<LatLngTuple>([21.03029206227961, 105.76805458681068]);
     const [mapInstance, setMapInstance] = useState<any>(null);

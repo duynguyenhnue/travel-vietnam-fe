@@ -9,7 +9,6 @@ interface TextArticleProps {
     content: Content[],
   }
 }
-
 interface Content {
   title: string,
   content: string[],

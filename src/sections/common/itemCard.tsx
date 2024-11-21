@@ -7,7 +7,8 @@ import { tokens } from 'src/locales/tokens';
 
 export interface Data {
     _id: string;
-    title: string;
+    title?: string;
+    name?: string;
     reviews: Review[];
     departurePoint?: Address;
     city?: Address;
@@ -67,7 +68,7 @@ const ItemCard = ({ data }: { data: Data }) => {
                             to={`/${data.departurePoint ? "tours" : "hotel"}/${data._id}`}
                             style={{ textDecoration: 'none', color: '#0b2727', transition: '0.3s' }}
                         >
-                            {data.title}
+                            {data.title || data.name}
                         </Link>
                     </Typography>
 

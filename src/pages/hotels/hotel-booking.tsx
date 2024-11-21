@@ -1,19 +1,5 @@
-import React from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Typography,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActions,
-  TextField,
-  MenuItem,
-  Rating,
-  Divider,
-} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Container, Grid, Typography, Card, CardMedia, CardContent, CardActions, TextField, MenuItem, Rating, Divider } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CancelIcon from '@mui/icons-material/Cancel';
 import MobileFriendlyIcon from '@mui/icons-material/MobileFriendly';
@@ -24,7 +10,7 @@ import TranslateIcon from '@mui/icons-material/Translate';
 import Maps from 'src/sections/common/map';
 import Testimonials from 'src/sections/common/testimonials';
 import CustomerReview from 'src/sections/hotels/details/review';
-import { useDispatch, useSelector, RootState } from 'src/redux/store';
+import { useDispatch, useSelector, RootState, dispatch } from 'src/redux/store';
 import { getPaymentUrl } from 'src/redux/slices/checkout';
 import { localStorageConfig } from 'src/config';
 import { useDialog } from 'src/hooks/use-dialog';
@@ -34,97 +20,63 @@ import { BookingType } from 'src/types/redux/checkout';
 import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
+import { getHotelById, getHotels } from 'src/redux/slices/hotels';
+import { LocationsType } from 'src/types/redux/hotels';
+import { getTours } from 'src/redux/slices/tours';
+import { Review } from 'src/types/redux/tours';
+import ImageModal from 'src/components/common/imageModal/ImageModal';
+import { LatLngTuple } from 'leaflet';
+import { useNavigate } from 'react-router-dom';
 
-const relatedHotelsToday = () => {
-  const tours = [
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-  ];
-  return tours.map((tour, index) => (
-    <Card key={index}>
+const relatedHotelsVietnam = () => {
+  const { hotels } = useSelector((state: RootState) => state.hotels);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!hotels) {
+      dispatch(getHotels());
+    }
+  }, [hotels]);
+  const calculateAverageRating = (reviews: Review[] | undefined) => {
+    if (!reviews || reviews.length === 0) return 5;
+    const total = reviews.reduce((acc, review) => acc + review.rating, 0);
+    return (total / reviews.length).toFixed(2) as unknown as number;
+  };
+  const handleHotelClick = (id: string) => {
+    navigate(`/hotels/${id}`);
+  };
+  return hotels?.map((hotel, index) => (
+    <Card key={index} onClick={() => handleHotelClick(hotel._id)}>
       <CardMedia
         component="img"
         height="140"
-        image={tour.image}
-        alt={tour.title}
+        image={hotel.photos[0]}
+        alt={hotel.name}
       />
       <CardContent>
         <Typography
           variant="subtitle1"
           fontWeight="bold"
         >
-          {tour.title}
+          {hotel.name}
         </Typography>
         <Typography
           variant="body2"
           color="textSecondary"
         >
-          {tour.duration}
+          {hotel.description}
         </Typography>
-        {tour.facilities.map((facility, i) => (
+        {hotel.reviews.map((review, i) => (
           <Typography
             variant="body2"
             color="textSecondary"
             key={i}
           >
-            {facility}
+            {review.reviewText}
           </Typography>
         ))}
         <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
           <Rating
-            value={tour.rating}
+            value={calculateAverageRating(hotel.reviews)}
             readOnly
             size="small"
           />
@@ -133,83 +85,42 @@ const relatedHotelsToday = () => {
             color="textSecondary"
             sx={{ ml: 1 }}
           >
-            {tour.reviews} reviews
+            {hotel.reviews.length} reviews
           </Typography>
         </Box>
         <Typography
           variant="h6"
           sx={{ mt: 1 }}
         >
-          {tour.price} per person
+          {hotel.price.toLocaleString()} VNĐ/person
         </Typography>
       </CardContent>
     </Card>
   ));
 };
 
-const relatedHotelsVietnam = () => {
-  const tours = [
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-    {
-      title: 'Alaska: Westminster to Greenwich River Thames',
-      image: 'https://via.placeholder.com/300x200',
-      duration: 'Duration 2 hours',
-      facilities: ['Transport Facility', 'Family Plan'],
-      price: '$35.00',
-      reviews: 584,
-      rating: 4,
-    },
-  ];
-  return tours.map((tour, index) => (
-    <Card key={index}>
+const relatedToursToday = () => {
+  const { tours } = useSelector((state: RootState) => state.tours);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!tours) {
+      dispatch(getTours());
+    }
+  }, [tours]);
+  const calculateAverageRating = (reviews: { rating: number }[]) => {
+    if (reviews.length === 0) return 5;
+    const total = reviews.reduce((acc, review) => acc + review.rating, 0);
+    return (total / reviews.length).toFixed(2) as unknown as number;
+  };
+  const handleTourClick = (id: string) => {
+    navigate(`/tours/${id}`);
+  };
+  return tours?.map((tour, index) => (
+    <Card key={index} onClick={() => handleTourClick(tour._id)}>
       <CardMedia
         component="img"
         height="140"
-        image={tour.image}
+        image={tour.photos[0]}
         alt={tour.title}
       />
       <CardContent>
@@ -223,20 +134,11 @@ const relatedHotelsVietnam = () => {
           variant="body2"
           color="textSecondary"
         >
-          {tour.duration}
+          {tour.desc}
         </Typography>
-        {tour.facilities.map((facility, i) => (
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            key={i}
-          >
-            {facility}
-          </Typography>
-        ))}
         <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
           <Rating
-            value={tour.rating}
+            value={calculateAverageRating(tour.reviews)}
             readOnly
             size="small"
           />
@@ -245,14 +147,14 @@ const relatedHotelsVietnam = () => {
             color="textSecondary"
             sx={{ ml: 1 }}
           >
-            {tour.reviews} reviews
+            {tour.reviews.length} reviews
           </Typography>
         </Box>
         <Typography
           variant="h6"
           sx={{ mt: 1 }}
         >
-          {tour.price} per person
+          {tour.price.toLocaleString()} VNĐ/person
         </Typography>
       </CardContent>
     </Card>
@@ -262,9 +164,59 @@ const relatedHotelsVietnam = () => {
 const HotelBookingPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const pathname = location.pathname;
+  const id = pathname.split('/').pop();
   const dialog = useDialog();
   const { locationId } = useParams();
   const { hotel } = useSelector((state: RootState) => state.hotels);
+  const [provinces, setProvinces] = useState<LocationsType[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [checkInDate, setCheckInDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [checkOutDate, setCheckOutDate] = useState<string>(new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [destination, setDestination] = useState<LatLngTuple>([0, 0]);
+
+  useEffect(() => {
+    if (hotel) {
+      setTotalPrice(hotel.price);
+    }
+  }, [hotel]);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getHotelById(id));
+    }
+  }, [id]);
+
+  useEffect(() => {
+    const fetchProvinces = async (): Promise<void> => {
+      try {
+        const response = await fetch('https://esgoo.net/api-tinhthanh/1/0.htm');
+        const data: { data: LocationsType[] } = await response.json() as { data: LocationsType[] };
+        setProvinces(data.data);
+        const destination = data.data?.find((p) => p.id === hotel?.address.province);
+        setDestination([destination?.latitude || 0, destination?.longitude || 0]);
+      } catch (error: unknown) {
+        toast.error(`Error fetching provinces: ${String(error)}`);
+      }
+    };
+
+    fetchProvinces().catch((error: unknown) => {
+      toast.error(`Error fetching provinces: ${String(error)}`);
+    });
+  }, [hotel]);
+
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      const checkIn = new Date(checkInDate);
+      const checkOut = new Date(checkOutDate);
+      const days = (checkOut.getTime() - checkIn.getTime()) / (1000 * 3600 * 24);
+      setTotalPrice(days * (hotel?.price || 0));
+    };
+
+    calculateTotalPrice();
+  }, [checkInDate, checkOutDate, hotel?.price]);
 
   const handlePayment = () => {
     const access = localStorage.getItem(localStorageConfig.accessToken);
@@ -278,7 +230,7 @@ const HotelBookingPage = () => {
 
     dispatch(
       getPaymentUrl({
-        amount: 78000,
+        amount: totalPrice,
         bookingType: BookingType.HOTELS,
         guestSize: 2,
         orderId: locationId || '',
@@ -319,6 +271,17 @@ const HotelBookingPage = () => {
     },
   ];
 
+  const calculateAverageRating = (reviews: Review[] | undefined) => {
+    if (!reviews || reviews.length === 0) return 5;
+    const total = reviews.reduce((acc, review) => acc + review.rating, 0);
+    return (total / reviews.length).toFixed(2) as unknown as number;
+  };
+
+  const handleImageClick = (src: string) => {
+    setSelectedImage(src);
+    setModalOpen(true);
+  };
+
   return (
     <Container
       maxWidth="xl"
@@ -329,7 +292,7 @@ const HotelBookingPage = () => {
         gutterBottom
         maxWidth="sm"
       >
-        {t(tokens.hotelBooking.title)}
+        {hotel?.name}
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Typography
@@ -337,11 +300,11 @@ const HotelBookingPage = () => {
           color="textSecondary"
           sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
         >
-          <LocationOnIcon fontSize="small" /> {t(tokens.hotelBooking.location)} |
+          <LocationOnIcon fontSize="small" /> {provinces?.find((p) => p.id === hotel?.address.province)?.name} |
         </Typography>
         <Rating
           name="half-rating-read"
-          defaultValue={hotel?.rating || 0}
+          defaultValue={calculateAverageRating(hotel?.reviews)}
           precision={0.5}
           readOnly
         />
@@ -349,7 +312,7 @@ const HotelBookingPage = () => {
           variant="subtitle1"
           color="textSecondary"
         >
-          ({300} {t(tokens.reviews.reviews)})
+          ({hotel?.reviews.length} {t(tokens.reviews.reviews)})
         </Typography>
       </Box>
 
@@ -372,22 +335,16 @@ const HotelBookingPage = () => {
             <CardMedia
               component="img"
               height="400"
-              image="https://via.placeholder.com/800x400"
+              image={hotel?.photos[0]}
               alt="Tour Image"
+              onClick={() => handleImageClick(hotel?.photos[0] || '')}
             />
             <CardContent sx={{ padding: 0 }}>
               <Grid
                 container
                 spacing={2}
               >
-                {[
-                  'https://via.placeholder.com/100',
-                  'https://via.placeholder.com/100',
-                  'https://via.placeholder.com/100',
-                  'https://via.placeholder.com/100',
-                  'https://via.placeholder.com/100',
-                  'https://via.placeholder.com/100',
-                ].map((src, index) => (
+                {hotel?.photos.slice(0, 6).map((src, index) => (
                   <Grid
                     item
                     xs={2}
@@ -396,7 +353,8 @@ const HotelBookingPage = () => {
                     <img
                       src={src}
                       alt={`Thumbnail ${index}`}
-                      style={{ width: '100%', height: '100%' }}
+                      style={{ width: '100%', height: '100%', cursor: 'pointer' }}
+                      onClick={() => handleImageClick(src)}
                     />
                   </Grid>
                 ))}
@@ -460,7 +418,7 @@ const HotelBookingPage = () => {
             >
               {t(tokens.hotelBooking.openInGoogleMaps)}
             </Typography>
-            <Maps />
+            <Maps destination={destination} />
           </Box>
         </Grid>
 
@@ -475,7 +433,8 @@ const HotelBookingPage = () => {
               <TextField
                 label={t(tokens.hotelBooking.booking.from)}
                 type="date"
-                defaultValue="2021-10-12"
+                value={checkInDate}
+                onChange={(e) => setCheckInDate(e.target.value)}
                 fullWidth
                 sx={{ mt: 2 }}
                 InputLabelProps={{ shrink: true }}
@@ -483,7 +442,8 @@ const HotelBookingPage = () => {
               <TextField
                 label={t(tokens.hotelBooking.booking.to)}
                 type="date"
-                defaultValue="2021-10-12"
+                value={checkOutDate}
+                onChange={(e) => setCheckOutDate(e.target.value)}
                 fullWidth
                 sx={{ mt: 2 }}
                 InputLabelProps={{ shrink: true }}
@@ -504,7 +464,7 @@ const HotelBookingPage = () => {
                 variant="h4"
                 sx={{ textAlign: 'center', color: '#faa935' }}
               >
-                $78.90
+                {totalPrice.toLocaleString()} VNĐ
               </Typography>
             </CardContent>
             <CardActions sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -537,7 +497,7 @@ const HotelBookingPage = () => {
       <Divider sx={{ my: 4 }} />
       <Box sx={{ mt: 4, '.MuiContainer-root': { padding: 0 } }}>
         <Typography variant="h6">{t(tokens.hotelBooking.relatedHotels.today)}</Typography>
-        <Testimonials Html={relatedHotelsToday()} />
+        <Testimonials Html={relatedToursToday()} />
       </Box>
       <Divider sx={{ my: 4 }} />
       <Box sx={{ mt: 4, '.MuiContainer-root': { padding: 0 } }}>
@@ -546,6 +506,11 @@ const HotelBookingPage = () => {
       </Box>
       <Divider sx={{ my: 4 }} />
       <CustomerReview data={[]} />
+      <ImageModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        imageSrc={selectedImage || ''}
+      />
     </Container>
   );
 };

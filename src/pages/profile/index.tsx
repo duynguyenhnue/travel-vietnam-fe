@@ -15,10 +15,11 @@ import BirthdayCakeIcon from '@mui/icons-material/Cake';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Information from 'src/sections/profile/information';
 import BookingHistory from 'src/sections/profile/bookingHistory';
-import { useSelector } from 'src/redux/store';
+import { dispatch, useSelector } from 'src/redux/store';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
+import { getUser } from 'src/redux/slices/user';
 
 const ProfilePage = () => {
   const [mode, setMode] = useState<'information' | 'booking' | 'newsletter' | 'notification'>(
@@ -29,6 +30,10 @@ const ProfilePage = () => {
   const [image, setImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
 
   useEffect(() => {
     const fetchProvinces = async (): Promise<void> => {

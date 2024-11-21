@@ -10,7 +10,6 @@ import { tokens } from 'src/locales/tokens';
 const ProposeHotel = () => {
     const { t } = useTranslation();
     const { hotels } = useSelector((state: RootState) => state.hotels);
-    
     useEffect(() => {
         dispatch(getHotels());
     }, []);

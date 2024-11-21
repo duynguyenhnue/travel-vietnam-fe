@@ -16,17 +16,17 @@ const relatedTeam = () => {
   const team = [
     {
       name: t(tokens.about.team.members.chung.name),
-      image: 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/454352570_1021518722683191_3340843354482863502_n.jpg?stp=dst-jpg_s1080x2048&_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHSB6ot_fH5gK_QkfUh-ZAb8_xouXvuYZ3z_Gi5e-5hnV5xHYlhKKXzp1wx4wdi6_IcmEjf-sS1FeFXIk_8nFai&_nc_ohc=wSYIroclYSkQ7kNvgH8vfNg&_nc_zt=23&_nc_ht=scontent.fhan2-5.fna&_nc_gid=ABVSHx0c4hHUMyyiSLX-plk&oh=00_AYD5YjV0pw-p2NznILZFTjKWtk8-FezwP55Wk4rEoVZskA&oe=672EDCF9',
+      image: 'https://scontent.fhan2-4.fna.fbcdn.net/v/t39.30808-6/398976089_757060773101846_5641531812183543884_n.jpg?stp=c0.169.1536.1536a_dst-jpg_s1080x2048&_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=JDOgL2Cm6WgQ7kNvgHsIaD6&_nc_zt=23&_nc_ht=scontent.fhan2-4.fna&_nc_gid=AyD8FEcrFtcaiqeWidMSe-n&oh=00_AYBNiZky8-QU2k0HIiHrxJJ8u91TmhM0jUyrQE3uyCixsw&oe=673AE270',
       description: t(tokens.about.team.members.chung.description),
     },
     {
       name: t(tokens.about.team.members.duy.name),
-      image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-6/440748415_1893292917776645_5960821697220423027_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeFNDSZTYa8Zkq_AeoCmXrgqhU3pNdDST2uFTek10NJPa8kNS_F7rgbOIJntffT_UQ-P-9_gwDuMmE59xz38FN_T&_nc_ohc=yyidaxzaPOkQ7kNvgF7e5Sv&_nc_zt=23&_nc_ht=scontent.fhan20-1.fna&_nc_gid=ASGJmQseEulTpkC41lo1QBU&oh=00_AYBN4ctVGZFOrRk-PKXf6-AjeBgpJ2MheYfEDmsf_glzUQ&oe=672EB5D0',
+      image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/463548278_2014031192369483_6536627204386298906_n.jpg?stp=cp6_dst-jpg_s200x200&_nc_cat=103&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=Uc_aaMlswZsQ7kNvgGuxacG&_nc_ad=z-m&_nc_cid=0&_nc_zt=24&_nc_ht=scontent.fhan20-1.fna&_nc_gid=AVoi3opBTMP-Nr3Ris2VYer&oh=00_AYC4DftdavJV7CjDwNFgYZN_p-3TdBbQu3daFwzXJkcKVw&oe=673B0F8C',
       description: t(tokens.about.team.members.duy.description),
     },
     {
       name: t(tokens.about.team.members.chinh.name),
-      image: 'https://scontent.fhan2-4.fna.fbcdn.net/v/t39.30808-1/460041178_2220076215018005_861567611400213216_n.jpg?stp=dst-jpg_s480x480&_nc_cat=100&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeHHROx3_YSt3Bne-7NieixOveo4kgSK1b-96jiSBIrVvwQD2QTO9JlKAqCMhZ3ByccM0oXEN-ftN2MVDbYIgwYy&_nc_ohc=woAppT2m_6EQ7kNvgGsCS3y&_nc_zt=24&_nc_ht=scontent.fhan2-4.fna&_nc_gid=AFoNKlSexeJtqgXc3LcihPo&oh=00_AYAwfbqsCu4gP9fGlLrJaZHZDBYsHUteAiypoBhnhR4ScQ&oe=672EE0A5',
+      image: '',
       description: t(tokens.about.team.members.chinh.description),
     },
     {

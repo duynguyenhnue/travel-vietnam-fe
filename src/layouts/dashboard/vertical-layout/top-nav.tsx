@@ -143,7 +143,7 @@ export const TopNav = () => {
                         : '#0b2727',
                   }}
                 >
-                  {item.display}
+                  {t(tokens.nav[item.display.toLowerCase() as keyof typeof tokens.nav])}
                 </Typography>
               </NavLink>
             ))}
