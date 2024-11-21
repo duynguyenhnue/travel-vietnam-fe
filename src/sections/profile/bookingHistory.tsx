@@ -18,26 +18,24 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/redux/store';
 
 function BookingHistory() {
   const { t } = useTranslation();
-  // Dữ liệu giả lập cho lịch sử đặt chỗ
-  const bookings = [
-    { id: 'BK001', service: 'Consultation', date: '2024-10-20', time: '10:00 AM', status: 'Completed' },
-    { id: 'BK002', service: 'Follow-up', date: '2024-10-22', time: '2:00 PM', status: 'Pending' },
-    { id: 'BK003', service: 'Therapy Session', date: '2024-10-24', time: '4:00 PM', status: 'Cancelled' },
-    { id: 'BK004', service: 'Consultation', date: '2024-10-25', time: '1:00 PM', status: 'Completed' },
-  ];
-
-  // Hàm trả về chip màu sắc dựa vào trạng thái
+  const bookings = useSelector((state: RootState) => state.booking.bookings);
   const getStatusChip = (status: string) => {
     switch (status) {
-      case 'Completed':
-        return <Chip label={t(tokens.bookingHistory.completed)} color="success" />;
-      case 'Pending':
+      case 'CONFIRMED':
+        return <Chip label={t(tokens.bookingHistory.confirmed)} color="success" />;
+      case 'PENDING':
         return <Chip label={t(tokens.bookingHistory.pending)} color="warning" />;
-      case 'Cancelled':
+      case 'CANCELLED':
         return <Chip label={t(tokens.bookingHistory.cancelled)} color="error" />;
+      case 'COMPLETED':
+        return <Chip label={t(tokens.bookingHistory.completed)} color="success" />;
+      case 'FAILED':
+        return <Chip label={t(tokens.bookingHistory.failed)} color="error" />;
       default:
         return <Chip label={status} />;
     }
@@ -66,7 +64,7 @@ function BookingHistory() {
                     {t(tokens.bookingHistory.date)}
                   </TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold' }}>
-                    {t(tokens.bookingHistory.time)}
+                    {t(tokens.bookingHistory.amount)}
                   </TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold' }}>
                     {t(tokens.bookingHistory.status)}
@@ -74,12 +72,12 @@ function BookingHistory() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {bookings.map((booking) => (
-                  <TableRow key={booking.id}>
-                    <TableCell align="center">{booking.id}</TableCell>
-                    <TableCell align="center">{booking.service}</TableCell>
-                    <TableCell align="center">{booking.date}</TableCell>
-                    <TableCell align="center">{booking.time}</TableCell>
+                {bookings?.map((booking) => (
+                  <TableRow key={booking._id}>
+                    <TableCell align="center">{booking._id}</TableCell>
+                    <TableCell align="center">{booking.bookingType}</TableCell>
+                    <TableCell align="center">{new Date(booking.createdAt).toLocaleDateString('vi-VN')}</TableCell>
+                    <TableCell align="center">{booking.amount.toLocaleString()} VNĐ</TableCell>
                     <TableCell align="center">{getStatusChip(booking.status)}</TableCell>
                   </TableRow>
                 ))}

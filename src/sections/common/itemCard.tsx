@@ -28,7 +28,7 @@ const ItemCard = ({ data }: { data: Data }) => {
                     <img
                         src={data.photos[0] || ""}
                         alt="tour-img"
-                        style={{ width: '100%', borderRadius: '5px 5px 0 0' }}
+                        style={{ width: '100%', borderRadius: '5px 5px 0 0', height: '200px', objectFit: 'cover' }}
                     />
                     {
                         averageRating > 4 &&
@@ -62,11 +62,20 @@ const ItemCard = ({ data }: { data: Data }) => {
 
                     <Typography
                         variant="h6"
-                        sx={{ marginTop: '1rem', fontSize: '1rem', cursor: 'pointer' }}
+                        sx={{ marginTop: '1rem', fontSize: '1rem', cursor: 'pointer', width: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
                     >
                         <Link
                             to={`/${data.departurePoint ? "tours" : "hotel"}/${data._id}`}
-                            style={{ textDecoration: 'none', color: '#0b2727', transition: '0.3s' }}
+                            style={{ 
+                                width: '100%',
+                                textDecoration: 'none', 
+                                color: '#0b2727', 
+                                transition: '0.3s',  
+                                display: 'block',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap'
+                            }}
                         >
                             {data.title || data.name}
                         </Link>

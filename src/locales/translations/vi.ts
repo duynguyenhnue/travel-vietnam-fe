@@ -89,6 +89,9 @@ export const vi = {
   [tokens.bookingHistory.completed]: 'Hoàn thành',
   [tokens.bookingHistory.pending]: 'Đang chờ',
   [tokens.bookingHistory.cancelled]: 'Đã hủy',
+  [tokens.bookingHistory.failed]: 'Thất bại',
+  [tokens.bookingHistory.confirmed]: 'Đã xác nhận',
+  [tokens.bookingHistory.amount]: 'Số tiền',
 
   // Discount
   [tokens.discount.title]: 'Mã giảm giá',

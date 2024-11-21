@@ -89,6 +89,9 @@ export const en = {
   [tokens.bookingHistory.completed]: 'Completed',
   [tokens.bookingHistory.pending]: 'Pending',
   [tokens.bookingHistory.cancelled]: 'Cancelled',
+  [tokens.bookingHistory.failed]: 'Failed',
+  [tokens.bookingHistory.confirmed]: 'Confirmed',
+  [tokens.bookingHistory.amount]: 'Amount',
 
   // Discount
   [tokens.discount.title]: 'Discount Codes',
