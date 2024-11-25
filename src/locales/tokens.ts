@@ -28,6 +28,7 @@ export const tokens = {
     logout: 'nav.logout',
     profile: 'nav.profile',
     home: 'nav.home',
+    gallery: 'nav.gallery',
     about: 'nav.about',
     tours: 'nav.tours',
     hotels: 'nav.hotels',
@@ -163,6 +164,7 @@ export const tokens = {
     reviews: 'reviews.reviews',
   },
   tours: {
+    tourDes: 'tours.tourDes',
     bookTour: 'tours.bookTour',
     destination: 'tours.destination',
     departurePoint: 'tours.departurePoint',
