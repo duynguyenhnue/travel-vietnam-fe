@@ -31,6 +31,7 @@ export const vi = {
   [tokens.nav.settings]: 'Cài đặt',
   [tokens.nav.profile]: 'Hồ sơ',
   [tokens.nav.home]: 'Trang chủ',
+  [tokens.nav.gallery]: 'Thư viện ảnh',
   [tokens.nav.about]: 'Về chúng tôi',
   [tokens.nav.tours]: 'Tour',
   [tokens.nav.hotels]: 'Khách sạn',
@@ -142,6 +143,7 @@ export const vi = {
 
   // Tours
   [tokens.tours.bookTour]: 'Đặt Tour',
+  [tokens.tours.tourDes]: 'Lorem ipsum dolor ngồi amet consectetur adipisicing elit. Hàng hóa, kẻ thù.',
   [tokens.tours.destination]: 'Điểm đến',
   [tokens.tours.departurePoint]: 'Điểm khởi hành',
   [tokens.tours.tourName]: 'Tên tour',
