@@ -139,7 +139,11 @@ export const vi = {
   [tokens.reviews.searchHere]: 'Tìm kiếm',
   [tokens.reviews.viewMore]: 'Xem thêm bình luận',
   [tokens.reviews.reviews]: 'đánh giá',
-
+  [tokens.reviews.writeReview]: 'Viết đánh giá',
+  [tokens.reviews.great]: 'Tuyệt vời',
+  [tokens.reviews.quiteGood]: 'Khá tốt',
+  [tokens.reviews.bad]: 'Không tốt',
+  [tokens.reviews.submit]: 'Gửi đánh giá',
   // Tours
   [tokens.tours.bookTour]: 'Đặt Tour',
   [tokens.tours.destination]: 'Điểm đến',

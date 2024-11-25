@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/redux/store';
+import { BookingType } from 'src/types/redux/booking';
 
 function BookingHistory() {
   const { t } = useTranslation();
@@ -70,7 +71,7 @@ function BookingHistory() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {bookings?.map((booking) => (
+                {bookings?.map((booking: BookingType) => (
                   <TableRow key={booking._id}>
                     <TableCell align="center">{booking._id}</TableCell>
                     <TableCell align="center">{booking.bookingType}</TableCell>

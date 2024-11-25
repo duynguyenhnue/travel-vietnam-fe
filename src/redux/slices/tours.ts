@@ -36,6 +36,9 @@ export const toursSlice = createSlice({
       state.loading = false;
       state.tour = action.payload;
     },
+    createReviewSuccess: (state: ToursState) => {
+      state.loading = false;
+    },
   },
 });
 
@@ -63,6 +66,23 @@ export const getTourById = (id: string) => {
       const result = await axios.get(`${envConfig.serverURL}/tours/get/${id}`);
       const tour: TourType = result.data.data;
       dispatch(toursSlice.actions.getTourSuccess(tour ? tour : null));
+    } catch (error) {
+      const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
+      toast.error(errorMessage);
+      dispatch(toursSlice.actions.getFailure(errorMessage));
+    }
+  };
+};
+
+export const createReview = (review: string, rating: number, id: string) => {
+  return async () => {
+    try {
+      dispatch(toursSlice.actions.getRequest());
+      await axios.post(`${envConfig.serverURL}/reviews/${id}/tour`, {
+        reviewText: review,
+        rating: rating,
+      });
+      dispatch(toursSlice.actions.createReviewSuccess());
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
       toast.error(errorMessage);

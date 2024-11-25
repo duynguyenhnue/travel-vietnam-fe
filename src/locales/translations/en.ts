@@ -139,7 +139,11 @@ export const en = {
   [tokens.reviews.searchHere]: 'Search Here',
   [tokens.reviews.viewMore]: 'View More Comments',
   [tokens.reviews.reviews]: 'Reviews',
-
+  [tokens.reviews.writeReview]: 'Write a Review',
+  [tokens.reviews.great]: 'Great',
+  [tokens.reviews.quiteGood]: 'Quite Good',
+  [tokens.reviews.bad]: 'Bad',
+  [tokens.reviews.submit]: 'Submit',
   // Tours
   [tokens.tours.bookTour]: 'Book Tour',
   [tokens.tours.destination]: 'Destinationity',

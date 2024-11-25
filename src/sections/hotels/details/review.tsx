@@ -1,11 +1,15 @@
-import React from 'react';
-import { Box, Container, Grid, Typography, Rating, Avatar, Divider, TextField, MenuItem } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Container, Grid, Typography, Rating, Avatar, Divider, TextField, MenuItem, Button } from '@mui/material';
 import { Review } from 'src/types/redux/tours';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
+import { dispatch } from 'src/redux/store';
+import { createReview } from 'src/redux/slices/tours';
 
-const CustomerReview = ({ data }: { data: Review[] }) => {
+const CustomerReview = ({ data, id }: { data: Review[], id: string }) => {
     const { t } = useTranslation();
+    const [rating, setRating] = useState(0);
+    const [review, setReview] = useState('');
     const calculateAverageRating = (reviews: { rating: number }[]) => {
         if (reviews.length === 0) return 0;
         const total = reviews.reduce((acc, review) => acc + review.rating, 0);
@@ -13,6 +17,22 @@ const CustomerReview = ({ data }: { data: Review[] }) => {
     };
 
     const averageRating = calculateAverageRating(data);
+
+    const handleRating = (value: number) => {
+        if (value > 4) {
+            return t(tokens.reviews.great);
+        }
+        if (value > 3) {
+            return t(tokens.reviews.quiteGood);
+        }
+        return t(tokens.reviews.bad);
+    };
+    
+    const handleSubmit = async () => {
+        await dispatch(createReview(review, rating, id));
+        setReview('');
+        setRating(0);
+    };
     return (
         <Container maxWidth="xl" sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography variant="h5" gutterBottom>
@@ -50,34 +70,47 @@ const CustomerReview = ({ data }: { data: Review[] }) => {
             {data.map((review: Review, index: number) => (
                 <Box key={index} sx={{ mb: 3 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                        <Avatar sx={{ mr: 2 }}>A</Avatar>
+                        <Avatar sx={{ mr: 2 }} src={review.avatar} />
                         <Box>
-                            <Typography variant="subtitle1" fontWeight="bold">{review.userId}</Typography>
+                            <Typography variant="subtitle1" fontWeight="bold">{review.fullName}</Typography>
                             <Typography variant="body2" color="textSecondary">
                                 {new Date(review.updatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
                             </Typography>
                         </Box>
                     </Box>
-                    <Rating value={review.rating} readOnly size="small" />
+                    <Rating value={review.rating} readOnly size="small" precision={0.1} />
                     <Typography variant="body2" color="textSecondary">{review.reviewText}</Typography>
                     <Divider sx={{ mt: 2 }} />
                 </Box>
             ))}
-            <Typography
-                variant="h6"
-                sx={{
-                    mt: 2,
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    textDecoration: 'none',
-                    '&:hover': {
-                        textDecoration: 'underline',
-                    },
-                    color: '#faa935',
-                }}
-            >
-                {t(tokens.reviews.viewMore)}
-            </Typography>
+            {
+                data.length > 5 && (
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            mt: 2,
+                            textAlign: 'center',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            '&:hover': {
+                                textDecoration: 'underline',
+                            },
+                            color: '#faa935',
+                        }}
+                    >
+                        {t(tokens.reviews.viewMore)}
+                    </Typography>
+                )
+            }
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Typography variant="h5" sx={{ mt: 2 }}>{t(tokens.reviews.writeReview)}</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Rating value={rating} precision={0.1} onChange={(e, newValue: number | null) => setRating(newValue || 0)} />
+                    <Typography variant="body1">{handleRating(rating)}</Typography>
+                </Box>
+                <TextField label={t(tokens.reviews.writeReview)} fullWidth value={review} onChange={(e) => setReview(e.target.value)} />
+                <Button variant="contained" disabled={!review || rating === 0} color="primary" onClick={handleSubmit}>{t(tokens.reviews.submit)}</Button>
+            </Box>
         </Container>
     );
 };

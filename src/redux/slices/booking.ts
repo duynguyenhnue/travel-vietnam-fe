@@ -58,7 +58,7 @@ export const getHotelById = (id: string) => {
   return async () => {
     try {
       dispatch(bookingSlice.actions.getRequest());
-      const result = await axios.get(`${envConfig.serverURL}/bookings/${id}`);
+      const result = await axios.get(`${envConfig.serverURL}/bookings/get/${id}`);
       const booking: BookingType = result.data.data;
       dispatch(bookingSlice.actions.getBookingSuccess(booking ? booking : null));
     } catch (error) {
