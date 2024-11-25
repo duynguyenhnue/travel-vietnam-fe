@@ -142,7 +142,8 @@ export const en = {
 
   // Tours
   [tokens.tours.bookTour]: 'Book Tour',
-  [tokens.tours.city]: 'City',
+  [tokens.tours.destination]: 'Destinationity',
+  [tokens.tours.departurePoint]: 'Departure Point',
   [tokens.tours.tourName]: 'Tour name',
   [tokens.tours.departureDate]: 'Departure date',
   [tokens.tours.returnDate]: 'Return date',
@@ -517,7 +518,8 @@ export const en = {
   hero: {
     title: 'Know Before You Go',
     subtitle: 'Traveling opens the door to creating memories',
-    description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam ipsum nobis asperiores soluta voluptas quas voluptates. Molestiae tempora dignissimos, animi praesentium molestias perferendis porro expedita delectus. Soluta natus porro.',
+    description:
+      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam ipsum nobis asperiores soluta voluptas quas voluptates. Molestiae tempora dignissimos, animi praesentium molestias perferendis porro expedita delectus. Soluta natus porro.',
     search: {
       location: 'Location',
       locationPlaceholder: 'Where are you going?',

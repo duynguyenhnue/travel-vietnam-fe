@@ -142,7 +142,8 @@ export const vi = {
 
   // Tours
   [tokens.tours.bookTour]: 'Đặt Tour',
-  [tokens.tours.city]: 'Thành phố',
+  [tokens.tours.destination]: 'Điểm đến',
+  [tokens.tours.departurePoint]: 'Điểm khởi hành',
   [tokens.tours.tourName]: 'Tên tour',
   [tokens.tours.departureDate]: 'Ngày khởi hành',
   [tokens.tours.returnDate]: 'Ngày về',
