@@ -5,6 +5,7 @@ import Testimonials from 'src/sections/common/testimonials';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
+import { Seo } from 'src/components/common/performance/seo';
 
 const StyledContainer = styled(Container)({
   marginTop: '4rem',
@@ -72,6 +73,7 @@ const AboutUs = () => {
 
   return (
     <StyledContainer maxWidth="xl">
+      <Seo title={t(tokens.about.title)} />
       <Typography variant="h3" gutterBottom>
         {t(tokens.about.title)}
       </Typography>

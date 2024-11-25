@@ -33,6 +33,7 @@ export const tokens = {
     hotels: 'nav.hotels',
   },
   hotels: {
+    title: 'hotels.title',
     destination: 'hotels.destination',
     checkIn: 'hotels.checkIn',
     checkOut: 'hotels.checkOut',
@@ -173,6 +174,7 @@ export const tokens = {
     children: 'tours.children',
     searchTour: 'tours.searchTour',
     propose: 'tours.propose',
+    title: 'tours.title',
   },
   tourBooking: {
     description: 'tourBooking.description',
@@ -309,6 +311,7 @@ export const tokens = {
       emailSent: 'auth.forgotPassword.emailSent',
       emailSentDescription: 'auth.forgotPassword.emailSentDescription',
       sendResetLink: 'auth.forgotPassword.sendResetLink',
+      verifyCode: 'auth.forgotPassword.verifyCode',
     },
   },
   hotelBooking: {

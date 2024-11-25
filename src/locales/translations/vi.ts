@@ -127,6 +127,7 @@ export const vi = {
   [tokens.hotels.adults]: 'Người lớn',
   [tokens.hotels.children]: 'Trẻ em',
   [tokens.hotels.rooms]: 'Số phòng',
+  [tokens.hotels.title]: 'Khách sạn',
 
   // Reviews
   [tokens.reviews.title]: 'Đánh giá của khách hàng',
@@ -151,6 +152,7 @@ export const vi = {
   [tokens.tours.children]: 'Trẻ em',
   [tokens.tours.searchTour]: 'Tìm Tour',
   [tokens.tours.propose]: 'Tour Đề Xuất',
+  [tokens.tours.title]: 'Tour',
 
   // Tour Booking
   [tokens.tourBooking.description]: 'Mô tả',
@@ -288,6 +290,7 @@ export const vi = {
       emailSentDescription:
         'Nếu có tài khoản PTE Magic được đăng ký với {email}, chúng tôi đã gửi hướng dẫn cách đặt lại mật khẩu của bạn.',
       sendResetLink: 'Gửi liên kết đặt lại',
+      verifyCode: 'Xác nhận mã',
     },
   },
 

@@ -1,7 +1,6 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { Button, CircularProgress, Stack, TextField, Typography } from '@mui/material';
-import { Seo } from 'src/components/common/performance/seo';
 import { paths } from 'src/paths';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { handleOpenDialog, login } from '../../redux/slices/authentication';
@@ -74,7 +73,6 @@ const LoginPage = () => {
 
   return (
     <>
-      <Seo title={t(tokens.auth.login.title)} />
       <div>
         <Stack
           sx={{ mb: 4 }}

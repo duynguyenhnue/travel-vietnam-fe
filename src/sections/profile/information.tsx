@@ -109,6 +109,8 @@ export default function Information() {
   const handleSavePassword = (): void => {
     if (oldPassword && newPassword && user?._id) {
       dispatch(updatePassword(user?._id, oldPassword, newPassword));
+      setOldPassword("");
+      setNewPassword("");
     }
   }
 

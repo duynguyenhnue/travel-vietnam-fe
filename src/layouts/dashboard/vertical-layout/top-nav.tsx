@@ -199,13 +199,13 @@ export const TopNav = () => {
             <RouterLink href="/profile">
               <MenuItem>{t(tokens.nav.profile)}</MenuItem>
             </RouterLink>
-            <MenuItem
+            {/* <MenuItem
               onClick={() => {
                 // Chuyển hướng đến trang cài đặt
               }}
             >
               {t(tokens.nav.settings)}
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem
               onClick={() => {
                 dialog.handleOpen();

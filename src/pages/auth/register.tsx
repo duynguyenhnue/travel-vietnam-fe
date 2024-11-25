@@ -14,7 +14,6 @@ import {
   FormControl,
 } from '@mui/material';
 
-import { Seo } from 'src/components/common/performance/seo';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { useMounted } from 'src/hooks/use-mounted';
 import { handleOpenDialog, register } from 'src/redux/slices/authentication';
@@ -177,7 +176,6 @@ const RegisterPage = () => {
   }, [formik.values.address.district]);
   return (
     <>
-      <Seo title={t(tokens.auth.register.title)} />
       <div>
         <Stack
           sx={{ mb: 4 }}

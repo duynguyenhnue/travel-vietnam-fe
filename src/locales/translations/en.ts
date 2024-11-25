@@ -127,6 +127,7 @@ export const en = {
   [tokens.hotels.adults]: 'Adults',
   [tokens.hotels.children]: 'Children',
   [tokens.hotels.rooms]: 'Rooms',
+  [tokens.hotels.title]: 'Hotel',
 
   // Reviews
   [tokens.reviews.title]: 'Customer Review',
@@ -151,6 +152,7 @@ export const en = {
   [tokens.tours.children]: 'Children',
   [tokens.tours.searchTour]: 'Search Tour',
   [tokens.tours.propose]: 'Tour Suggestions',
+  [tokens.tours.title]: 'Tour',
 
   tourBooking: {
     description: 'Description',
@@ -303,6 +305,7 @@ export const en = {
       emailSentDescription:
         'If there is a PTE Magic account registered to {email} we have sent instructions for how to reset your password.',
       sendResetLink: 'Send reset link',
+      verifyCode: 'Verify code',
     },
   },
 
