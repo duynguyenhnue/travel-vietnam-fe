@@ -14,6 +14,7 @@ import {
   Rating,
   Divider,
   CircularProgress,
+  Link,
 } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -25,7 +26,7 @@ import TranslateIcon from '@mui/icons-material/Translate';
 import Maps from 'src/sections/common/map';
 import Testimonials from 'src/sections/common/testimonials';
 import CustomerReview from 'src/sections/hotels/details/review';
-import { dispatch, RootState, useDispatch, useSelector } from 'src/redux/store';
+import { RootState, useDispatch, useSelector } from 'src/redux/store';
 import { getTourById, getTours } from 'src/redux/slices/tours';
 import { localStorageConfig } from 'src/config';
 import { handleOpenDialog } from 'src/redux/slices/authentication';
@@ -36,143 +37,128 @@ import { useDialog } from 'src/hooks/use-dialog';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { getHotels } from 'src/redux/slices/hotels';
-import { Review } from 'src/types/redux/tours';
-import { LocationsType } from 'src/types/redux/hotels';
+import { Review, TourType } from 'src/types/redux/tours';
+import { HotelType, LocationsType } from 'src/types/redux/hotels';
 import ImageModal from 'src/components/common/imageModal/ImageModal';
 import { LatLngTuple } from 'leaflet';
-import { useNavigate } from 'react-router-dom';
 
-const relatedHotelsVietnam = () => {
-  const { hotels } = useSelector((state: RootState) => state.hotels);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!hotels) {
-      dispatch(getHotels());
-    }
-  }, [hotels]);
+const relatedHotelsVietnam = (hotels: HotelType[]) => {
   const calculateAverageRating = (reviews: Review[] | undefined) => {
     if (!reviews || reviews.length === 0) return 5;
     const total = reviews.reduce((acc, review) => acc + review.rating, 0);
     return (total / reviews.length).toFixed(2) as unknown as number;
   };
-  const handleHotelClick = (id: string) => {
-    navigate(`/hotels/${id}`);
-  };
-  return hotels?.map((hotel, index) => (
-    <Card key={index} onClick={() => handleHotelClick(hotel._id)}>
-      <CardMedia
-        component="img"
-        height="140"
-        image={hotel.photos[0]}
-        alt={hotel.name}
-      />
-      <CardContent>
-        <Typography
-          variant="subtitle1"
-          fontWeight="bold"
-        >
-          {hotel.name}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-        >
-          {hotel.description}
-        </Typography>
-        {hotel.reviews.map((review, i) => (
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            key={i}
-          >
-            {review.reviewText}
-          </Typography>
-        ))}
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-          <Rating
-            value={calculateAverageRating(hotel.reviews)}
-            readOnly
-            size="small"
+  return hotels && (
+    hotels?.map((hotel, index) => (
+      <Card key={index}>
+        <Link href={`/hotels/${hotel._id}`} underline="none">
+          <CardMedia
+            component="img"
+            height="140"
+            image={hotel.photos[0]}
+            alt={hotel.name}
           />
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            sx={{ ml: 1 }}
-          >
-            {hotel.reviews.length} reviews
-          </Typography>
-        </Box>
-        <Typography
-          variant="h6"
-          sx={{ mt: 1 }}
-        >
-          {hotel.price.toLocaleString()} VNĐ/person
-        </Typography>
-      </CardContent>
-    </Card>
-  ));
+          <CardContent>
+            <Typography
+              variant="subtitle1"
+              fontWeight="bold"
+            >
+              {hotel.name}
+            </Typography>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+            >
+              {hotel.description}
+            </Typography>
+            {hotel.reviews.map((review, i) => (
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                key={i}
+              >
+                {review.reviewText}
+              </Typography>
+            ))}
+            <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+              <Rating
+                value={calculateAverageRating(hotel.reviews)}
+                readOnly
+                size="small"
+              />
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ ml: 1 }}
+              >
+                {hotel.reviews.length} reviews
+              </Typography>
+            </Box>
+            <Typography
+              variant="h6"
+              sx={{ mt: 1 }}
+            >
+              {hotel.price.toLocaleString()} VNĐ/person
+            </Typography>
+          </CardContent>
+        </Link>
+      </Card>
+    )))
 };
 
-const relatedToursToday = () => {
-  const { tours } = useSelector((state: RootState) => state.tours);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!tours) {
-      dispatch(getTours());
-    }
-  }, [tours]);
+const relatedToursToday = (tours: TourType[]) => {
   const calculateAverageRating = (reviews: { rating: number }[]) => {
     if (reviews.length === 0) return 5;
     const total = reviews.reduce((acc, review) => acc + review.rating, 0);
     return (total / reviews.length).toFixed(2) as unknown as number;
   };
-  const handleTourClick = (id: string) => {
-    navigate(`/tours/${id}`);
-  };
-  return tours?.map((tour, index) => (
-    <Card key={index} onClick={() => handleTourClick(tour._id)}>
-      <CardMedia
-        component="img"
-        height="140"
-        image={tour.photos[0]}
-        alt={tour.title}
-      />
-      <CardContent>
-        <Typography
-          variant="subtitle1"
-          fontWeight="bold"
-        >
-          {tour.title}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-        >
-          {tour.desc}
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-          <Rating
-            value={calculateAverageRating(tour.reviews)}
-            readOnly
-            size="small"
-          />
+  return tours && (
+    tours?.map((tour, index) => (
+      <Card key={index}>
+        <Link href={`/tours/${tour._id}`} underline="none">
+          <CardMedia
+            component="img"
+          height="140"
+          image={tour.photos[0]}
+          alt={tour.title}
+        />
+        <CardContent>
+          <Typography
+            variant="subtitle1"
+            fontWeight="bold"
+          >
+            {tour.title}
+          </Typography>
           <Typography
             variant="body2"
             color="textSecondary"
-            sx={{ ml: 1 }}
           >
-            {tour.reviews.length} reviews
+            {tour.desc}
           </Typography>
-        </Box>
-        <Typography
-          variant="h6"
-          sx={{ mt: 1 }}
-        >
-          {tour.price.toLocaleString()} VNĐ/person
-        </Typography>
-      </CardContent>
-    </Card>
-  ));
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+            <Rating
+              value={calculateAverageRating(tour.reviews)}
+              readOnly
+              size="small"
+            />
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              sx={{ ml: 1 }}
+            >
+              {tour.reviews.length} reviews
+            </Typography>
+          </Box>
+          <Typography
+            variant="h6"
+            sx={{ mt: 1 }}
+          >
+            {tour.price.toLocaleString()} VNĐ/person
+          </Typography>
+          </CardContent>
+        </Link>
+      </Card>
+    )))
 };
 
 const TourBookingPage = () => {
@@ -182,6 +168,8 @@ const TourBookingPage = () => {
   const id = pathname.split('/').pop();
   const dialog = useDialog();
   const { tour } = useSelector((state: RootState) => state.tours);
+  const { tours } = useSelector((state: RootState) => state.tours);
+  const { hotels } = useSelector((state: RootState) => state.hotels);
   const [destination, setDestination] = useState<LatLngTuple>([0, 0]);
   const [provinces, setProvinces] = useState<LocationsType[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -189,9 +177,16 @@ const TourBookingPage = () => {
   const [checkOutDate, setCheckOutDate] = useState<string>(new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+
   useEffect(() => {
     if (tour) {
       setTotalPrice(tour.price);
+    }
+    if (!tours) {
+      dispatch(getTours());
+    }
+    if (!hotels) {
+      dispatch(getHotels());
     }
   }, [tour]);
 
@@ -510,12 +505,12 @@ const TourBookingPage = () => {
             <Divider sx={{ my: 4 }} />
             <Box sx={{ mt: 4, '.MuiContainer-root': { padding: 0 } }}>
               <Typography variant="h6">{t(tokens.hotelBooking.relatedHotels.today)}</Typography>
-              <Testimonials Html={relatedToursToday()} />
+              {tours && <Testimonials Html={relatedToursToday(tours)} />}
             </Box>
             <Divider sx={{ my: 4 }} />
             <Box sx={{ mt: 4, '.MuiContainer-root': { padding: 0 } }}>
               <Typography variant="h6">{t(tokens.hotelBooking.relatedHotels.vietnam)}</Typography>
-              <Testimonials Html={relatedHotelsVietnam()} />
+              {hotels && <Testimonials Html={relatedHotelsVietnam(hotels)} />}
             </Box>
             <Divider sx={{ my: 4 }} />
             <CustomerReview data={[]} />
