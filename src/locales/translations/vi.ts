@@ -287,6 +287,7 @@ export const vi = {
       emailSentDescription:
         'Nếu có tài khoản PTE Magic được đăng ký với {email}, chúng tôi đã gửi hướng dẫn cách đặt lại mật khẩu của bạn.',
       sendResetLink: 'Gửi liên kết đặt lại',
+      verifyCode: 'Xác nhận mã',
     },
   },
 

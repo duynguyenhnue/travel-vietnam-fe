@@ -137,13 +137,31 @@ export const logout = () => {
   };
 };
 
-export const forgotPassword = () => {
+export const forgotPassword = (email: string) => {
   return async () => {
     try {
       dispatch(authenticationSlice.actions.forgotPasswordRequest());
+      await axios.post(`${envConfig.serverURL}/auth/forgot-password`, { email });
+      dispatch(authenticationSlice.actions.forgotPasswordSuccess());
+      toast.success('Code has been sent to your email');
+    } catch (error) {
+      const errorMessage: string = error.response
+        ? error.response.data.message
+        : 'Something went wrong';
+      toast.error(errorMessage);
+      dispatch(authenticationSlice.actions.forgotPasswordFailure(errorMessage));
+    }
+  };
+};
+
+export const verifyCode = (verifyCodeRequest: { email: string, code: string }) => {
+  return async () => {
+    try {
+      dispatch(authenticationSlice.actions.forgotPasswordRequest());
+      await axios.post(`${envConfig.serverURL}/auth/verify-code`, verifyCodeRequest);
       dispatch(authenticationSlice.actions.forgotPasswordSuccess());
       toast.success('New password has been sent to your email');
-      dispatch(handleOpenDialog('login'));
+      dispatch(authenticationSlice.actions.setDiaLog('login'));
     } catch (error) {
       const errorMessage: string = error.response
         ? error.response.data.message

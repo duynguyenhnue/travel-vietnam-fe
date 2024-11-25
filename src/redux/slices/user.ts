@@ -59,9 +59,9 @@ export const getUser = () => {
 export const updatePassword = (id: string, oldPassword: string, newPassword: string) => {
   return async () => {
     try {
-      toast.loading('Updating password...');
       dispatch(userSlice.actions.getUserRequest());
-      await axios.put(`${envConfig.serverURL}/users/change-password/${id}`, { oldPassword, newPassword });
+      await axios.post(`${envConfig.serverURL}/users/change-password`, { oldPassword, newPassword });
+      toast.success('Update password success!');
       dispatch(userSlice.actions.updatePasswordSuccess());
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : 'Something went wrong';

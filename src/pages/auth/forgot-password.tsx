@@ -11,12 +11,13 @@ import {
 } from '@mui/material';
 import { Seo } from 'src/components/common/performance/seo';
 import { useDispatch, useSelector } from 'src/redux/store';
-import { useMounted } from 'src/hooks/use-mounted';
-import { forgotPassword, handleOpenDialog } from 'src/redux/slices/authentication';
+import { forgotPassword, handleOpenDialog, verifyCode } from 'src/redux/slices/authentication';
 import { Container } from '@mui/system';
 import { ArrowLeftIcon } from '@mui/x-date-pickers';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
+import { MuiOtpInput } from 'mui-one-time-password-input'
+import { useState } from 'react';
 
 interface ForgotPasswordValues {
   email: string;
@@ -32,25 +33,29 @@ const validationSchema = Yup.object({
 
 const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
-  const isMounted = useMounted();
   const { t } = useTranslation();
+  const [otp, setOtp] = useState('');
 
   const { loading, forgotEmailSent } = useSelector((state) => state.authentication);
 
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: async (values, helpers): Promise<void> => {
-      try {
-        await dispatch(forgotPassword());
-      } catch (err) {
-        if (isMounted()) {
-          helpers.setStatus({ success: false });
-          helpers.setSubmitting(false);
-        }
-      }
+    onSubmit: async (): Promise<void> => {
+
     },
   });
+
+  const handleClick = async () => {
+    await dispatch(forgotPassword(formik.values.email));
+  };
+  const handleChange = (value: string) => {
+    setOtp(value);
+  };
+
+  const handleVerifyCode = async () => {
+    await dispatch(verifyCode({ email: formik.values.email, code: otp }));
+  };
 
   return (
     <>
@@ -80,6 +85,20 @@ const ForgotPasswordPage = () => {
               ? t(tokens.auth.forgotPassword.emailSentDescription, { email: formik.values.email })
               : t(tokens.auth.forgotPassword.description)}
           </Typography>
+          {forgotEmailSent && <>
+            <MuiOtpInput value={otp} onChange={handleChange} length={6} />
+            <Button
+              fullWidth
+              size="large"
+              sx={{ mt: 3 }}
+              type="submit"
+              variant="contained"
+              disabled={loading}
+              onClick={handleVerifyCode}
+            >
+              {loading ? <CircularProgress /> : t(tokens.auth.forgotPassword.verifyCode)}
+            </Button>
+            </>}
         </Stack>
         {!forgotEmailSent && (
           <form
@@ -105,6 +124,7 @@ const ForgotPasswordPage = () => {
               type="submit"
               variant="contained"
               disabled={loading}
+              onClick={handleClick}
             >
               {loading ? <CircularProgress /> : t(tokens.auth.forgotPassword.sendResetLink)}
             </Button>

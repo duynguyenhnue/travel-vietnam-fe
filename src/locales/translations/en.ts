@@ -302,6 +302,7 @@ export const en = {
       emailSentDescription:
         'If there is a PTE Magic account registered to {email} we have sent instructions for how to reset your password.',
       sendResetLink: 'Send reset link',
+      verifyCode: 'Verify code',
     },
   },
 

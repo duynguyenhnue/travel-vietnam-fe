@@ -308,6 +308,7 @@ export const tokens = {
       emailSent: 'auth.forgotPassword.emailSent',
       emailSentDescription: 'auth.forgotPassword.emailSentDescription',
       sendResetLink: 'auth.forgotPassword.sendResetLink',
+      verifyCode: 'auth.forgotPassword.verifyCode',
     },
   },
   hotelBooking: {
