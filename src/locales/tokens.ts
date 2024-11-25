@@ -33,6 +33,7 @@ export const tokens = {
     hotels: 'nav.hotels',
   },
   hotels: {
+    title: 'hotels.title',
     destination: 'hotels.destination',
     checkIn: 'hotels.checkIn',
     checkOut: 'hotels.checkOut',
@@ -172,6 +173,7 @@ export const tokens = {
     children: 'tours.children',
     searchTour: 'tours.searchTour',
     propose: 'tours.propose',
+    title: 'tours.title',
   },
   tourBooking: {
     description: 'tourBooking.description',

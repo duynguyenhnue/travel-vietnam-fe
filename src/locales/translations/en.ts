@@ -127,6 +127,7 @@ export const en = {
   [tokens.hotels.adults]: 'Adults',
   [tokens.hotels.children]: 'Children',
   [tokens.hotels.rooms]: 'Rooms',
+  [tokens.hotels.title]: 'Hotel',
 
   // Reviews
   [tokens.reviews.title]: 'Customer Review',
@@ -150,6 +151,7 @@ export const en = {
   [tokens.tours.children]: 'Children',
   [tokens.tours.searchTour]: 'Search Tour',
   [tokens.tours.propose]: 'Tour Suggestions',
+  [tokens.tours.title]: 'Tour',
 
   tourBooking: {
     description: 'Description',

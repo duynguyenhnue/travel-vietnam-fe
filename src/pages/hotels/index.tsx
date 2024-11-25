@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { dispatch } from 'src/redux/store';
 import { useEffect } from 'react';
 import { getTours } from 'src/redux/slices/tours';
+import { tokens } from 'src/locales/tokens';
+import { Seo } from 'src/components/common/performance/seo';
 
 const HotelPage = () => {
   const { t } = useTranslation();
@@ -64,6 +66,7 @@ const HotelPage = () => {
   }, []);
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', gap: 5, mb: 5 }}>
+      <Seo title={t(tokens.hotels.title)} />
       <BannerSlider banners={banners} />
       <FormFieldHotel />
       <Discount promoCodes={promoCodes} />

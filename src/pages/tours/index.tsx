@@ -1,4 +1,7 @@
 import { Stack } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Seo } from 'src/components/common/performance/seo';
+import { tokens } from 'src/locales/tokens';
 import BannerSlider from 'src/sections/common/banner';
 import Discount from 'src/sections/common/discount';
 import Explore from 'src/sections/common/explore';
@@ -6,6 +9,7 @@ import TextArticle from 'src/sections/hotels/hotelArticle';
 import FormFieldTour from 'src/sections/tours/formField';
 
 const TourPage = () => {
+  const { t } = useTranslation();
   const banners = [
     {
       image: '/assets/tours/banner1.png',
@@ -57,6 +61,7 @@ const TourPage = () => {
   }
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', gap: 5, mb: 5 }}>
+      <Seo title={t(tokens.tours.title)} />
       <BannerSlider banners={banners} />
       <FormFieldTour />
       <Discount promoCodes={promoCodes} />

@@ -11,8 +11,6 @@ import {
   Chip,
   Divider,
   Card,
-  CardActions,
-  Button,
   CardContent,
   CardHeader
 } from '@mui/material';
@@ -86,9 +84,6 @@ function BookingHistory() {
           </TableContainer>
         </CardContent>
         <Divider />
-        <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">{t(tokens.profile.save)}</Button>
-        </CardActions>
       </Card>
     </Box>
   );

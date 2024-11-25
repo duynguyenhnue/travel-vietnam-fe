@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { getUser } from 'src/redux/slices/user';
 import { getBookings } from 'src/redux/slices/booking';
+import { Seo } from 'src/components/common/performance/seo';
 
 const ProfilePage = () => {
   const [mode, setMode] = useState<'information' | 'booking' | 'newsletter' | 'notification'>(
@@ -76,6 +77,7 @@ const ProfilePage = () => {
       maxWidth="xl"
       sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}
     >
+      <Seo title={t(tokens.profile.title)} />
       {
         !user ?
           <CircularProgress />
