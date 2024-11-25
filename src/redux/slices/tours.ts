@@ -39,11 +39,13 @@ export const toursSlice = createSlice({
   },
 });
 
-export const getTours = (page = 0, limit = 9, city = '') => {
+export const getTours = (page = 0, limit = 9, name = '', destination = '', departurePoint = '') => {
   return async () => {
     try {
       dispatch(toursSlice.actions.getRequest());
-      const result = await axios.get(`${envConfig.serverURL}/tours/search?page=${page}&limit=${limit}&city=${city}`);
+      const result = await axios.get(
+        `${envConfig.serverURL}/tours/search?page=${page}&limit=${limit}&name=${name}&departurePoint=${departurePoint}&destination=${destination}`
+      );
       const tours: TourType[] = Array.isArray(result.data.data.data) ? result.data.data.data : [];
       dispatch(toursSlice.actions.getToursSuccess(tours.length > 0 ? tours : null));
     } catch (error) {

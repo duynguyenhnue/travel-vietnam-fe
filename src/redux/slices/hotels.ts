@@ -41,11 +41,13 @@ export const hotelsSlice = createSlice({
   },
 });
 
-export const getHotels = (page = 0, limit = 9, city = "") => {
+export const getHotels = (page = 0, limit = 9, name = '', city = '') => {
   return async () => {
     try {
       dispatch(hotelsSlice.actions.getRequest());
-      const result = await axios.get(`${envConfig.serverURL}/hotels/search?page=${page}&limit=${limit}&city=${city}`);
+      const result = await axios.get(
+        `${envConfig.serverURL}/hotels/search?page=${page}&limit=${limit}&name=${name}&city=${city}`
+      );
       const tours: HotelType[] = Array.isArray(result.data.data.data) ? result.data.data.data : [];
       dispatch(hotelsSlice.actions.getToursSuccess(tours.length > 0 ? tours : null));
     } catch (error) {

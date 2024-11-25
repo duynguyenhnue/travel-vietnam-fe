@@ -163,7 +163,8 @@ export const tokens = {
   },
   tours: {
     bookTour: 'tours.bookTour',
-    city: 'tours.city',
+    destination: 'tours.destination',
+    departurePoint: 'tours.departurePoint',
     tourName: 'tours.tourName',
     departureDate: 'tours.departureDate',
     returnDate: 'tours.returnDate',
