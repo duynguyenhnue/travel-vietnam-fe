@@ -254,7 +254,7 @@ export const vi = {
           name: 'Dương Thị Ánh Duyên',
           role: 'Kiểm Thử Viên',
           description:
-            'Một kiểm thử viên tỉ mỉ chuyên về đảm bảo chất lượng. Duyên đảm bảo mọi sản phẩm phát hành đều đạt tiêu chuẩn cao nhất, phát hiện và giải quyết vấn đề trước khi đến tay người dùng.',
+            'Một kiểm thử viên tỉ mỉ chuyên về đảm bảo chất lượng.Ánh Duyên đảm bảo mọi sản phẩm phát hành đều đạt tiêu chuẩn cao nhất, phát hiện và giải quyết vấn đề trước khi đến tay người dùng.',
         },
       },
     },
