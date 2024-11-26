@@ -30,6 +30,7 @@ export const en = {
   [tokens.nav.settings]: 'Settings',
   [tokens.nav.profile]: 'Profile',
   [tokens.nav.home]: 'Home',
+  [tokens.nav.gallery]: 'Gallery',
   [tokens.nav.about]: 'About',
   [tokens.nav.tours]: 'Tours',
   [tokens.nav.hotels]: 'Hotels',
@@ -146,6 +147,7 @@ export const en = {
   [tokens.reviews.submit]: 'Submit',
   // Tours
   [tokens.tours.bookTour]: 'Book Tour',
+  [tokens.tours.tourDes]: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, enim.',
   [tokens.tours.destination]: 'Destinationity',
   [tokens.tours.departurePoint]: 'Departure Point',
   [tokens.tours.tourName]: 'Tour name',
