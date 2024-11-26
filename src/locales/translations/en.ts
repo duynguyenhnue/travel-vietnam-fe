@@ -269,7 +269,7 @@ export const en = {
           name: 'Duong Thi Anh Duyen',
           role: 'Quality Assurance',
           description:
-            'A meticulous Tester dedicated to quality assurance. Duyen ensures that every product release meets the highest standards, finding and resolving issues before they reach the user.',
+            'A meticulous Tester dedicated to quality assurance.Anh Duyen ensures that every product release meets the highest standards, finding and resolving issues before they reach the user.',
         },
       },
     },
