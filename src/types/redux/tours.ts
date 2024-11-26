@@ -7,6 +7,8 @@ export type ToursState = {
 
 export type Review = {
     userId: string;
+    avatar?: string;
+    fullName?: string;
     rating: number;
     reviewText: string;
     createdAt: Date;

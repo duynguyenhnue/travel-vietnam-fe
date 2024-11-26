@@ -298,7 +298,7 @@ const HotelBookingPage = () => {
             <Rating
               name="half-rating-read"
               defaultValue={calculateAverageRating(hotel?.reviews)}
-              precision={0.5}
+              precision={0.1}
               readOnly
             />
             <Typography
@@ -337,7 +337,7 @@ const HotelBookingPage = () => {
                     container
                     spacing={2}
                   >
-                    {hotel?.photos.slice(0, 6).map((src, index) => (
+                    {hotel?.photos.slice(0, 6).map((src: string, index: number) => (
                       <Grid
                         item
                         xs={2}
@@ -498,7 +498,7 @@ const HotelBookingPage = () => {
             {hotels && <Testimonials Html={relatedHotelsVietnam(hotels)} />}
           </Box>
           <Divider sx={{ my: 4 }} />
-          <CustomerReview data={[]} />
+          <CustomerReview data={hotel?.reviews || []} id={hotel?._id || ''} />
           <ImageModal
             open={modalOpen}
             onClose={() => setModalOpen(false)}
