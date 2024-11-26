@@ -31,13 +31,6 @@ import { LanguageSwitch } from '../language-switch';
 import ProfileIcon from '@mui/icons-material/Person';
 import ForgotPasswordPage from 'src/pages/auth/forgot-password';
 
-const navLinks = [
-  { path: '/', display: 'Home' },
-  { path: '/about', display: 'About' },
-  { path: '/tours', display: 'Tours' },
-  { path: '/hotels', display: 'Hotels' },
-];
-
 export const TopNav = () => {
   const dialog = useDialog();
   const dispatch = useDispatch();
@@ -100,6 +93,13 @@ export const TopNav = () => {
 
   const { t } = useTranslation();
   const location = useLocation();
+
+  const navLinks = [
+    { path: '/', display: t(tokens.nav.home) },
+    { path: '/about', display: t(tokens.nav.about) },
+    { path: '/tours', display: t(tokens.nav.tours) },
+    { path: '/hotels', display: t(tokens.nav.hotels) },
+  ];
   return (
     <AppBar
       position="sticky"
