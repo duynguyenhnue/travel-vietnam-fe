@@ -323,6 +323,7 @@ export const tokens = {
   },
   hotelBooking: {
     title: 'hotelBooking.title',
+    noRoomsAvailable: 'hotelBooking.noRoomsAvailable',
     location: 'hotelBooking.location',
     description: 'hotelBooking.description',
     openInGoogleMaps: 'hotelBooking.openInGoogleMaps',
@@ -361,6 +362,7 @@ export const tokens = {
       confirmBooking: 'hotelBooking.booking.confirmBooking',
       saveWishlist: 'hotelBooking.booking.saveWishlist',
       shareActivity: 'hotelBooking.booking.shareActivity',
+      selectRoom: 'hotelBooking.booking.selectRoom',
     },
     relatedHotels: {
       today: 'hotelBooking.relatedHotels.today',

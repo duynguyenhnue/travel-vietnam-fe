@@ -14,10 +14,6 @@ const VnPayResult: React.FC = () => {
   const dispatch = useDispatch();
   const { vnpayReturn } = useSelector((state) => state.checkout);
 
-  const handleRetry = () => {
-    dispatch(paymentReturn(params as unknown as ParamsReturn));
-  };
-
   useEffect(() => {
     dispatch(paymentReturn(params as unknown as ParamsReturn));
   }, []);
@@ -58,6 +54,14 @@ const VnPayResult: React.FC = () => {
 
               <Typography variant="body1">Số tiền: {vnpayReturn.amount} VND</Typography>
               <Typography variant="body1">Mã giao dịch: {vnpayReturn.txnRef}</Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                href="/"
+                sx={{ mt: 3 }}
+              >
+                Trở về
+              </Button>
             </>
           ) : (
             <>
@@ -81,10 +85,10 @@ const VnPayResult: React.FC = () => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleRetry}
+                href="/"
                 sx={{ mt: 3 }}
               >
-                Thử lại
+                Trở về
               </Button>
             </>
           )}

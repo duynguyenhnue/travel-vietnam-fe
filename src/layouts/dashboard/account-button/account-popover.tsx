@@ -36,7 +36,6 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
     try {
       onClose?.();
       dispatch(logout());
-      router.push(paths.auth.login);
     } catch (err) {
       toast.error('Something went wrong!');
     }

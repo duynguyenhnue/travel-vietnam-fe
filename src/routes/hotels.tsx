@@ -25,13 +25,9 @@ export const hotelsRoutes: RouteObject[] = [
         element: <HotelsPage />,
       },
       {
-        path: '/hotels/:locationId',
+        path: '/hotels/:hotelId',
         element: <HotelBookingPage />,
       },
-      // {
-      //   path: '/hotels/:locationId/:hotelId',
-      //   element: <RoomsBookingPage />,
-      // },
     ],
   },
   {
