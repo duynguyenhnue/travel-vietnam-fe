@@ -8,7 +8,10 @@ export interface VnpayParams {
   amount: number;
   bookingType: BookingType;
   guestSize: number;
+  roomId: string;
   orderId: string;
+  startDate: string;
+  endDate: string;
 }
 export enum BookingStatus {
   CONFIRMED = 'CONFIRMED',

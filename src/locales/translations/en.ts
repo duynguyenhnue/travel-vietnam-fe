@@ -348,6 +348,7 @@ export const en = {
   hotelBooking: {
     title: 'Hotel Details',
     location: 'Location',
+    noRoomsAvailable: 'No rooms available',
     description: 'Description',
     openInGoogleMaps: 'Open In Google Maps',
     features: {
@@ -380,6 +381,7 @@ export const en = {
       title: 'Booking',
       from: 'From',
       to: 'To',
+      selectRoom: 'Select Room',
       guests: 'No. Of Guest',
       subtotal: 'Subtotal',
       confirmBooking: 'Confirm Booking',

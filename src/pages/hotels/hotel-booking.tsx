@@ -1,5 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Container, Grid, Typography, Card, CardMedia, CardContent, CardActions, TextField, MenuItem, Rating, Divider, CircularProgress, Link } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Typography,
+  Card,
+  CardMedia,
+  CardContent,
+  Rating,
+  Divider,
+  CircularProgress,
+  Link,
+  Stack,
+} from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CancelIcon from '@mui/icons-material/Cancel';
 import MobileFriendlyIcon from '@mui/icons-material/MobileFriendly';
@@ -26,6 +40,7 @@ import { getTours } from 'src/redux/slices/tours';
 import { Review, TourType } from 'src/types/redux/tours';
 import ImageModal from 'src/components/common/imageModal/ImageModal';
 import { LatLngTuple } from 'leaflet';
+import { RoomOptionItem } from 'src/sections/hotels/details/rooms';
 
 const relatedHotelsVietnam = (hotels: HotelType[]) => {
   const calculateAverageRating = (reviews: Review[] | undefined) => {
@@ -35,54 +50,57 @@ const relatedHotelsVietnam = (hotels: HotelType[]) => {
   };
   return hotels?.map((hotel, index) => (
     <Card key={index}>
-      <Link href={`/hotels/${hotel._id}`} underline="none">
+      <Link
+        href={`/hotels/${hotel._id}`}
+        underline="none"
+      >
         <CardMedia
           component="img"
           height="140"
-        image={hotel.photos[0]}
-        alt={hotel.name}
-      />
-      <CardContent>
-        <Typography
-          variant="subtitle1"
-          fontWeight="bold"
-        >
-          {hotel.name}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-        >
-          {hotel.description}
-        </Typography>
-        {hotel.reviews.map((review, i) => (
+          image={hotel.photos[0]}
+          alt={hotel.name}
+        />
+        <CardContent>
+          <Typography
+            variant="subtitle1"
+            fontWeight="bold"
+          >
+            {hotel.name}
+          </Typography>
           <Typography
             variant="body2"
             color="textSecondary"
-            key={i}
           >
-            {review.reviewText}
+            {hotel.description}
           </Typography>
-        ))}
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-          <Rating
-            value={calculateAverageRating(hotel.reviews)}
-            readOnly
-            size="small"
-          />
+          {hotel.reviews.map((review, i) => (
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              key={i}
+            >
+              {review.reviewText}
+            </Typography>
+          ))}
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+            <Rating
+              value={calculateAverageRating(hotel.reviews)}
+              readOnly
+              size="small"
+            />
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              sx={{ ml: 1 }}
+            >
+              {hotel.reviews.length} reviews
+            </Typography>
+          </Box>
           <Typography
-            variant="body2"
-            color="textSecondary"
-            sx={{ ml: 1 }}
+            variant="h6"
+            sx={{ mt: 1 }}
           >
-            {hotel.reviews.length} reviews
-          </Typography>
-        </Box>
-        <Typography
-          variant="h6"
-          sx={{ mt: 1 }}
-        >
-          {hotel.price.toLocaleString()} VNĐ/person
+            {hotel.price.toLocaleString()} VNĐ/person
           </Typography>
         </CardContent>
       </Link>
@@ -98,7 +116,10 @@ const relatedToursToday = (tours: TourType[]) => {
   };
   return tours?.map((tour, index) => (
     <Card key={index}>
-      <Link href={`/tours/${tour._id}`} underline="none">
+      <Link
+        href={`/tours/${tour._id}`}
+        underline="none"
+      >
         <CardMedia
           component="img"
           height="140"
@@ -150,14 +171,12 @@ const HotelBookingPage = () => {
   const pathname = location.pathname;
   const id = pathname.split('/').pop();
   const dialog = useDialog();
-  const { locationId } = useParams();
-  const { hotel } = useSelector((state: RootState) => state.hotels);
+  const { hotelId } = useParams();
   const { tours } = useSelector((state: RootState) => state.tours);
-  const { hotels } = useSelector((state: RootState) => state.hotels);
+  const { hotels, hotel, rooms } = useSelector((state: RootState) => state.hotels);
   const [provinces, setProvinces] = useState<LocationsType[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [checkInDate, setCheckInDate] = useState<string>(new Date().toISOString().split('T')[0]);
-  const [checkOutDate, setCheckOutDate] = useState<string>(new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]);
+
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [destination, setDestination] = useState<LatLngTuple>([0, 0]);
@@ -184,7 +203,9 @@ const HotelBookingPage = () => {
     const fetchProvinces = async (): Promise<void> => {
       try {
         const response = await fetch('https://esgoo.net/api-tinhthanh/1/0.htm');
-        const data: { data: LocationsType[] } = await response.json() as { data: LocationsType[] };
+        const data: { data: LocationsType[] } = (await response.json()) as {
+          data: LocationsType[];
+        };
         setProvinces(data.data);
         const destination = data.data?.find((p) => p.id === hotel?.address.province);
         setDestination([destination?.latitude || 0, destination?.longitude || 0]);
@@ -198,18 +219,13 @@ const HotelBookingPage = () => {
     });
   }, [hotel]);
 
-  useEffect(() => {
-    const calculateTotalPrice = () => {
-      const checkIn = new Date(checkInDate);
-      const checkOut = new Date(checkOutDate);
-      const days = (checkOut.getTime() - checkIn.getTime()) / (1000 * 3600 * 24);
-      setTotalPrice(days * (hotel?.price || 0));
-    };
-
-    calculateTotalPrice();
-  }, [checkInDate, checkOutDate, hotel?.price]);
-
-  const handlePayment = () => {
+  const handlePayment = (
+    price: number,
+    roomId: string,
+    guestSize: number,
+    startDate: string,
+    endDate: string
+  ) => {
     const access = localStorage.getItem(localStorageConfig.accessToken);
 
     if (!access) {
@@ -221,10 +237,13 @@ const HotelBookingPage = () => {
 
     dispatch(
       getPaymentUrl({
-        amount: totalPrice,
+        amount: price,
         bookingType: BookingType.HOTELS,
-        guestSize: 2,
-        orderId: locationId || '',
+        roomId: roomId,
+        guestSize: guestSize,
+        orderId: hotelId || '',
+        startDate: startDate,
+        endDate: endDate,
       })
     );
   };
@@ -272,6 +291,8 @@ const HotelBookingPage = () => {
     setSelectedImage(src);
     setModalOpen(true);
   };
+  const [showAll, setShowAll] = useState(false);
+  const visibleRooms = showAll ? rooms : rooms && rooms.slice(0, 2);
 
   return (
     <Container
@@ -280,34 +301,73 @@ const HotelBookingPage = () => {
     >
       {hotel ? (
         <>
-          <Typography
-            variant="h4"
-            gutterBottom
-            maxWidth="sm"
+          <Stack
+            direction="row"
+            justifyContent="space-between"
           >
-            {hotel?.name}
-          </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography
-              variant="subtitle1"
-              color="textSecondary"
-              sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
+            <Stack>
+              <Typography
+                variant="h4"
+                gutterBottom
+                maxWidth="sm"
+              >
+                {hotel?.name}
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography
+                  variant="subtitle1"
+                  color="textSecondary"
+                  sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
+                >
+                  <LocationOnIcon fontSize="small" />{' '}
+                  {provinces?.find((p) => p.id === hotel?.address.province)?.name} |
+                </Typography>
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={calculateAverageRating(hotel?.reviews)}
+                  precision={0.1}
+                  readOnly
+                />
+                <Typography
+                  variant="subtitle1"
+                  color="textSecondary"
+                >
+                  ({hotel?.reviews.length} {t(tokens.reviews.reviews)})
+                </Typography>
+              </Box>
+            </Stack>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={2}
             >
-              <LocationOnIcon fontSize="small" /> {provinces?.find((p) => p.id === hotel?.address.province)?.name} |
-            </Typography>
-            <Rating
-              name="half-rating-read"
-              defaultValue={calculateAverageRating(hotel?.reviews)}
-              precision={0.1}
-              readOnly
-            />
-            <Typography
-              variant="subtitle1"
-              color="textSecondary"
-            >
-              ({hotel?.reviews.length} {t(tokens.reviews.reviews)})
-            </Typography>
-          </Box>
+              <Stack>
+                <Typography>Giá/phòng/đêm từ</Typography>
+                <Typography
+                  variant="h5"
+                  sx={{ color: '#faa935' }}
+                >
+                  {totalPrice.toLocaleString()} VNĐ
+                </Typography>
+              </Stack>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: '#faa935',
+                  '&:hover': { backgroundColor: '#faa935' },
+                  height: 'fit-content',
+                }}
+                onClick={() => {
+                  const targetElement = document.getElementById('rooms');
+                  if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+              >
+                {t(tokens.hotelBooking.booking.selectRoom)}
+              </Button>
+            </Stack>
+          </Stack>
 
           <Grid
             container
@@ -318,7 +378,6 @@ const HotelBookingPage = () => {
             <Grid
               item
               xs={12}
-              md={8}
               sx={{
                 '.MuiPaper-root': { border: 0, borderRadius: 0 },
                 '.MuiCardContent-root': { padding: 0 },
@@ -413,78 +472,65 @@ const HotelBookingPage = () => {
                 </Typography>
                 <Maps destination={destination} />
               </Box>
-            </Grid>
-
-            <Grid
-              item
-              xs={12}
-              md={4}
-            >
-              <Card>
-                <CardContent>
-                  <Typography variant="h6">{t(tokens.hotelBooking.booking.title)}</Typography>
-                  <TextField
-                    label={t(tokens.hotelBooking.booking.from)}
-                    type="date"
-                    value={checkInDate}
-                    onChange={(e) => setCheckInDate(e.target.value)}
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    InputLabelProps={{ shrink: true }}
-                  />
-                  <TextField
-                    label={t(tokens.hotelBooking.booking.to)}
-                    type="date"
-                    value={checkOutDate}
-                    onChange={(e) => setCheckOutDate(e.target.value)}
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    InputLabelProps={{ shrink: true }}
-                  />
-                  <TextField
-                    label={t(tokens.hotelBooking.booking.guests)}
-                    select
-                    defaultValue="2 adults"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                  >
-                    <MenuItem value="1 adult">1 adult</MenuItem>
-                    <MenuItem value="2 adults">2 adults</MenuItem>
-                    <MenuItem value="3 adults">3 adults</MenuItem>
-                  </TextField>
-                  <p style={{ textAlign: 'center' }}>{t(tokens.hotelBooking.booking.subtotal)}</p>
+              <Stack
+                direction="row"
+                sx={{ mt: 4 }}
+                spacing={2}
+                id="rooms"
+              >
+                <Card sx={{ mt: 4, p: 2, borderRadius: 4, width: '100%' }}>
                   <Typography
-                    variant="h4"
-                    sx={{ textAlign: 'center', color: '#faa935' }}
+                    variant="h5"
+                    color="text.primary"
+                    mb={2}
                   >
-                    {totalPrice.toLocaleString()} VNĐ
+                    Room
                   </Typography>
-                </CardContent>
-                <CardActions sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                  <Button
-                    variant="contained"
-                    sx={{ backgroundColor: '#faa935', '&:hover': { backgroundColor: '#faa935' } }}
-                    onClick={handlePayment}
-                    fullWidth
+                  {rooms && rooms.length === 0 && (
+                    <Typography
+                      variant="subtitle1"
+                      color="text.secondary"
+                      mb={2}
+                    >
+                      {t(tokens.hotelBooking.noRoomsAvailable)}
+                    </Typography>
+                  )}
+                  <Grid
+                    container
+                    spacing={2}
                   >
-                    {t(tokens.hotelBooking.booking.confirmBooking)}
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    fullWidth
-                    color="inherit"
-                  >
-                    {t(tokens.hotelBooking.booking.saveWishlist)}
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    fullWidth
-                    color="inherit"
-                  >
-                    {t(tokens.hotelBooking.booking.shareActivity)}
-                  </Button>
-                </CardActions>
-              </Card>
+                    <Grid
+                      item
+                      xs={12}
+                    >
+                      {visibleRooms &&
+                        visibleRooms.map((room, index) => (
+                          <Stack key={index}>
+                            <RoomOptionItem
+                              id={room._id}
+                              title={'Mã phòng: ' + room.roomNumber}
+                              details={'Loại phòng: ' + room.roomType}
+                              price={room.price}
+                              adults={room.maxOccupancy}
+                              handlePayment={handlePayment}
+                            />
+                          </Stack>
+                        ))}
+                      {rooms && rooms.length > 2 && !showAll && (
+                        <Stack justifyContent="center">
+                          <Button
+                            variant="outlined"
+                            sx={{ mt: 2 }}
+                            onClick={() => setShowAll(true)}
+                          >
+                            Xem thêm
+                          </Button>
+                        </Stack>
+                      )}
+                    </Grid>
+                  </Grid>
+                </Card>
+              </Stack>
             </Grid>
           </Grid>
           <Divider sx={{ my: 4 }} />
@@ -498,7 +544,10 @@ const HotelBookingPage = () => {
             {hotels && <Testimonials Html={relatedHotelsVietnam(hotels)} />}
           </Box>
           <Divider sx={{ my: 4 }} />
-          <CustomerReview data={hotel?.reviews || []} id={hotel?._id || ''} />
+          <CustomerReview
+            data={hotel?.reviews || []}
+            id={hotel?._id || ''}
+          />
           <ImageModal
             open={modalOpen}
             onClose={() => setModalOpen(false)}

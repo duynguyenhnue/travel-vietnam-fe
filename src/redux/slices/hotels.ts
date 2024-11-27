@@ -4,10 +4,10 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { envConfig } from 'src/config';
 import { dispatch } from 'src/redux/store';
-import { HotelType, HotelsState } from 'src/types/redux/hotels';
+import { HotelType, HotelsState, RoomType } from 'src/types/redux/hotels';
 
 type GetHotelsSuccessAction = PayloadAction<HotelType[] | null>;
-type GetHotelSuccessAction = PayloadAction<HotelType | null>;
+type GetHotelSuccessAction = PayloadAction<{ hotel: HotelType; rooms: RoomType[] }>;
 type GetFailureAction = PayloadAction<string>;
 
 const initialState: HotelsState = {
@@ -36,7 +36,8 @@ export const hotelsSlice = createSlice({
     },
     getHotelSuccess: (state: HotelsState, action: GetHotelSuccessAction) => {
       state.loading = false;
-      state.hotel = action.payload;
+      state.hotel = action.payload.hotel;
+      state.rooms = action.payload.rooms;
     },
     createReviewSuccess: (state: HotelsState) => {
       state.loading = false;
@@ -66,8 +67,8 @@ export const getHotelById = (id: string) => {
     try {
       dispatch(hotelsSlice.actions.getRequest());
       const result = await axios.get(`${envConfig.serverURL}/hotels/${id}`);
-      const tour: HotelType = result.data.data;
-      dispatch(hotelsSlice.actions.getHotelSuccess(tour ? tour : null));
+      const hotel: { hotel: HotelType; rooms: [] } = result.data.data;
+      dispatch(hotelsSlice.actions.getHotelSuccess(hotel));
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
       toast.error(errorMessage);

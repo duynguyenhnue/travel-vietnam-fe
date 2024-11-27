@@ -147,7 +147,8 @@ export const vi = {
   [tokens.reviews.submit]: 'Gửi đánh giá',
   // Tours
   [tokens.tours.bookTour]: 'Đặt Tour',
-  [tokens.tours.tourDes]: 'Lorem ipsum dolor ngồi amet consectetur adipisicing elit. Hàng hóa, kẻ thù.',
+  [tokens.tours.tourDes]:
+    'Lorem ipsum dolor ngồi amet consectetur adipisicing elit. Hàng hóa, kẻ thù.',
   [tokens.tours.destination]: 'Điểm đến',
   [tokens.tours.departurePoint]: 'Điểm khởi hành',
   [tokens.tours.tourName]: 'Tên tour',
@@ -333,6 +334,7 @@ export const vi = {
   hotelBooking: {
     title: 'Chi tiết Khách sạn',
     location: 'Vị trí',
+    noRoomsAvailable: 'Không có phòng trống',
     description: 'Mô tả',
     openInGoogleMaps: 'Mở trong Google Maps',
     features: {
@@ -365,6 +367,7 @@ export const vi = {
       title: 'Đặt phòng',
       from: 'Từ',
       to: 'Đến',
+      selectRoom: 'Chọn phòng',
       guests: 'Số khách',
       subtotal: 'Tổng cộng',
       confirmBooking: 'Xác nhận đặt phòng',

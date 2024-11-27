@@ -1,4 +1,4 @@
-import { Address, Review } from "./tours";
+import { Address, Review } from './tours';
 
 export type HotelsState = {
   loading: boolean;
@@ -29,11 +29,14 @@ export interface HotelType {
 }
 
 export interface RoomType {
-  id: string;
-  hotel_id: string;
-  image_url: string;
+  _id: string;
+  hotelId: string;
+  images: string[];
+  roomNumber: number;
+  roomType: string;
   name: string;
-  price: string;
+  price: number;
   description: string;
   availability: boolean;
+  maxOccupancy: number;
 }
