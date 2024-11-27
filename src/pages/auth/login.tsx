@@ -1,12 +1,9 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { Button, CircularProgress, Stack, TextField, Typography } from '@mui/material';
-import { paths } from 'src/paths';
 import { useDispatch, useSelector } from 'src/redux/store';
 import { handleOpenDialog, login } from '../../redux/slices/authentication';
-import { useRouter } from 'src/hooks/use-router';
 import { useMounted } from 'src/hooks/use-mounted';
-import { useEffect } from 'react';
 import { useDialog } from 'src/hooks/use-dialog';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
@@ -25,7 +22,6 @@ const initialValues: LoginValues = {
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const router = useRouter();
   const isMounted = useMounted();
   const dialog = useDialog();
   const { t } = useTranslation();
@@ -41,7 +37,7 @@ const LoginPage = () => {
       .required(t(tokens.auth.login.passwordRequired)),
   });
 
-  const { loading, isAuthenticated } = useSelector((state) => state.authentication);
+  const { loading } = useSelector((state) => state.authentication);
 
   const formik = useFormik({
     initialValues,
@@ -64,12 +60,6 @@ const LoginPage = () => {
       }
     },
   });
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push(paths.index);
-    }
-  }, [dispatch, isAuthenticated]);
 
   return (
     <>
