@@ -4,10 +4,13 @@ import { Review } from 'src/types/redux/tours';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { dispatch } from 'src/redux/store';
-import { createReview } from 'src/redux/slices/tours';
+import { createReviewTour } from 'src/redux/slices/tours';
+import { useLocation } from 'react-router';
+import { createReviewHotel } from 'src/redux/slices/hotels';
 
 const CustomerReview = ({ data, id }: { data: Review[], id: string }) => {
     const { t } = useTranslation();
+    const pathname = useLocation();
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
     const calculateAverageRating = (reviews: { rating: number }[]) => {
@@ -29,7 +32,11 @@ const CustomerReview = ({ data, id }: { data: Review[], id: string }) => {
     };
     
     const handleSubmit = async () => {
-        await dispatch(createReview(review, rating, id));
+        if (pathname.pathname.includes('tours')) {
+            await dispatch(createReviewTour(review, rating, id));
+        } else {
+            await dispatch(createReviewHotel(review, rating, id));
+        }
         setReview('');
         setRating(0);
     };
