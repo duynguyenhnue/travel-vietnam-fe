@@ -38,6 +38,9 @@ export const hotelsSlice = createSlice({
       state.loading = false;
       state.hotel = action.payload;
     },
+    createReviewSuccess: (state: HotelsState) => {
+      state.loading = false;
+    },
   },
 });
 
@@ -73,4 +76,21 @@ export const getHotelById = (id: string) => {
   };
 };
 
+export const createReviewHotel = (review: string, rating: number, id: string) => {
+  return async () => {
+    try {
+      dispatch(hotelsSlice.actions.getRequest());
+      await axios.post(`${envConfig.serverURL}/reviews/${id}/hotel`, {
+        reviewText: review,
+        rating: rating,
+      });
+      dispatch(hotelsSlice.actions.createReviewSuccess());
+      toast.success('Review created successfully');
+    } catch (error) {
+      const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
+      toast.error(errorMessage);
+      dispatch(hotelsSlice.actions.getFailure(errorMessage));
+    }
+  };
+};
 export default hotelsSlice.reducer;

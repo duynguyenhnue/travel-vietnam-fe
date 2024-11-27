@@ -74,7 +74,7 @@ export const getTourById = (id: string) => {
   };
 };
 
-export const createReview = (review: string, rating: number, id: string) => {
+export const createReviewTour = (review: string, rating: number, id: string) => {
   return async () => {
     try {
       dispatch(toursSlice.actions.getRequest());
@@ -83,6 +83,7 @@ export const createReview = (review: string, rating: number, id: string) => {
         rating: rating,
       });
       dispatch(toursSlice.actions.createReviewSuccess());
+      toast.success('Review created successfully');
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
       toast.error(errorMessage);
