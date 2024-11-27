@@ -39,6 +39,9 @@ export const toursSlice = createSlice({
     createReviewSuccess: (state: ToursState) => {
       state.loading = false;
     },
+    deleteReviewSuccess: (state: ToursState) => {
+      state.loading = false;
+    },
   },
 });
 
@@ -84,6 +87,21 @@ export const createReviewTour = (review: string, rating: number, id: string) => 
       });
       dispatch(toursSlice.actions.createReviewSuccess());
       toast.success('Review created successfully');
+    } catch (error) {
+      const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
+      toast.error(errorMessage);
+      dispatch(toursSlice.actions.getFailure(errorMessage));
+    }
+  };
+};
+
+export const deleteReviewTour = (id: string) => {
+  return async () => {
+    try {
+      dispatch(toursSlice.actions.getRequest());
+      await axios.delete(`${envConfig.serverURL}/reviews/${id}`);
+      dispatch(toursSlice.actions.deleteReviewSuccess());
+      toast.success('Review deleted successfully');
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
       toast.error(errorMessage);

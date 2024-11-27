@@ -113,7 +113,7 @@ const FormFieldTour = () => {
 
   return (
     <Container maxWidth="xl">
-      <StyledTitleComponent>{t(tokens.tours.bookTour)}</StyledTitleComponent>
+      <StyledTitleComponent>{t(tokens.tours.searchTour)}</StyledTitleComponent>
 
       <Grid
         container

@@ -1,3 +1,10 @@
+export type ReplyReviewRequest = {
+    reviewText: string;
+    userId?: string;
+    avatar?: string;
+    fullName?: string;
+}
+
 export type ToursState = {
     loading: boolean;
     tours: TourType[] | null;
@@ -6,6 +13,7 @@ export type ToursState = {
 };
 
 export type Review = {
+    _id: string;
     userId: string;
     avatar?: string;
     fullName?: string;
@@ -13,6 +21,7 @@ export type Review = {
     reviewText: string;
     createdAt: Date;
     updatedAt: Date;
+    reply?: ReplyReviewRequest[];
 };
 
 export type TourType = {

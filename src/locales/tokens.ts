@@ -39,7 +39,7 @@ export const tokens = {
     checkIn: 'hotels.checkIn',
     checkOut: 'hotels.checkOut',
     guests: 'common.guests',
-    bookHotel: 'hotels.bookHotel',
+    searchHotel: 'hotels.searchHotel',
     city: 'hotels.city',
     hotelName: 'hotels.hotelName',
     checkInOut: 'hotels.checkInOut',

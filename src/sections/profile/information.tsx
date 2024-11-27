@@ -186,12 +186,12 @@ export default function Information() {
               />
             </FormControl>
           </Box>
-          <Box sx={{ display: 'flex', gap: '10px' }}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 1fr' }, gap: '10px' }}>
             <TextField
               select
               label={t(tokens.profile.province)}
               name="address.province"
-              value={userDetail?.address.province}
+              value={userDetail?.address?.province || ''}
               onChange={handleChange}
               fullWidth
             >
@@ -208,7 +208,7 @@ export default function Information() {
               select
               label={t(tokens.profile.district)}
               name="address.district"
-              value={userDetail?.address?.district}
+              value={userDetail?.address?.district || ''}
               onChange={handleChange}
               fullWidth
               disabled={!userDetail?.address?.province}
@@ -226,7 +226,7 @@ export default function Information() {
               select
               label={t(tokens.profile.ward)}
               name="address.ward"
-              value={userDetail?.address?.ward}
+              value={userDetail?.address?.ward || ''}
               onChange={handleChange}
               fullWidth
               disabled={!userDetail?.address?.district}

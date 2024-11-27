@@ -120,7 +120,7 @@ export const en = {
   [tokens.testimonials.customer]: 'Customer',
 
   // Hotels
-  [tokens.hotels.bookHotel]: 'Book Hotel',
+  [tokens.hotels.searchHotel]: 'Search Hotel',
   [tokens.hotels.city]: 'City',
   [tokens.hotels.hotelName]: 'Hotel name',
   [tokens.hotels.checkInOut]: 'Check-in / Check-out',

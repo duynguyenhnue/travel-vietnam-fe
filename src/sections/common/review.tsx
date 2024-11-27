@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Container, Grid, Typography, Rating, Avatar, Divider, TextField, MenuItem, Button } from '@mui/material';
-import { Review } from 'src/types/redux/tours';
+import { Box, Container, Grid, Typography, Rating, Avatar, Divider, TextField, MenuItem, Button, Menu } from '@mui/material';
+import { ReplyReviewRequest, Review } from 'src/types/redux/tours';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
 import { dispatch } from 'src/redux/store';
-import { createReviewTour } from 'src/redux/slices/tours';
+import { createReviewTour, deleteReviewTour } from 'src/redux/slices/tours';
 import { useLocation } from 'react-router';
 import { createReviewHotel } from 'src/redux/slices/hotels';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 const CustomerReview = ({ data, id }: { data: Review[], id: string }) => {
     const { t } = useTranslation();
@@ -30,7 +31,7 @@ const CustomerReview = ({ data, id }: { data: Review[], id: string }) => {
         }
         return t(tokens.reviews.bad);
     };
-    
+
     const handleSubmit = async () => {
         if (pathname.pathname.includes('tours')) {
             await dispatch(createReviewTour(review, rating, id));
@@ -39,6 +40,19 @@ const CustomerReview = ({ data, id }: { data: Review[], id: string }) => {
         }
         setReview('');
         setRating(0);
+    };
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const handleDelete = async (id: string) => {
+        await dispatch(deleteReviewTour(id));
+        handleClose();
     };
     return (
         <Container maxWidth="xl" sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -75,20 +89,71 @@ const CustomerReview = ({ data, id }: { data: Review[], id: string }) => {
             </Grid>
 
             {data.map((review: Review, index: number) => (
-                <Box key={index} sx={{ mb: 3 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                        <Avatar sx={{ mr: 2 }} src={review.avatar} />
-                        <Box>
-                            <Typography variant="subtitle1" fontWeight="bold">{review.fullName}</Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                {new Date(review.updatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-                            </Typography>
+                <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <Box sx={{ mb: 3 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                            <Avatar sx={{ mr: 2 }} src={review.avatar} />
+                            <Box>
+                                <Typography variant="subtitle1" fontWeight="bold">{review.fullName}</Typography>
+                                <Typography variant="body2" color="textSecondary">
+                                    {new Date(review.updatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                </Typography>
+                            </Box>
                         </Box>
+                        <Rating value={review.rating} readOnly size="small" precision={0.1} />
+                        <Typography variant="body2" color="textSecondary">{review.reviewText}</Typography>
+                        {
+                            review.reply && review.reply.map((reply: ReplyReviewRequest, index: number) => (
+                                <Box key={index} sx={{ ml: 7, mt: 2, mb: 2 }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                                        <Avatar sx={{ mr: 2 }} src={reply.avatar} />
+                                        <Box>
+                                            <Typography variant="subtitle1" fontWeight="bold">{reply.fullName}</Typography>
+                                        </Box>
+                                    </Box>
+                                    <Typography variant="body2" color="textSecondary">{reply.reviewText}</Typography>
+                                </Box>
+                            ))
+                        }
+                        <Divider sx={{ mt: 2 }} />
                     </Box>
-                    <Rating value={review.rating} readOnly size="small" precision={0.1} />
-                    <Typography variant="body2" color="textSecondary">{review.reviewText}</Typography>
-                    <Divider sx={{ mt: 2 }} />
+                    <Button
+                        id="basic-button"
+                        aria-controls={open ? 'basic-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClick}
+                        sx={{
+                            backgroundColor: 'transparent',
+                            border: 'none',
+                            color: 'black',
+                            '&:hover': {
+                                backgroundColor: 'transparent',
+                            },
+                        }}
+                    >
+                        <MoreHorizIcon />
+                    </Button>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                        }}
+                        sx={{
+                            '.MuiPaper-root': {
+                                boxShadow: 'none',
+                                backgroundColor: 'transparent',
+                                border: '1px solid rgba(22, 82, 125, 0.08)',
+                            },
+                        }}
+                    >
+                        <MenuItem onClick={() => handleDelete(review._id)}>Delete</MenuItem>
+                    </Menu>
                 </Box>
+
             ))}
             {
                 data.length > 5 && (

@@ -25,7 +25,7 @@ import { getBookings } from 'src/redux/slices/booking';
 import { Seo } from 'src/components/common/performance/seo';
 
 const ProfilePage = () => {
-  const [mode, setMode] = useState<'information' | 'booking' | 'newsletter' | 'notification'>(
+  const [mode, setMode] = useState<'information' | 'booking'>(
     'information'
   );
   const { user } = useSelector((state) => state.user);
@@ -82,9 +82,16 @@ const ProfilePage = () => {
         !user ?
           <CircularProgress />
           :
-          <>
+          <Box
+            sx={{
+              width: '100%',
+              gap: 2,
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+            }}
+          >
             <Box
-              width="25%"
+              width={{ xs: '100%', md: '25%' }}
               bgcolor="white"
               p={2}
               borderRadius="8px"
@@ -157,7 +164,7 @@ const ProfilePage = () => {
                   onClick={() => setMode('information')}
                   sx={{
                     cursor: 'pointer',
-                    backgroundColor: mode === 'information' ? 'primary.light' : 'transparent',
+                    backgroundColor: mode == 'information' ? '#ff7e01' : 'transparent',
                   }}
                 >
                   <ListItemText primary={t(tokens.profile.information)} />
@@ -167,7 +174,7 @@ const ProfilePage = () => {
                   onClick={() => setMode('booking')}
                   sx={{
                     cursor: 'pointer',
-                    backgroundColor: mode === 'booking' ? 'primary.light' : 'transparent',
+                    backgroundColor: mode == 'booking' ? '#ff7e01' : 'transparent',
                   }}
                 >
                   <ListItemText primary={t(tokens.profile.booking)} />
@@ -177,12 +184,12 @@ const ProfilePage = () => {
             </Box>
             <Box
               flexGrow={1}
-              ml={4}
+              ml={{ xs: 0, md: 4 }}
             >
               {mode === 'information' && <Information />}
               {mode === 'booking' && <BookingHistory />}
             </Box>
-          </>
+          </Box>
       }
 
 

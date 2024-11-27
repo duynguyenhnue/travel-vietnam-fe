@@ -35,7 +35,7 @@ export const vi = {
   [tokens.nav.about]: 'Về chúng tôi',
   [tokens.nav.tours]: 'Tour',
   [tokens.nav.hotels]: 'Khách sạn',
-
+  
   // Hotels
   [tokens.hotels.destination]: 'Điểm đến',
   [tokens.hotels.checkIn]: 'Ngày nhận',
@@ -120,7 +120,7 @@ export const vi = {
   [tokens.testimonials.customer]: 'Khách hàng',
 
   // Hotels
-  [tokens.hotels.bookHotel]: 'Đặt Khách sạn',
+  [tokens.hotels.searchHotel]: 'Tìm khách sạn',
   [tokens.hotels.city]: 'Thành phố',
   [tokens.hotels.hotelName]: 'Tên khách sạn',
   [tokens.hotels.checkInOut]: 'Ngày nhận / trả phòng',

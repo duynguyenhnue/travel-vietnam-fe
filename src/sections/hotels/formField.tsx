@@ -110,7 +110,7 @@ const FormFieldHotel = () => {
 
   return (
     <Container maxWidth="xl">
-      <StyledTitleComponent>{t(tokens.hotels.bookHotel)}</StyledTitleComponent>
+      <StyledTitleComponent>{t(tokens.hotels.searchHotel)}</StyledTitleComponent>
 
       <Grid
         container

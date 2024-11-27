@@ -23,7 +23,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import TranslateIcon from '@mui/icons-material/Translate';
 import Maps from 'src/sections/common/map';
 import Testimonials from 'src/sections/common/testimonials';
-import CustomerReview from 'src/sections/hotels/details/review';
+import CustomerReview from 'src/sections/common/review';
 import { useDispatch, useSelector, RootState } from 'src/redux/store';
 import { getPaymentUrl } from 'src/redux/slices/checkout';
 import { localStorageConfig } from 'src/config';

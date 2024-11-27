@@ -95,10 +95,10 @@ export const TopNav = () => {
   const location = useLocation();
 
   const navLinks = [
-    { path: '/', display: t(tokens.nav.home) },
-    { path: '/about', display: t(tokens.nav.about) },
-    { path: '/tours', display: t(tokens.nav.tours) },
-    { path: '/hotels', display: t(tokens.nav.hotels) },
+    { path: '/', display: 'Home' },
+    { path: '/about', display: 'About' },
+    { path: '/tours', display: 'Tours' },
+    { path: '/hotels', display: 'Hotels' },
   ];
   return (
     <AppBar
@@ -138,7 +138,7 @@ export const TopNav = () => {
                     '&:hover': { color: '#faa935' },
                     color:
                       location.pathname === item.path ||
-                      (item.path !== '/' && location.pathname.startsWith(item.path))
+                        (item.path !== '/' && location.pathname.startsWith(item.path))
                         ? '#faa935'
                         : '#0b2727',
                   }}
@@ -154,7 +154,7 @@ export const TopNav = () => {
               <ProfileIcon />
             </IconButton>
           ) : (
-            <>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 3 }}>
               <MenuItem
                 onClick={() => {
                   dialog.handleOpen();
@@ -189,7 +189,7 @@ export const TopNav = () => {
               >
                 {t(tokens.nav.register)}
               </MenuItem>
-            </>
+            </Box>
           )}
           <Menu
             anchorEl={anchorEl}
@@ -304,10 +304,77 @@ export const TopNav = () => {
                   style={{ textDecoration: 'none', color: '#0b2727', width: '100%' }}
                   className={({ isActive }) => (isActive ? 'active__link' : '')}
                 >
-                  <ListItemText primary={item.display} />
+                  <ListItemText primary={t(tokens.nav[item.display.toLowerCase() as keyof typeof tokens.nav])} />
                 </NavLink>
               </ListItem>
             ))}
+            {isTokenValid ? (
+              <>
+                <ListItem
+                  button
+                  onClick={toggleDrawer}
+                >
+                  <NavLink
+                    to="/profile"
+                    style={{ textDecoration: 'none', color: '#0b2727', width: '100%' }}
+                    className={({ isActive }) => (isActive ? 'active__link' : '')}
+                  >
+                    <ListItemText primary={t(tokens.nav.profile)} />
+                  </NavLink>
+                </ListItem>
+                <MenuItem
+                  onClick={() => {
+                    dialog.handleOpen();
+                    dispatch(handleOpenDialog('logout'));
+                  }}
+                  sx={{
+                    background: '#faa935',
+                    border: 'none',
+                    padding: '0.4rem 1.5rem',
+                    ':hover': {
+                      background: '#ff7e01',
+                    },
+                  }}
+                >
+                  {t(tokens.nav.logout)}
+                </MenuItem>
+              </>
+            ) : (
+              <>
+                <MenuItem
+                  onClick={() => {
+                    dialog.handleOpen();
+                    dispatch(handleOpenDialog('login'));
+                  }}
+                  sx={{
+                    background: '#faa935',
+                    border: 'none',
+                    padding: '0.4rem 1.5rem',
+                    ':hover': {
+                      background: '#ff7e01',
+                    },
+                  }}
+                >
+                  {t(tokens.nav.login)}
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    dialog.handleOpen();
+                    dispatch(handleOpenDialog('register'));
+                  }}
+                  sx={{
+                    background: '#ff7e01',
+                    border: 'none',
+                    padding: '0.4rem 1.5rem',
+                    ':hover': {
+                      background: '#ff7e01',
+                    },
+                  }}
+                >
+                  {t(tokens.nav.register)}
+                </MenuItem>
+              </>
+            )}
           </List>
         </Drawer>
       </Container>
