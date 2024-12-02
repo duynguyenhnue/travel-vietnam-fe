@@ -342,7 +342,7 @@ const HotelBookingPage = () => {
               spacing={2}
             >
               <Stack>
-                <Typography>Giá/phòng/đêm từ</Typography>
+                <Typography>{t(tokens.hotels.pricePerNight)}</Typography>
                 <Typography
                   variant="h5"
                   sx={{ color: '#faa935' }}
@@ -484,7 +484,7 @@ const HotelBookingPage = () => {
                     color="text.primary"
                     mb={2}
                   >
-                    Room
+                    {t(tokens.hotels.room)}
                   </Typography>
                   {rooms && rooms.length === 0 && (
                     <Typography
@@ -523,7 +523,7 @@ const HotelBookingPage = () => {
                             sx={{ mt: 2 }}
                             onClick={() => setShowAll(true)}
                           >
-                            Xem thêm
+                            {t(tokens.hotels.showMore)}
                           </Button>
                         </Stack>
                       )}
