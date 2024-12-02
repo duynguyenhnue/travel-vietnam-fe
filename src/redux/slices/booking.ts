@@ -39,12 +39,17 @@ export const bookingSlice = createSlice({
   },
 });
 
-export const getBookings = (page = 0, limit = 9, city = "") => {
+export const getBookings = (page = 0, limit = 9, city = '') => {
   return async () => {
     try {
       dispatch(bookingSlice.actions.getRequest());
-      const result = await axios.get(`${envConfig.serverURL}/bookings?page=${page}&limit=${limit}&city=${city}`);
-      const bookings: BookingType[] = Array.isArray(result.data.data) ? result.data.data : [];
+      const result = await axios.get(
+        `${envConfig.serverURL}/bookings?page=${page}&limit=${limit}&city=${city}`
+      );
+      const bookings: BookingType[] = Array.isArray(result.data.data.data)
+        ? result.data.data.data
+        : [];
+
       dispatch(bookingSlice.actions.getBookingsSuccess(bookings.length > 0 ? bookings : null));
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : 'Something went wrong';

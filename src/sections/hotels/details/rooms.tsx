@@ -15,6 +15,8 @@ import {
 import PersonIcon from '@mui/icons-material/Person';
 import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { tokens } from 'src/locales/tokens';
 
 export const RoomOptionItem: React.FC<{
   id: string;
@@ -38,7 +40,7 @@ export const RoomOptionItem: React.FC<{
   });
   const [error, setError] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
-
+  const { t } = useTranslation();
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -53,9 +55,11 @@ export const RoomOptionItem: React.FC<{
 
     // Kiểm tra lỗi ngày
     if (name === 'endDate' && newInfo.startDate && value <= newInfo.startDate) {
-      setError('Ngày kết thúc phải lớn hơn ngày bắt đầu');
+      // setError('Ngày kết thúc phải lớn hơn ngày bắt đầu');
+      setError(t(tokens.hotels.roomEndDate));
     } else if (name === 'startDate' && newInfo.endDate && value >= newInfo.endDate) {
-      setError('Ngày bắt đầu phải nhỏ hơn ngày kết thúc');
+      // setError('Ngày bắt đầu phải nhỏ hơn ngày kết thúc');
+      setError(t(tokens.hotels.roomStartDate));
     } else {
       setError('');
     }
@@ -131,7 +135,7 @@ export const RoomOptionItem: React.FC<{
                 variant="subtitle1"
                 fontWeight="bold"
               >
-                Lựa chọn phòng
+                {t(tokens.hotels.roomSelect)}
               </Typography>
             </Grid>
             <Grid
@@ -142,7 +146,7 @@ export const RoomOptionItem: React.FC<{
                 variant="subtitle1"
                 fontWeight="bold"
               >
-                Số lượng
+                {t(tokens.hotels.roomGuest)}
               </Typography>
             </Grid>
             <Grid
@@ -154,7 +158,7 @@ export const RoomOptionItem: React.FC<{
                 variant="subtitle1"
                 fontWeight="bold"
               >
-                Giá/phòng/đêm
+                {t(tokens.hotels.roomPrice)}
               </Typography>
             </Grid>
           </Grid>
@@ -205,7 +209,7 @@ export const RoomOptionItem: React.FC<{
                 fontSize: '0.85rem',
               }}
             >
-              Đặc biệt dành cho bạn!
+              {t(tokens.hotels.roomSpecial)}
             </Typography>
             <Typography
               variant="h5"
@@ -218,7 +222,7 @@ export const RoomOptionItem: React.FC<{
               variant="caption"
               sx={{ color: 'text.secondary', mt: 0.5 }}
             >
-              Đã bao gồm thuế và phí
+              {t(tokens.hotels.roomTax)}
             </Typography>
           </Grid>
         </Grid>
@@ -239,7 +243,7 @@ export const RoomOptionItem: React.FC<{
             },
           }}
         >
-          Đặt ngay
+          {t(tokens.hotels.roomBook)}
         </Button>
       </Box>
       <Dialog
@@ -248,11 +252,11 @@ export const RoomOptionItem: React.FC<{
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle>Hóa đơn đặt phòng</DialogTitle>
+        <DialogTitle>{t(tokens.hotels.roomBill)}</DialogTitle>
         <DialogContent>
           <Stack spacing={2}>
             <TextField
-              label="Từ ngày"
+              label={t(tokens.hotels.roomStart)}
               type="date"
               name="startDate"
               InputLabelProps={{ shrink: true }}
@@ -262,7 +266,7 @@ export const RoomOptionItem: React.FC<{
               helperText={bookingInfo.startDate >= bookingInfo.endDate && error}
             />
             <TextField
-              label="Đến ngày"
+              label={t(tokens.hotels.roomEnd)}
               type="date"
               name="endDate"
               InputLabelProps={{ shrink: true }}
@@ -273,10 +277,10 @@ export const RoomOptionItem: React.FC<{
             />
             <Divider />
             <Typography variant="body2">
-              <strong>Giá mỗi đêm:</strong> {price.toLocaleString()} VNĐ
+              <strong>{t(tokens.hotels.pricePerNight)}:</strong> {price.toLocaleString()} VNĐ
             </Typography>
             <Typography variant="body2">
-              <strong>Số đêm:</strong>{' '}
+              <strong>{t(tokens.hotels.numberOfNights)}:</strong>{' '}
               {bookingInfo.startDate && bookingInfo.endDate
                 ? dayjs(bookingInfo.endDate).diff(dayjs(bookingInfo.startDate), 'day')
                 : 0}
@@ -285,7 +289,7 @@ export const RoomOptionItem: React.FC<{
               variant="h6"
               color="primary"
             >
-              <strong>Tổng tiền:</strong> {totalPrice.toLocaleString()} VNĐ
+              <strong>{t(tokens.hotels.totalAmount)}:</strong> {totalPrice.toLocaleString()} VNĐ
             </Typography>
           </Stack>
         </DialogContent>
@@ -294,14 +298,14 @@ export const RoomOptionItem: React.FC<{
             onClick={handleClose}
             color="secondary"
           >
-            Hủy
+            {t(tokens.hotels.cancel)}
           </Button>
           <Button
             onClick={handleConfirm}
             variant="contained"
             color="primary"
           >
-            Xác nhận
+            {t(tokens.hotels.confirm)}
           </Button>
         </DialogActions>
       </Dialog>

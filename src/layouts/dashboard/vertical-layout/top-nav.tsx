@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -70,17 +70,7 @@ export const TopNav = () => {
     }
   }, [open]);
 
-  const [isTokenValid, setIsTokenValid] = useState<boolean>();
-
-  useEffect(() => {
-    const token = localStorage.getItem(localStorageConfig.accessToken);
-
-    if (token) {
-      setIsTokenValid(true);
-    } else {
-      setIsTokenValid(false);
-    }
-  }, [open]);
+  const token = localStorage.getItem(localStorageConfig.accessToken);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const openProfileMenu = Boolean(anchorEl);
@@ -143,13 +133,13 @@ export const TopNav = () => {
                         : '#0b2727',
                   }}
                 >
-                  {t(tokens.nav[item.display.toLowerCase() as keyof typeof tokens.nav])}
+                  {item.display}
                 </Typography>
               </NavLink>
             ))}
           </Box>
           <LanguageSwitch />
-          {isTokenValid ? (
+          {token ? (
             <IconButton onClick={handleClick}>
               <ProfileIcon />
             </IconButton>
@@ -256,7 +246,6 @@ export const TopNav = () => {
                           onClick={() => {
                             dispatch(logout());
                             dialog.handleClose();
-                            setIsTokenValid(false);
                           }}
                         >
                           Đăng xuất
