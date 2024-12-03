@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -24,6 +24,8 @@ export const RoomOptionItem: React.FC<{
   details: string;
   price: number;
   adults?: number;
+  startDate?: Date | null;
+  endDate?: Date | null;
   handlePayment?: (
     price: number,
     roomId: string,
@@ -32,63 +34,35 @@ export const RoomOptionItem: React.FC<{
     endDate: string
   ) => void;
   isPopular?: boolean;
-}> = ({ id, title, details, price, adults, handlePayment }) => {
+}> = ({ id, title, details, price, adults, handlePayment, startDate, endDate }) => {
   const [open, setOpen] = useState(false);
-  const [bookingInfo, setBookingInfo] = useState({
-    startDate: '',
-    endDate: '',
-  });
+
   const [error, setError] = useState('');
-  const [totalPrice, setTotalPrice] = useState(0);
+
+  const totalPrice =
+    price * (endDate && startDate ? dayjs(endDate).diff(dayjs(startDate), 'day') : 0);
   const { t } = useTranslation();
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     setError('');
-    setBookingInfo({ startDate: '', endDate: '' });
-    setTotalPrice(0);
   };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const newInfo = { ...bookingInfo, [name]: value };
-
-    // Kiểm tra lỗi ngày
-    if (name === 'endDate' && newInfo.startDate && value <= newInfo.startDate) {
-      // setError('Ngày kết thúc phải lớn hơn ngày bắt đầu');
-      setError(t(tokens.hotels.roomEndDate));
-    } else if (name === 'startDate' && newInfo.endDate && value >= newInfo.endDate) {
-      // setError('Ngày bắt đầu phải nhỏ hơn ngày kết thúc');
-      setError(t(tokens.hotels.roomStartDate));
-    } else {
-      setError('');
-    }
-
-    setBookingInfo(newInfo);
-
-    // Tính toán tổng tiền trực tiếp
-    if (newInfo.startDate && newInfo.endDate) {
-      const start = dayjs(newInfo.startDate);
-      const end = dayjs(newInfo.endDate);
-      const nights = end.diff(start, 'day');
-      if (nights > 0) {
-        setTotalPrice(nights * price);
-      } else {
-        setTotalPrice(0);
-      }
-    }
-  };
   const handleConfirm = () => {
     if (error || totalPrice === 0) {
       toast.error('Thông tin chưa hợp lệ');
       return;
     }
 
-    if (bookingInfo.startDate && bookingInfo.endDate) {
-      const guestSize = adults || 1;
-      if (handlePayment) {
-        handlePayment(totalPrice, id, guestSize, bookingInfo.startDate, bookingInfo.endDate);
-      }
+    const guestSize = adults || 1;
+    if (handlePayment) {
+      handlePayment(
+        totalPrice,
+        id,
+        guestSize,
+        startDate ? startDate.toISOString() : '',
+        endDate ? endDate.toISOString() : ''
+      );
     }
     handleClose();
   };
@@ -260,20 +234,14 @@ export const RoomOptionItem: React.FC<{
               type="date"
               name="startDate"
               InputLabelProps={{ shrink: true }}
-              value={bookingInfo.startDate}
-              onChange={handleInputChange}
-              error={!!error && bookingInfo.startDate >= bookingInfo.endDate}
-              helperText={bookingInfo.startDate >= bookingInfo.endDate && error}
+              value={startDate ? dayjs(startDate).format('YYYY-MM-DD') : ''}
             />
             <TextField
               label={t(tokens.hotels.roomEnd)}
               type="date"
               name="endDate"
               InputLabelProps={{ shrink: true }}
-              value={bookingInfo.endDate}
-              onChange={handleInputChange}
-              error={!!error && bookingInfo.endDate <= bookingInfo.startDate}
-              helperText={bookingInfo.endDate <= bookingInfo.startDate && error}
+              value={endDate ? dayjs(endDate).format('YYYY-MM-DD') : ''}
             />
             <Divider />
             <Typography variant="body2">
@@ -281,9 +249,7 @@ export const RoomOptionItem: React.FC<{
             </Typography>
             <Typography variant="body2">
               <strong>{t(tokens.hotels.numberOfNights)}:</strong>{' '}
-              {bookingInfo.startDate && bookingInfo.endDate
-                ? dayjs(bookingInfo.endDate).diff(dayjs(bookingInfo.startDate), 'day')
-                : 0}
+              {startDate && endDate ? dayjs(endDate).diff(dayjs(startDate), 'day') : 0}
             </Typography>
             <Typography
               variant="h6"
