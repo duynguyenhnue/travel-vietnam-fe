@@ -89,6 +89,8 @@ export const tokens = {
     totalAmount: 'hotels.totalAmount',
     cancel: 'hotels.cancel',
     confirm: 'hotels.confirm',
+    roomsAvailable: 'hotels.roomsAvailable',
+    roomType: 'hotels.roomType',
   },
   flights: {
     from: 'flights.from',

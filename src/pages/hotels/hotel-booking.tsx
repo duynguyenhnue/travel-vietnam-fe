@@ -34,13 +34,15 @@ import { BookingType } from 'src/types/redux/checkout';
 import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/locales/tokens';
-import { getHotelById, getHotels } from 'src/redux/slices/hotels';
+import { getHotelById, getHotels, getRooms } from 'src/redux/slices/hotels';
 import { HotelType, LocationsType } from 'src/types/redux/hotels';
 import { getTours } from 'src/redux/slices/tours';
 import { Review, TourType } from 'src/types/redux/tours';
 import ImageModal from 'src/components/common/imageModal/ImageModal';
 import { LatLngTuple } from 'leaflet';
 import { RoomOptionItem } from 'src/sections/hotels/details/rooms';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 const relatedHotelsVietnam = (hotels: HotelType[]) => {
   const calculateAverageRating = (reviews: Review[] | undefined) => {
@@ -294,6 +296,17 @@ const HotelBookingPage = () => {
   const [showAll, setShowAll] = useState(false);
   const visibleRooms = showAll ? rooms : rooms && rooms.slice(0, 2);
 
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+
+  const handleSearch = () => {
+    if (startDate && endDate) {
+      dispatch(getRooms(hotelId || '', startDate.toISOString(), endDate.toISOString()));
+    } else {
+      toast.error('Please select both start and end dates');
+    }
+  };
+
   return (
     <Container
       maxWidth="xl"
@@ -486,6 +499,36 @@ const HotelBookingPage = () => {
                   >
                     {t(tokens.hotels.room)}
                   </Typography>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <Stack
+                      direction="row"
+                      spacing={2}
+                      mb={2}
+                    >
+                      <DatePicker
+                        label={t(tokens.hotels.roomStart)}
+                        value={startDate}
+                        onChange={(newValue) => setStartDate(newValue)}
+                        slotProps={{ textField: { fullWidth: true } }}
+                      />
+                      <DatePicker
+                        label={t(tokens.hotels.roomEnd)}
+                        value={endDate}
+                        onChange={(newValue) => setEndDate(newValue)}
+                        slotProps={{ textField: { fullWidth: true } }}
+                      />
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: '#faa935',
+                          '&:hover': { backgroundColor: '#faa935' },
+                        }}
+                        onClick={handleSearch}
+                      >
+                        {t(tokens.layout.search)}
+                      </Button>
+                    </Stack>
+                  </LocalizationProvider>
                   {rooms && rooms.length === 0 && (
                     <Typography
                       variant="subtitle1"
@@ -508,11 +551,13 @@ const HotelBookingPage = () => {
                           <Stack key={index}>
                             <RoomOptionItem
                               id={room._id}
-                              title={'Mã phòng: ' + room.roomNumber}
-                              details={'Loại phòng: ' + room.roomType}
+                              title={t(tokens.hotels.roomsAvailable) + ' : ' + room.roomNumber}
+                              details={t(tokens.hotels.roomType) + ' : ' + room.roomType}
                               price={room.price}
                               adults={room.maxOccupancy}
                               handlePayment={handlePayment}
+                              startDate={startDate}
+                              endDate={endDate}
                             />
                           </Stack>
                         ))}

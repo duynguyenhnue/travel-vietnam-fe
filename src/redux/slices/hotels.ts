@@ -8,6 +8,7 @@ import { HotelType, HotelsState, RoomType } from 'src/types/redux/hotels';
 
 type GetHotelsSuccessAction = PayloadAction<HotelType[] | null>;
 type GetHotelSuccessAction = PayloadAction<{ hotel: HotelType; rooms: RoomType[] }>;
+type GetRoomsSuccessAction = PayloadAction<RoomType[] | null>;
 type GetFailureAction = PayloadAction<string>;
 
 const initialState: HotelsState = {
@@ -37,7 +38,10 @@ export const hotelsSlice = createSlice({
     getHotelSuccess: (state: HotelsState, action: GetHotelSuccessAction) => {
       state.loading = false;
       state.hotel = action.payload.hotel;
-      state.rooms = action.payload.rooms;
+    },
+    getRoomsSuccess: (state: HotelsState, action: GetRoomsSuccessAction) => {
+      state.loading = false;
+      state.rooms = action.payload;
     },
     createReviewSuccess: (state: HotelsState) => {
       state.loading = false;
@@ -54,6 +58,23 @@ export const getHotels = (page = 0, limit = 9, name = '', city = '') => {
       );
       const tours: HotelType[] = Array.isArray(result.data.data.data) ? result.data.data.data : [];
       dispatch(hotelsSlice.actions.getToursSuccess(tours.length > 0 ? tours : null));
+    } catch (error) {
+      const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
+      toast.error(errorMessage);
+      dispatch(hotelsSlice.actions.getFailure(errorMessage));
+    }
+  };
+};
+
+export const getRooms = (hotelId: string, startDate: string, endDate: string) => {
+  return async () => {
+    try {
+      dispatch(hotelsSlice.actions.getRequest());
+      const result = await axios.get(
+        `${envConfig.serverURL}/rooms?hotelId=${hotelId}&startDate=${startDate}&endDate=${endDate}`
+      );
+      const rooms: RoomType[] = Array.isArray(result.data.data) ? result.data.data : [];
+      dispatch(hotelsSlice.actions.getRoomsSuccess(rooms));
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : 'Something went wrong';
       toast.error(errorMessage);

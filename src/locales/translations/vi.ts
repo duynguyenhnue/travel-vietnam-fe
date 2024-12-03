@@ -347,6 +347,8 @@ export const vi = {
     totalAmount: 'Tổng cộng',
     cancel: 'Hủy',
     confirm: 'Xác nhận',
+    roomsAvailable: 'Phòng trống',
+    roomType: 'Loại phòng',
   },
 
   hotelBooking: {

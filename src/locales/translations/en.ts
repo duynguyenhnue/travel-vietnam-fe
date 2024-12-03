@@ -361,6 +361,8 @@ export const en = {
     totalAmount: 'Total amount',
     cancel: 'Cancel',
     confirm: 'Confirm',
+    roomsAvailable: 'Rooms available',
+    roomType: 'Room type',
   },
 
   hotelBooking: {
