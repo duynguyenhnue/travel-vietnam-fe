@@ -83,9 +83,9 @@ jobs:
           docker stop frontend_container || true
           docker rm frontend_container || true
 
-          # Chạy container mới, bind port 8080
+          # Chạy container mới, bind port 3000
           docker run -d --restart unless-stopped \
-            -p 8080:8080 \
+            -p 3000:3000 \
             -e VITE_SERVER_URL="http://20.2.139.63:8080" \
             --name frontend_container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           EOF
